@@ -72,7 +72,7 @@
     .svc-card:nth-child(1){ border-color:var(--red); }
     .svc-card:nth-child(2){ border-color:var(--gold); }
     .svc-card:nth-child(3){ border-color:var(--purple); }
-    .svc-icon { width:64px; height:64px; }
+    .svc-icon { font-size:3rem; }
     .svc-name { font-weight:900; font-size:1.2rem; flex:1; text-align:right; }
     .svc-arrow { font-size:1.5rem; color:var(--text2); }
     .location-hint { text-align:center; color:var(--text2); font-size:0.85rem; margin-top:20px; }
@@ -329,14 +329,7 @@
 
   <!-- NAVBAR -->
   <nav class="nav" id="navbar">
-    <div class="nav-logo">
-      <svg width="28" height="28" viewBox="0 0 80 80">
-        <circle cx="40" cy="40" r="38" fill="#1A73E8"/>
-        <rect x="36" y="20" width="8" height="40" rx="3" fill="white"/>
-        <rect x="20" y="36" width="40" height="8" rx="3" fill="white"/>
-      </svg>
-      الحقونا
-    </div>
+    <div class="nav-logo">🏥 الحقونا</div>
     <div class="nav-btns" id="navBtns">
       <button class="nav-btn nav-btn-outline" onclick="showScreen('login')">🏥 دخول مراكز</button>
     </div>
@@ -347,45 +340,18 @@
     <h1 class="home-title">ماذا تحتاج؟</h1>
     <div class="service-cards">
       <div class="svc-card" onclick="searchService('icu')">
-        <svg class="svc-icon" viewBox="0 0 80 80">
-          <circle cx="40" cy="40" r="38" fill="#D32F2F"/>
-          <path d="M40 18 C32 18 22 24 22 36 C22 52 40 62 40 62 C40 62 58 52 58 36 C58 24 48 18 40 18Z" fill="#FFCDD2"/>
-          <path d="M40 24 C34 24 27 28 27 37 C27 49 40 57 40 57 C40 57 53 49 53 37 C53 28 46 24 40 24Z" fill="#E53935"/>
-          <rect x="37" y="28" width="6" height="22" rx="2" fill="white"/>
-          <rect x="31" y="35" width="18" height="6" rx="2" fill="white"/>
-        </svg>
+        <span class="svc-icon">❤️</span>
         <span class="svc-name">عناية مركزة</span>
         <span class="svc-arrow">←</span>
       </div>
       <div class="svc-card" onclick="searchService('incubator')">
-        <svg class="svc-icon" viewBox="0 0 80 80">
-          <rect x="4" y="20" width="72" height="44" rx="12" fill="#7B1FA2"/>
-          <rect x="10" y="26" width="60" height="32" rx="8" fill="#E1BEE7"/>
-          <rect x="14" y="30" width="52" height="24" rx="6" fill="#F3E5F5"/>
-          <ellipse cx="40" cy="44" rx="14" ry="8" fill="#FFCC80"/>
-          <circle cx="35" cy="40" r="2.5" fill="#5D4037"/>
-          <circle cx="45" cy="40" r="2.5" fill="#5D4037"/>
-          <path d="M36 46 Q40 50 44 46" stroke="#5D4037" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-          <path d="M30 36 Q40 28 50 36" stroke="#5D4037" stroke-width="1.5" fill="none"/>
-          <rect x="16" y="58" width="8" height="6" rx="2" fill="#9C27B0"/>
-          <rect x="56" y="58" width="8" height="6" rx="2" fill="#9C27B0"/>
-          <circle cx="66" cy="22" r="3" fill="#E91E63"/>
-        </svg>
-        <span class="svc-name">حضانة المواليد</span>
+        <span class="svc-icon">👶</span>
+        <span class="svc-name">حضانة أطفال</span>
         <span class="svc-arrow">←</span>
       </div>
       <div class="svc-card" onclick="searchService('radiation')">
-        <svg class="svc-icon" viewBox="0 0 80 80">
-          <circle cx="40" cy="40" r="38" fill="#00897B"/>
-          <circle cx="40" cy="40" r="30" fill="#B2DFDB"/>
-          <circle cx="40" cy="40" r="24" fill="#00897B"/>
-          <circle cx="40" cy="34" r="10" fill="#FFCC80"/>
-          <path d="M30 50 L34 42 L40 52 L46 42 L50 50" stroke="#FFCC80" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-          <rect x="28" y="26" width="4" height="8" rx="2" fill="white" transform="rotate(-20 30 30)"/>
-          <rect x="48" y="26" width="4" height="8" rx="2" fill="white" transform="rotate(20 50 30)"/>
-          <circle cx="40" cy="34" r="4" fill="white" opacity="0.5"/>
-        </svg>
-        <span class="svc-name">رعاية مركزة</span>
+        <span class="svc-icon">☢️</span>
+        <span class="svc-name">أشعة وعلاج إشعاعي</span>
         <span class="svc-arrow">←</span>
       </div>
     </div>
@@ -989,15 +955,10 @@ async function saveSetup() {
 }
 
 // ==================== DASHBOARD ====================
-const SERVICE_ICONS = {
-  icu: '<svg width="32" height="32" viewBox="0 0 80 80"><circle cx="40" cy="40" r="38" fill="#D32F2F"/><path d="M40 24 C34 24 27 28 27 37 C27 49 40 57 40 57 C40 57 53 49 53 37 C53 28 46 24 40 24Z" fill="#E53935"/><rect x="37" y="28" width="6" height="22" rx="2" fill="white"/><rect x="31" y="35" width="18" height="6" rx="2" fill="white"/></svg>',
-  incubator: '<svg width="32" height="32" viewBox="0 0 80 80"><rect x="4" y="20" width="72" height="44" rx="12" fill="#7B1FA2"/><rect x="14" y="30" width="52" height="24" rx="6" fill="#F3E5F5"/><ellipse cx="40" cy="44" rx="14" ry="8" fill="#FFCC80"/><circle cx="35" cy="40" r="2.5" fill="#5D4037"/><circle cx="45" cy="40" r="2.5" fill="#5D4037"/><path d="M36 46 Q40 50 44 46" stroke="#5D4037" stroke-width="1.5" fill="none"/></svg>',
-  radiation: '<svg width="32" height="32" viewBox="0 0 80 80"><circle cx="40" cy="40" r="38" fill="#00897B"/><circle cx="40" cy="40" r="24" fill="#00897B"/><circle cx="40" cy="34" r="10" fill="#FFCC80"/><path d="M30 50 L34 42 L40 52 L46 42 L50 50" stroke="#FFCC80" stroke-width="3" fill="none" stroke-linecap="round"/><rect x="28" y="26" width="4" height="8" rx="2" fill="white" transform="rotate(-20 30 30)"/><rect x="48" y="26" width="4" height="8" rx="2" fill="white" transform="rotate(20 50 30)"/></svg>'
-};
 const SERVICE_CONFIG = [
-  {key:'icu', icon: SERVICE_ICONS.icu, name:'عناية مركزة', color:'#EF4444'},
-  {key:'incubator', icon: SERVICE_ICONS.incubator, name:'حضانة المواليد', color:'#F59E0B'},
-  {key:'radiation', icon: SERVICE_ICONS.radiation, name:'رعاية مركزة', color:'#8B5CF6'},
+  {key:'icu', icon:'❤️', name:'عناية مركزة', color:'#EF4444'},
+  {key:'incubator', icon:'👶', name:'حضانة أطفال', color:'#F59E0B'},
+  {key:'radiation', icon:'☢️', name:'أشعة', color:'#8B5CF6'},
 ];
 
 function renderDashboard() {
