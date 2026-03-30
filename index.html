@@ -2,962 +2,1044 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>الحقونا — لأن كل ثانية مهمة</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-storage-compat.js"></script>
   <style>
-    /* ===== RESET & BASE ===== */
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
     :root {
-      --blue: #1A73E8;
-      --blue-dark: #1557B0;
-      --green: #00897B;
-      --green-dark: #00695C;
-      --bg: #F8FAFB;
-      --white: #FFFFFF;
-      --text: #1A1A2E;
-      --text-sec: #6B7280;
-      --border: #E5E7EB;
-      --red: #EF4444;
-      --purple: #8B5CF6;
-      --gold: #F59E0B;
-      --shadow: 0 4px 24px rgba(0,0,0,0.08);
-      --shadow-lg: 0 12px 40px rgba(0,0,0,0.12);
-      --radius: 16px;
-      --radius-lg: 24px;
+      --blue:#1A73E8; --blue-d:#1557B0;
+      --green:#00897B; --green-d:#00695C;
+      --bg:#F8FAFB; --white:#FFFFFF;
+      --text:#1A1A2E; --text2:#6B7280;
+      --border:#E5E7EB; --red:#EF4444;
+      --purple:#8B5CF6; --gold:#F59E0B;
+      --r:16px; --rl:24px;
+      --shadow:0 4px 20px rgba(0,0,0,0.08);
     }
-    html { scroll-behavior: smooth; }
     body {
-      font-family: 'Cairo', 'Roboto', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.7;
-      overflow-x: hidden;
-    }
-    a { text-decoration: none; color: inherit; }
-    img { max-width: 100%; }
-    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
-
-    /* ===== ANIMATIONS ===== */
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(40px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-12px); }
-    }
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-    }
-    @keyframes slideRight {
-      from { opacity: 0; transform: translateX(-60px); }
-      to { opacity: 1; transform: translateX(0); }
-    }
-    @keyframes slideLeft {
-      from { opacity: 0; transform: translateX(60px); }
-      to { opacity: 1; transform: translateX(0); }
-    }
-    @keyframes heartbeat {
-      0%, 100% { transform: scale(1); }
-      14% { transform: scale(1.15); }
-      28% { transform: scale(1); }
-      42% { transform: scale(1.1); }
-      56% { transform: scale(1); }
-    }
-    @keyframes gradientShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-    .anim-up { animation: fadeInUp 0.8s ease-out both; }
-    .anim-fade { animation: fadeIn 1s ease-out both; }
-    .anim-float { animation: float 3s ease-in-out infinite; }
-    .anim-pulse { animation: pulse 2s ease-in-out infinite; }
-    .anim-heart { animation: heartbeat 1.5s ease-in-out infinite; }
-    .anim-right { animation: slideRight 0.8s ease-out both; }
-    .anim-left { animation: slideLeft 0.8s ease-out both; }
-
-    /* ===== NAVBAR ===== */
-    .navbar {
-      position: fixed; top: 0; right: 0; left: 0;
-      z-index: 1000;
-      background: rgba(255,255,255,0.92);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-      transition: box-shadow 0.3s;
-    }
-    .navbar.scrolled { box-shadow: 0 2px 20px rgba(0,0,0,0.08); }
-    .nav-inner {
-      max-width: 1100px; margin: 0 auto; padding: 0 24px;
-      display: flex; align-items: center; justify-content: space-between;
-      height: 70px;
-    }
-    .nav-logo {
-      font-size: 1.5rem; font-weight: 900;
-      color: var(--blue);
-      display: flex; align-items: center; gap: 8px;
-    }
-    .nav-logo span { font-size: 1.8rem; }
-    .nav-links { display: flex; gap: 32px; align-items: center; }
-    .nav-links a {
-      font-weight: 600; font-size: 0.95rem;
-      color: var(--text-sec);
-      transition: color 0.3s;
-      position: relative;
-    }
-    .nav-links a:hover { color: var(--blue); }
-    .nav-links a::after {
-      content: ''; position: absolute; bottom: -4px; right: 0;
-      width: 0; height: 2px; background: var(--blue);
-      transition: width 0.3s;
-    }
-    .nav-links a:hover::after { width: 100%; }
-    .nav-cta {
-      background: var(--blue) !important; color: var(--white) !important;
-      padding: 10px 24px; border-radius: 50px;
-      font-weight: 700 !important;
-      transition: all 0.3s !important;
-      box-shadow: 0 4px 12px rgba(26,115,232,0.3);
-    }
-    .nav-cta:hover {
-      background: var(--blue-dark) !important;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(26,115,232,0.4) !important;
-    }
-    .nav-cta::after { display: none !important; }
-    .hamburger {
-      display: none; cursor: pointer; flex-direction: column; gap: 5px;
-    }
-    .hamburger span {
-      width: 28px; height: 3px; background: var(--text);
-      border-radius: 2px; transition: 0.3s;
-    }
-
-    /* ===== HERO ===== */
-    .hero {
-      min-height: 100vh;
-      display: flex; align-items: center;
-      padding-top: 70px;
-      background: linear-gradient(135deg, #f0f7ff 0%, var(--bg) 50%, #e8f5e9 100%);
-      position: relative;
-      overflow: hidden;
-    }
-    .hero::before {
-      content: ''; position: absolute;
-      top: -200px; left: -200px;
-      width: 600px; height: 600px;
-      background: radial-gradient(circle, rgba(26,115,232,0.08) 0%, transparent 70%);
-      border-radius: 50%;
-    }
-    .hero::after {
-      content: ''; position: absolute;
-      bottom: -150px; right: -150px;
-      width: 500px; height: 500px;
-      background: radial-gradient(circle, rgba(0,137,123,0.06) 0%, transparent 70%);
-      border-radius: 50%;
-    }
-    .hero-inner {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 60px; align-items: center;
-      position: relative; z-index: 1;
-    }
-    .hero-text h1 {
-      font-size: 3.2rem; font-weight: 900;
-      line-height: 1.3; margin-bottom: 20px;
-    }
-    .hero-text h1 .highlight {
-      background: linear-gradient(135deg, var(--blue), var(--green));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    .hero-text p {
-      font-size: 1.2rem; color: var(--text-sec);
-      margin-bottom: 32px; max-width: 480px;
-    }
-    .hero-buttons { display: flex; gap: 16px; flex-wrap: wrap; }
-    .btn-primary {
-      background: linear-gradient(135deg, var(--blue), var(--blue-dark));
-      color: var(--white); padding: 16px 36px;
-      border-radius: 50px; font-weight: 700; font-size: 1.05rem;
-      border: none; cursor: pointer;
-      transition: all 0.3s;
-      box-shadow: 0 6px 20px rgba(26,115,232,0.35);
-      display: inline-flex; align-items: center; gap: 8px;
-    }
-    .btn-primary:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 10px 30px rgba(26,115,232,0.45);
-    }
-    .btn-secondary {
-      background: var(--white); color: var(--blue);
-      padding: 16px 36px; border-radius: 50px;
-      font-weight: 700; font-size: 1.05rem;
-      border: 2px solid var(--blue); cursor: pointer;
-      transition: all 0.3s;
-      display: inline-flex; align-items: center; gap: 8px;
-    }
-    .btn-secondary:hover {
-      background: var(--blue); color: var(--white);
-      transform: translateY(-3px);
-    }
-    .hero-visual {
-      display: flex; justify-content: center; align-items: center;
-      position: relative;
-    }
-    .phone-mockup {
-      width: 300px; height: 600px;
-      background: var(--white);
-      border-radius: 40px;
-      box-shadow: var(--shadow-lg);
-      border: 8px solid #1a1a2e;
-      position: relative;
-      overflow: hidden;
-      animation: float 4s ease-in-out infinite;
-    }
-    .phone-notch {
-      width: 120px; height: 28px;
-      background: #1a1a2e;
-      border-radius: 0 0 16px 16px;
-      margin: 0 auto;
-      position: relative; z-index: 2;
-    }
-    .phone-screen {
-      padding: 20px 16px;
-      height: calc(100% - 28px);
-      display: flex; flex-direction: column;
-      background: linear-gradient(180deg, #f0f7ff, var(--white));
-    }
-    .phone-header {
-      text-align: center; margin-bottom: 16px;
-    }
-    .phone-header h3 {
-      font-size: 1.1rem; font-weight: 900; color: var(--blue);
-    }
-    .phone-header p { font-size: 0.7rem; color: var(--text-sec); }
-    .phone-services { display: flex; flex-direction: column; gap: 10px; flex: 1; }
-    .phone-service {
-      background: var(--white);
-      border-radius: 14px;
-      padding: 14px;
-      display: flex; align-items: center; gap: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-      border-right: 4px solid;
-      animation: slideLeft 0.6s ease-out both;
-    }
-    .phone-service:nth-child(1) { border-color: var(--red); animation-delay: 0.3s; }
-    .phone-service:nth-child(2) { border-color: var(--gold); animation-delay: 0.5s; }
-    .phone-service:nth-child(3) { border-color: var(--purple); animation-delay: 0.7s; }
-    .phone-service .icon { font-size: 2rem; }
-    .phone-service .name { font-weight: 700; font-size: 0.85rem; }
-    .phone-service .arrow { margin-right: auto; color: var(--text-sec); font-size: 0.8rem; }
-    .floating-badge {
-      position: absolute;
-      background: var(--white);
-      border-radius: 16px;
-      padding: 12px 18px;
-      box-shadow: var(--shadow);
-      font-weight: 700; font-size: 0.85rem;
-      display: flex; align-items: center; gap: 8px;
-      z-index: 3;
-    }
-    .badge-location {
-      top: 40px; left: -40px;
-      animation: slideRight 1s 0.5s ease-out both;
-    }
-    .badge-call {
-      bottom: 80px; right: -30px;
-      animation: slideLeft 1s 0.8s ease-out both;
-    }
-    .badge-green { color: var(--green); }
-    .badge-blue { color: var(--blue); }
-
-    /* ===== STATS ===== */
-    .stats {
-      padding: 80px 0;
-      background: var(--white);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-    }
-    .stats-grid {
-      display: grid; grid-template-columns: repeat(4, 1fr);
-      gap: 32px; text-align: center;
-    }
-    .stat-item { padding: 20px; }
-    .stat-number {
-      font-size: 2.8rem; font-weight: 900;
-      background: linear-gradient(135deg, var(--blue), var(--green));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      line-height: 1.2;
-    }
-    .stat-label { font-size: 1rem; color: var(--text-sec); font-weight: 600; margin-top: 4px; }
-
-    /* ===== HOW IT WORKS ===== */
-    .how-it-works { padding: 100px 0; }
-    .section-title {
-      text-align: center; margin-bottom: 60px;
-    }
-    .section-title h2 {
-      font-size: 2.4rem; font-weight: 900; margin-bottom: 12px;
-    }
-    .section-title p {
-      font-size: 1.1rem; color: var(--text-sec); max-width: 600px; margin: 0 auto;
-    }
-    .steps-grid {
-      display: grid; grid-template-columns: repeat(3, 1fr);
-      gap: 40px;
-    }
-    .step-card {
-      background: var(--white);
-      border-radius: var(--radius-lg);
-      padding: 40px 28px;
-      text-align: center;
-      box-shadow: var(--shadow);
-      transition: all 0.4s;
-      position: relative;
-    }
-    .step-card:hover {
-      transform: translateY(-8px);
-      box-shadow: var(--shadow-lg);
-    }
-    .step-number {
-      width: 56px; height: 56px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--blue), var(--green));
-      color: var(--white);
-      display: flex; align-items: center; justify-content: center;
-      font-weight: 900; font-size: 1.4rem;
-      margin: 0 auto 20px;
-    }
-    .step-icon { font-size: 3rem; margin-bottom: 16px; display: block; }
-    .step-card h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: 10px; }
-    .step-card p { font-size: 0.95rem; color: var(--text-sec); }
-    .step-connector {
-      position: absolute; top: 68px; left: -32px;
-      font-size: 1.5rem; color: var(--border);
-    }
-    .step-card:nth-child(1) .step-connector { display: none; }
-
-    /* ===== SERVICES SECTION ===== */
-    .services-section {
-      padding: 100px 0;
-      background: linear-gradient(180deg, var(--white), var(--bg));
-    }
-    .services-grid {
-      display: grid; grid-template-columns: repeat(3, 1fr);
-      gap: 28px;
-    }
-    .service-card {
-      background: var(--white);
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      box-shadow: var(--shadow);
-      transition: all 0.4s;
-      border-top: 5px solid;
-    }
-    .service-card:hover {
-      transform: translateY(-8px) scale(1.02);
-      box-shadow: var(--shadow-lg);
-    }
-    .service-card.card-icu { border-color: var(--red); }
-    .service-card.card-incubator { border-color: var(--gold); }
-    .service-card.card-radiation { border-color: var(--purple); }
-    .service-top {
-      padding: 32px 24px 20px;
-      text-align: center;
-    }
-    .service-emoji {
-      font-size: 4rem; margin-bottom: 12px;
-      display: block;
-    }
-    .service-card h3 {
-      font-size: 1.3rem; font-weight: 900; margin-bottom: 8px;
-    }
-    .service-card .desc {
-      font-size: 0.9rem; color: var(--text-sec); padding: 0 8px;
-    }
-    .service-bottom {
-      padding: 16px 24px;
-      background: var(--bg);
-      display: flex; justify-content: space-between; align-items: center;
-    }
-    .service-tag {
-      font-size: 0.8rem; font-weight: 700;
-      padding: 6px 14px; border-radius: 50px;
-      color: var(--white);
-    }
-    .tag-free { background: var(--green); }
-    .tag-discount { background: var(--blue); }
-    .service-arrow {
-      font-size: 1.4rem; color: var(--text-sec);
-      transition: 0.3s;
-    }
-    .service-card:hover .service-arrow { color: var(--blue); transform: translateX(-6px); }
-
-    /* ===== FEATURES ===== */
-    .features { padding: 100px 0; }
-    .features-grid {
-      display: grid; grid-template-columns: repeat(2, 1fr);
-      gap: 32px;
-    }
-    .feature-card {
-      display: flex; gap: 20px; align-items: flex-start;
-      background: var(--white);
-      padding: 32px; border-radius: var(--radius-lg);
-      box-shadow: var(--shadow);
-      transition: all 0.3s;
-    }
-    .feature-card:hover { transform: translateX(-8px); box-shadow: var(--shadow-lg); }
-    .feature-icon {
-      width: 60px; height: 60px; min-width: 60px;
-      border-radius: 16px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.8rem;
-    }
-    .fi-blue { background: rgba(26,115,232,0.1); }
-    .fi-green { background: rgba(0,137,123,0.1); }
-    .fi-red { background: rgba(239,68,68,0.1); }
-    .fi-purple { background: rgba(139,92,246,0.1); }
-    .feature-text h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 6px; }
-    .feature-text p { font-size: 0.9rem; color: var(--text-sec); }
-
-    /* ===== PROVIDER CTA ===== */
-    .provider-cta {
-      padding: 100px 0;
-      background: linear-gradient(135deg, var(--blue), var(--green));
-      position: relative; overflow: hidden;
-    }
-    .provider-cta::before {
-      content: ''; position: absolute;
-      top: -100px; right: -100px;
-      width: 400px; height: 400px;
-      background: rgba(255,255,255,0.05);
-      border-radius: 50%;
-    }
-    .provider-cta::after {
-      content: ''; position: absolute;
-      bottom: -80px; left: -80px;
-      width: 300px; height: 300px;
-      background: rgba(255,255,255,0.05);
-      border-radius: 50%;
-    }
-    .cta-content {
-      text-align: center; color: var(--white);
-      position: relative; z-index: 1;
-    }
-    .cta-content h2 {
-      font-size: 2.6rem; font-weight: 900; margin-bottom: 16px;
-    }
-    .cta-content p {
-      font-size: 1.2rem; opacity: 0.9;
-      max-width: 600px; margin: 0 auto 36px;
-    }
-    .btn-white {
-      background: var(--white);
-      color: var(--blue);
-      padding: 18px 44px;
-      border-radius: 50px;
-      font-weight: 900; font-size: 1.1rem;
-      border: none; cursor: pointer;
-      transition: all 0.3s;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-    }
-    .btn-white:hover {
-      transform: translateY(-3px) scale(1.03);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    }
-    .cta-features {
-      display: flex; justify-content: center; gap: 48px;
-      margin-top: 48px; flex-wrap: wrap;
-    }
-    .cta-feat {
-      display: flex; align-items: center; gap: 10px;
-      font-weight: 600; font-size: 1rem;
-    }
-    .cta-feat span { font-size: 1.4rem; }
-
-    /* ===== FOOTER ===== */
-    .footer {
-      background: var(--text);
-      color: rgba(255,255,255,0.7);
-      padding: 60px 0 30px;
-    }
-    .footer-grid {
-      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
-      gap: 40px; margin-bottom: 40px;
-    }
-    .footer-brand h3 {
-      color: var(--white); font-size: 1.4rem;
-      font-weight: 900; margin-bottom: 12px;
-    }
-    .footer-brand p { font-size: 0.9rem; line-height: 1.8; }
-    .footer-col h4 {
-      color: var(--white); font-weight: 700;
-      margin-bottom: 16px; font-size: 1rem;
-    }
-    .footer-col a {
-      display: block; margin-bottom: 10px;
-      font-size: 0.9rem;
-      transition: color 0.3s;
-    }
-    .footer-col a:hover { color: var(--white); }
-    .footer-bottom {
-      border-top: 1px solid rgba(255,255,255,0.1);
-      padding-top: 24px;
-      display: flex; justify-content: space-between; align-items: center;
-      flex-wrap: wrap; gap: 16px;
-    }
-    .footer-bottom p { font-size: 0.85rem; }
-    .footer-social { display: flex; gap: 16px; }
-    .footer-social a {
-      width: 40px; height: 40px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.1);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.2rem;
-      transition: all 0.3s;
-    }
-    .footer-social a:hover {
-      background: var(--blue);
-      transform: translateY(-3px);
-    }
-
-    /* ===== DOWNLOAD SECTION ===== */
-    .download-section {
-      padding: 80px 0;
-      text-align: center;
-      background: var(--bg);
-    }
-    .download-buttons { display: flex; gap: 16px; justify-content: center; margin-top: 32px; flex-wrap: wrap; }
-    .store-btn {
-      background: var(--text);
-      color: var(--white);
-      padding: 14px 32px;
-      border-radius: 14px;
-      display: flex; align-items: center; gap: 12px;
-      transition: all 0.3s;
-      border: none; cursor: pointer;
-    }
-    .store-btn:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
-    .store-btn .store-icon { font-size: 2rem; }
-    .store-btn .store-text { text-align: right; }
-    .store-btn .store-text small { font-size: 0.7rem; opacity: 0.7; display: block; }
-    .store-btn .store-text strong { font-size: 1rem; }
-
-    /* ===== SCROLL TO TOP ===== */
-    .scroll-top {
-      position: fixed; bottom: 30px; left: 30px;
-      width: 50px; height: 50px;
-      border-radius: 50%;
-      background: var(--blue);
-      color: var(--white);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.4rem;
-      cursor: pointer;
-      box-shadow: var(--shadow);
-      opacity: 0; visibility: hidden;
-      transition: all 0.3s;
-      z-index: 999;
-      border: none;
-    }
-    .scroll-top.visible { opacity: 1; visibility: visible; }
-    .scroll-top:hover { transform: translateY(-3px); background: var(--blue-dark); }
-
-    /* ===== RESPONSIVE ===== */
-    @media (max-width: 768px) {
-      .hero-inner { grid-template-columns: 1fr; text-align: center; gap: 40px; }
-      .hero-text h1 { font-size: 2.2rem; }
-      .hero-text p { margin: 0 auto 32px; }
-      .hero-buttons { justify-content: center; }
-      .hero-visual { margin-top: 20px; }
-      .phone-mockup { width: 240px; height: 480px; }
-      .floating-badge { display: none; }
-      .stats-grid { grid-template-columns: repeat(2, 1fr); }
-      .steps-grid { grid-template-columns: 1fr; }
-      .step-connector { display: none !important; }
-      .services-grid { grid-template-columns: 1fr; }
-      .features-grid { grid-template-columns: 1fr; }
-      .footer-grid { grid-template-columns: 1fr 1fr; }
-      .nav-links { display: none; }
-      .hamburger { display: flex; }
-      .cta-features { gap: 24px; }
-      .cta-content h2 { font-size: 1.8rem; }
-      .section-title h2 { font-size: 1.8rem; }
-    }
-
-    @media (max-width: 480px) {
-      .stats-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-      .stat-number { font-size: 2rem; }
-      .footer-grid { grid-template-columns: 1fr; }
-      .hero-buttons { flex-direction: column; align-items: center; }
-      .download-buttons { flex-direction: column; align-items: center; }
+      font-family:'Cairo',sans-serif;
+      background:var(--bg); color:var(--text);
+      min-height:100vh; overflow-x:hidden;
+    }
+    /* NAVBAR */
+    .nav {
+      position:fixed; top:0; right:0; left:0; z-index:100;
+      background:rgba(255,255,255,0.95); backdrop-filter:blur(10px);
+      border-bottom:1px solid var(--border);
+      height:60px; display:flex; align-items:center;
+      padding:0 20px; justify-content:space-between;
+    }
+    .nav-logo { font-weight:900; font-size:1.3rem; color:var(--blue); display:flex; align-items:center; gap:6px; }
+    .nav-btns { display:flex; gap:10px; }
+    .nav-btn {
+      padding:8px 16px; border-radius:50px; font-weight:700; font-size:0.85rem;
+      border:none; cursor:pointer; font-family:inherit;
+    }
+    .nav-btn-outline { background:transparent; border:2px solid var(--blue); color:var(--blue); }
+    .nav-btn-fill { background:var(--blue); color:var(--white); }
+    /* SCREENS */
+    .screen { display:none; padding:70px 16px 30px; min-height:100vh; }
+    .screen.active { display:block; }
+    /* SPLASH */
+    .splash {
+      display:none; position:fixed; inset:0; z-index:999;
+      background:linear-gradient(135deg, var(--blue), var(--green));
+      justify-content:center; align-items:center; flex-direction:column;
+      animation:splashOut 0.5s 2.5s forwards;
+    }
+    .splash.show { display:flex; }
+    .splash h1 { color:var(--white); font-size:2.5rem; margin-top:16px; }
+    .splash p { color:rgba(255,255,255,0.8); font-size:1.1rem; margin-top:8px; }
+    .splash-emoji { font-size:5rem; animation:float 2s ease-in-out infinite; }
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-15px)} }
+    @keyframes splashOut { to{opacity:0;pointer-events:none} }
+    /* HOME */
+    .home-title { text-align:center; font-size:1.6rem; font-weight:900; margin:20px 0 24px; }
+    .service-cards { display:flex; flex-direction:column; gap:14px; max-width:500px; margin:0 auto; }
+    .svc-card {
+      background:var(--white); border-radius:var(--rl);
+      padding:20px; display:flex; align-items:center; gap:16px;
+      box-shadow:var(--shadow); cursor:pointer;
+      border-right:5px solid; transition:all 0.3s;
+    }
+    .svc-card:active { transform:scale(0.97); }
+    .svc-card:nth-child(1){ border-color:var(--red); }
+    .svc-card:nth-child(2){ border-color:var(--gold); }
+    .svc-card:nth-child(3){ border-color:var(--purple); }
+    .svc-icon { font-size:3rem; }
+    .svc-name { font-weight:900; font-size:1.2rem; flex:1; text-align:right; }
+    .svc-arrow { font-size:1.5rem; color:var(--text2); }
+    .location-hint { text-align:center; color:var(--text2); font-size:0.85rem; margin-top:20px; }
+    /* RESULTS */
+    .results-header {
+      display:flex; justify-content:space-between; align-items:center;
+      margin-bottom:20px;
+    }
+    .results-header h2 { font-weight:900; font-size:1.4rem; }
+    .back-btn {
+      background:none; border:none; color:var(--blue); font-weight:700;
+      font-size:1rem; cursor:pointer; font-family:inherit;
+    }
+    .center-card {
+      background:var(--white); border-radius:var(--rl);
+      padding:16px; margin-bottom:12px;
+      box-shadow:var(--shadow);
+    }
+    .center-top { display:flex; align-items:center; gap:12px; margin-bottom:10px; }
+    .center-avatar {
+      width:50px; height:50px; border-radius:50%;
+      background:var(--bg); display:flex; align-items:center; justify-content:center;
+      font-size:1.5rem;
+    }
+    .center-info { flex:1; text-align:right; }
+    .center-name { font-weight:700; font-size:1rem; }
+    .center-dist { color:var(--text2); font-size:0.8rem; }
+    .badge {
+      padding:6px 12px; border-radius:8px; color:var(--white);
+      font-weight:700; font-size:0.75rem;
+    }
+    .badge-free { background:var(--green); }
+    .badge-discount { background:var(--blue); }
+    .center-actions { display:flex; gap:8px; margin-top:10px; }
+    .center-actions button {
+      flex:1; padding:10px; border-radius:12px; font-weight:700;
+      font-size:0.85rem; cursor:pointer; font-family:inherit; border:none;
+    }
+    .btn-call { background:var(--green); color:var(--white); }
+    .btn-map { background:var(--blue); color:var(--white); }
+    .btn-detail { background:var(--bg); color:var(--text); border:1px solid var(--border) !important; }
+    .no-results {
+      text-align:center; padding:60px 20px;
+    }
+    .no-results .icon { font-size:4rem; margin-bottom:16px; }
+    .no-results h3 { font-weight:700; margin-bottom:8px; }
+    .no-results p { color:var(--text2); }
+    /* CENTER DETAIL */
+    .detail-photo {
+      width:100%; height:200px; border-radius:var(--rl);
+      background:var(--bg); display:flex; align-items:center; justify-content:center;
+      font-size:4rem; margin-bottom:16px;
+    }
+    .detail-name { font-weight:900; font-size:1.5rem; text-align:center; margin-bottom:8px; }
+    .detail-badge { text-align:center; margin-bottom:20px; }
+    .detail-info { background:var(--white); border-radius:var(--r); padding:16px; margin-bottom:16px; }
+    .detail-row { display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--border); }
+    .detail-row:last-child { border:none; }
+    .detail-label { color:var(--text2); }
+    .detail-value { font-weight:700; }
+    .detail-actions { display:flex; flex-direction:column; gap:10px; }
+    .detail-actions button {
+      padding:14px; border-radius:12px; font-weight:700;
+      font-size:1rem; cursor:pointer; font-family:inherit; border:none;
+      width:100%;
+    }
+    .btn-main { background:var(--green); color:var(--white); }
+    .btn-hotline { background:var(--blue); color:var(--white); }
+    .btn-done { background:#22C55E; color:var(--white); margin-top:10px; }
+    /* THANK YOU */
+    .thankyou {
+      text-align:center; padding:80px 20px;
+      background:linear-gradient(135deg,var(--blue),var(--green));
+      border-radius:var(--rl); margin:40px auto; max-width:500px;
+      color:var(--white);
+    }
+    .thankyou .emoji { font-size:5rem; margin-bottom:16px; }
+    .thankyou h2 { font-size:1.6rem; margin-bottom:8px; }
+    .thankyou p { opacity:0.85; margin-bottom:24px; }
+    .thankyou button {
+      background:var(--white); color:var(--blue); border:none;
+      padding:12px 32px; border-radius:50px; font-weight:700;
+      font-size:1rem; cursor:pointer; font-family:inherit;
+    }
+    /* AUTH */
+    .auth-box {
+      max-width:420px; margin:40px auto; background:var(--white);
+      border-radius:var(--rl); padding:32px 24px; box-shadow:var(--shadow);
+    }
+    .auth-box h2 { text-align:center; font-size:1.5rem; margin-bottom:6px; }
+    .auth-box .subtitle { text-align:center; color:var(--text2); margin-bottom:24px; font-size:0.9rem; }
+    .form-group { margin-bottom:14px; }
+    .form-group label { display:block; text-align:right; font-weight:600; margin-bottom:6px; font-size:0.9rem; }
+    .form-group input {
+      width:100%; padding:12px 16px; border:1px solid var(--border);
+      border-radius:12px; font-family:inherit; font-size:1rem;
+      text-align:right; outline:none; transition:0.3s;
+    }
+    .form-group input:focus { border-color:var(--blue); }
+    .form-submit {
+      width:100%; padding:14px; background:var(--blue); color:var(--white);
+      border:none; border-radius:12px; font-weight:700; font-size:1rem;
+      cursor:pointer; font-family:inherit; margin-top:8px; transition:0.3s;
+    }
+    .form-submit:disabled { opacity:0.5; }
+    .auth-switch { text-align:center; margin-top:16px; color:var(--text2); font-size:0.9rem; }
+    .auth-switch a { color:var(--blue); font-weight:700; cursor:pointer; }
+    /* DASHBOARD */
+    .dash-header {
+      text-align:center; margin-bottom:24px;
+    }
+    .dash-header h2 { font-size:1.5rem; font-weight:900; }
+    .dash-header p { color:var(--text2); font-size:0.9rem; }
+    .dash-logout {
+      background:none; border:none; color:var(--red); font-weight:700;
+      cursor:pointer; font-family:inherit; font-size:0.9rem; margin-bottom:16px;
+    }
+    .svc-control {
+      background:var(--white); border-radius:var(--rl);
+      padding:16px; margin-bottom:12px; box-shadow:var(--shadow);
+    }
+    .svc-control-top { display:flex; align-items:center; justify-content:space-between; }
+    .svc-control-info { display:flex; align-items:center; gap:10px; }
+    .svc-control-info .icon { font-size:1.8rem; }
+    .svc-control-info .name { font-weight:700; }
+    .svc-status { padding:4px 10px; border-radius:6px; color:var(--white); font-size:0.7rem; font-weight:700; }
+    .status-open { background:var(--green); }
+    .status-closed { background:var(--red); }
+    .toggle-switch {
+      width:50px; height:28px; border-radius:14px;
+      background:var(--border); cursor:pointer; position:relative; transition:0.3s;
+    }
+    .toggle-switch.on { background:var(--green); }
+    .toggle-switch::after {
+      content:''; position:absolute; top:3px; right:3px;
+      width:22px; height:22px; border-radius:50%;
+      background:var(--white); transition:0.3s; box-shadow:0 2px 4px rgba(0,0,0,0.2);
+    }
+    .toggle-switch.on::after { right:25px; }
+    .discount-row {
+      margin-top:12px; padding-top:12px; border-top:1px solid var(--border);
+      display:flex; align-items:center; gap:10px; justify-content:flex-end;
+    }
+    .discount-row label { font-size:0.85rem; color:var(--text2); }
+    .discount-input {
+      width:70px; padding:8px; border:1px solid var(--border);
+      border-radius:10px; text-align:center; font-family:inherit;
+      font-size:1.1rem; font-weight:700;
+    }
+    .discount-hint { font-size:0.8rem; color:var(--text2); }
+    /* PROVIDER SETUP */
+    .setup-progress {
+      display:flex; align-items:center; justify-content:center; gap:8px;
+      margin-bottom:24px;
+    }
+    .progress-dot {
+      width:12px; height:12px; border-radius:50%; background:var(--border);
+    }
+    .progress-dot.active { background:var(--blue); }
+    .progress-dot.done { background:var(--green); }
+    .progress-line { width:40px; height:2px; background:var(--border); }
+    .progress-line.active { background:var(--green); }
+    .photo-upload {
+      width:100%; height:180px; border-radius:var(--rl);
+      border:2px dashed var(--border); display:flex; flex-direction:column;
+      align-items:center; justify-content:center; cursor:pointer;
+      margin-bottom:16px; transition:0.3s; background:var(--white);
+    }
+    .photo-upload:hover { border-color:var(--blue); }
+    .photo-upload .icon { font-size:2.5rem; margin-bottom:8px; }
+    .photo-upload span { color:var(--text2); }
+    .photo-upload img { width:100%; height:100%; object-fit:cover; border-radius:var(--rl); }
+    .gps-btn {
+      width:100%; padding:40px; border-radius:var(--rl);
+      background:var(--blue); color:var(--white); border:none;
+      font-family:inherit; cursor:pointer; transition:0.3s;
+      margin-bottom:16px;
+    }
+    .gps-btn.done { background:var(--green); }
+    .gps-btn .big-icon { font-size:2.5rem; display:block; margin-bottom:8px; }
+    .gps-btn span { font-weight:700; font-size:1rem; }
+    .coords-display {
+      background:var(--white); border-radius:12px; padding:12px;
+      text-align:center; margin-bottom:16px;
+    }
+    .coords-display .label { color:var(--text2); font-size:0.85rem; }
+    .coords-display .value { font-weight:700; }
+    .save-btn {
+      width:100%; padding:14px; background:var(--green); color:var(--white);
+      border:none; border-radius:12px; font-weight:700; font-size:1.1rem;
+      cursor:pointer; font-family:inherit;
+    }
+    .save-btn:disabled { opacity:0.5; }
+    /* LOADING */
+    .loading-screen {
+      display:none; position:fixed; inset:0; z-index:200;
+      background:rgba(248,250,251,0.9); justify-content:center;
+      align-items:center; flex-direction:column;
+    }
+    .loading-screen.show { display:flex; }
+    .spinner {
+      width:50px; height:50px; border:4px solid var(--border);
+      border-top-color:var(--blue); border-radius:50%;
+      animation:spin 0.8s linear infinite;
+    }
+    @keyframes spin { to{transform:rotate(360deg)} }
+    .loading-screen p { margin-top:16px; color:var(--text2); }
+    /* ALERT */
+    .alert-box {
+      display:none; position:fixed; inset:0; z-index:300;
+      background:rgba(0,0,0,0.5); justify-content:center; align-items:center;
+    }
+    .alert-box.show { display:flex; }
+    .alert-content {
+      background:var(--white); border-radius:var(--rl); padding:24px;
+      max-width:340px; width:90%; text-align:center;
+    }
+    .alert-content h3 { font-size:1.2rem; margin-bottom:8px; }
+    .alert-content p { color:var(--text2); font-size:0.9rem; margin-bottom:16px; }
+    .alert-content button {
+      padding:10px 32px; border-radius:50px; border:none;
+      background:var(--blue); color:var(--white); font-weight:700;
+      cursor:pointer; font-family:inherit;
+    }
+    /* RESPONSIVE */
+    @media(min-width:768px) {
+      .screen { max-width:600px; margin:0 auto; }
     }
   </style>
 </head>
 <body>
 
+  <!-- SPLASH -->
+  <div class="splash show" id="splash">
+    <div class="splash-emoji">🏥</div>
+    <h1>الحقونا</h1>
+    <p>لأن كل ثانية مهمة</p>
+  </div>
+
+  <!-- LOADING -->
+  <div class="loading-screen" id="loading">
+    <div class="spinner"></div>
+    <p id="loadingText">جاري التحميل...</p>
+  </div>
+
+  <!-- ALERT -->
+  <div class="alert-box" id="alertBox">
+    <div class="alert-content">
+      <h3 id="alertTitle">تنبيه</h3>
+      <p id="alertMsg"></p>
+      <button onclick="closeAlert()">حسناً</button>
+    </div>
+  </div>
+
   <!-- NAVBAR -->
-  <nav class="navbar" id="navbar">
-    <div class="nav-inner">
-      <a href="#" class="nav-logo">
-        <span>🏥</span> الحقونا
-      </a>
-      <div class="nav-links" id="navLinks">
-        <a href="#how">كيف يعمل</a>
-        <a href="#services">الخدمات</a>
-        <a href="#features">المميزات</a>
-        <a href="#providers">انضم كمركز</a>
-        <a href="#download" class="nav-cta">حمّل التطبيق</a>
-      </div>
-      <div class="hamburger" id="hamburger" onclick="toggleMenu()">
-        <span></span><span></span><span></span>
-      </div>
+  <nav class="nav" id="navbar">
+    <div class="nav-logo">🏥 الحقونا</div>
+    <div class="nav-btns" id="navBtns">
+      <button class="nav-btn nav-btn-outline" onclick="showScreen('login')">🏥 دخول مراكز</button>
     </div>
   </nav>
 
-  <!-- HERO -->
-  <section class="hero" id="hero">
-    <div class="container">
-      <div class="hero-inner">
-        <div class="hero-text anim-up">
-          <h1>
-            ابحث عن أقرب<br>
-            <span class="highlight">خدمة طبية مجانية</span><br>
-            بضغطة واحدة
-          </h1>
-          <p>
-            تطبيق مجاني يربط المحتاج لعناية مركزة أو حضانة أطفال أو أشعة
-            بأقرب مركز يقدمها — بدون تسجيل.
-          </p>
-          <div class="hero-buttons">
-            <button class="btn-primary" onclick="document.getElementById('download').scrollIntoView()">
-              📱 حمّل التطبيق
-            </button>
-            <button class="btn-secondary" onclick="document.getElementById('how').scrollIntoView()">
-              ℹ️ كيف يعمل؟
-            </button>
-          </div>
-        </div>
-        <div class="hero-visual anim-fade" style="animation-delay: 0.3s;">
-          <div class="phone-mockup">
-            <div class="phone-notch"></div>
-            <div class="phone-screen">
-              <div class="phone-header">
-                <h3>الحقونا</h3>
-                <p>ماذا تحتاج؟</p>
-              </div>
-              <div class="phone-services">
-                <div class="phone-service">
-                  <span class="icon">❤️</span>
-                  <span class="name">عناية مركزة</span>
-                  <span class="arrow">←</span>
-                </div>
-                <div class="phone-service">
-                  <span class="icon">👶</span>
-                  <span class="name">حضانة أطفال</span>
-                  <span class="arrow">←</span>
-                </div>
-                <div class="phone-service">
-                  <span class="icon">☢️</span>
-                  <span class="name">أشعة</span>
-                  <span class="arrow">←</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="floating-badge badge-location">
-            <span>📍</span>
-            <span class="badge-green">0.5 كم</span>
-          </div>
-          <div class="floating-badge badge-call">
-            <span>📞</span>
-            <span class="badge-blue">اتصل الآن</span>
-          </div>
-        </div>
+  <!-- SCREEN: HOME (Patient) -->
+  <div class="screen active" id="screen-home">
+    <h1 class="home-title">ماذا تحتاج؟</h1>
+    <div class="service-cards">
+      <div class="svc-card" onclick="searchService('icu')">
+        <span class="svc-icon">❤️</span>
+        <span class="svc-name">عناية مركزة</span>
+        <span class="svc-arrow">←</span>
+      </div>
+      <div class="svc-card" onclick="searchService('incubator')">
+        <span class="svc-icon">👶</span>
+        <span class="svc-name">حضانة أطفال</span>
+        <span class="svc-arrow">←</span>
+      </div>
+      <div class="svc-card" onclick="searchService('radiation')">
+        <span class="svc-icon">☢️</span>
+        <span class="svc-name">أشعة وعلاج إشعاعي</span>
+        <span class="svc-arrow">←</span>
       </div>
     </div>
-  </section>
+    <p class="location-hint" id="locationHint">📍 اضغط على الخدمة وسيتم تحديد موقعك تلقائياً</p>
+  </div>
 
-  <!-- STATS -->
-  <section class="stats">
-    <div class="container">
-      <div class="stats-grid">
-        <div class="stat-item anim-up">
-          <div class="stat-number" data-count="500">500+</div>
-          <div class="stat-label">مركز طبي مسجل</div>
-        </div>
-        <div class="stat-item anim-up" style="animation-delay:0.1s">
-          <div class="stat-number" data-count="12000">12,000+</div>
-          <div class="stat-label">حالة تم مساعدتها</div>
-        </div>
-        <div class="stat-item anim-up" style="animation-delay:0.2s">
-          <div class="stat-number" data-count="27">27</div>
-          <div class="stat-label">محافظة مصرية</div>
-        </div>
-        <div class="stat-item anim-up" style="animation-delay:0.3s">
-          <div class="stat-number">24/7</div>
-          <div class="stat-label">متاح على مدار الساعة</div>
-        </div>
-      </div>
+  <!-- SCREEN: RESULTS -->
+  <div class="screen" id="screen-results">
+    <div class="results-header">
+      <button class="back-btn" onclick="showScreen('home')">← رجوع</button>
+      <h2 id="resultsTitle">المراكز القريبة</h2>
     </div>
-  </section>
+    <div id="resultsList"></div>
+  </div>
 
-  <!-- HOW IT WORKS -->
-  <section class="how-it-works" id="how">
-    <div class="container">
-      <div class="section-title">
-        <h2>كيف يعمل التطبيق؟</h2>
-        <p>ثلاث خطوات بسيطة للوصول للخدمة الطبية — بدون أي تعقيد</p>
-      </div>
-      <div class="steps-grid">
-        <div class="step-card anim-up">
-          <div class="step-number">1</div>
-          <span class="step-icon">📱</span>
-          <h3>افتح التطبيق</h3>
-          <p>حمّل التطبيق وافتحه — لا حاجة لتسجيل. اختار نوع الخدمة المطلوبة.</p>
-        </div>
-        <div class="step-card anim-up" style="animation-delay:0.15s">
-          <div class="step-number">2</div>
-          <span class="step-icon">📍</span>
-          <h3>شوف الأقرب</h3>
-          <p>هيشتغل GPS تلقائي ويعرض أقرب مركز متاح مع نسبة الخصم ورقم الهاتف.</p>
-        </div>
-        <div class="step-card anim-up" style="animation-delay:0.3s">
-          <div class="step-number">3</div>
-          <span class="step-icon">📞</span>
-          <h3>اتصل على طول</h3>
-          <p>اضغط زر الاتصال مباشرة — بدون أي خطوات إضافية. كل ثانية مهمة.</p>
-        </div>
-      </div>
+  <!-- SCREEN: CENTER DETAIL -->
+  <div class="screen" id="screen-detail">
+    <div class="results-header">
+      <button class="back-btn" onclick="showScreen('results')">← رجوع</button>
+      <h2>تفاصيل المركز</h2>
     </div>
-  </section>
+    <div id="detailContent"></div>
+  </div>
 
-  <!-- SERVICES -->
-  <section class="services-section" id="services">
-    <div class="container">
-      <div class="section-title">
-        <h2>الخدمات المتوفرة</h2>
-        <p>نوفر لك الوصول لأهم ثلاث خدمات طبية طارئة</p>
-      </div>
-      <div class="services-grid">
-        <div class="service-card card-icu anim-up">
-          <div class="service-top">
-            <span class="service-emoji anim-heart">❤️</span>
-            <h3>العناية المركزة</h3>
-            <p class="desc">أسرة عناية مركزة متاحة للحالات الحرجة — قلب، تنفس، جراحة</p>
-          </div>
-          <div class="service-bottom">
-            <span class="service-tag tag-free">مجاني / مخفض</span>
-            <span class="service-arrow">←</span>
-          </div>
-        </div>
-        <div class="service-card card-incubator anim-up" style="animation-delay:0.15s">
-          <div class="service-top">
-            <span class="service-emoji">👶</span>
-            <h3>الحضانة</h3>
-            <p class="desc">حاضنات للأطفال الخدج والمواليد المحتاجين لرعاية خاصة</p>
-          </div>
-          <div class="service-bottom">
-            <span class="service-tag tag-free">مجاني / مخفض</span>
-            <span class="service-arrow">←</span>
-          </div>
-        </div>
-        <div class="service-card card-radiation anim-up" style="animation-delay:0.3s">
-          <div class="service-top">
-            <span class="service-emoji">☢️</span>
-            <h3>الأشعة والعلاج الإشعاعي</h3>
-            <p class="desc">جلسات أشعة وعلاج إشعاعي للمرضى بأقل التكاليف</p>
-          </div>
-          <div class="service-bottom">
-            <span class="service-tag tag-discount">خصم 50%+</span>
-            <span class="service-arrow">←</span>
-          </div>
-        </div>
-      </div>
+  <!-- SCREEN: THANK YOU -->
+  <div class="screen" id="screen-thankyou">
+    <div class="thankyou">
+      <div class="emoji">🤲</div>
+      <h2>شكراً لاستخدامك الحقونا</h2>
+      <p>نتمنى السلامة لمن تحب</p>
+      <button onclick="showScreen('home')">العودة للرئيسية</button>
     </div>
-  </section>
+  </div>
 
-  <!-- FEATURES -->
-  <section class="features" id="features">
-    <div class="container">
-      <div class="section-title">
-        <h2>ليه الحقونا؟</h2>
-        <p>مميزات تخلي التطبيق هو الخيار الأول في حالة الطوارئ</p>
+  <!-- SCREEN: LOGIN -->
+  <div class="screen" id="screen-login">
+    <div class="auth-box">
+      <h2>تسجيل الدخول</h2>
+      <p class="subtitle">بوابة المراكز الطبية</p>
+      <div class="form-group">
+        <label>البريد الإلكتروني</label>
+        <input type="email" id="loginEmail" placeholder="example@center.com">
       </div>
-      <div class="features-grid">
-        <div class="feature-card anim-right">
-          <div class="feature-icon fi-blue">⚡</div>
-          <div class="feature-text">
-            <h3>بدون تسجيل</h3>
-            <p>المريض يفتح التطبيق ويلاقي الخدمة فوراً — مفيش أي إنشاء حساب أو بيانات.</p>
-          </div>
-        </div>
-        <div class="feature-card anim-left">
-          <div class="feature-icon fi-green">📍</div>
-          <div class="feature-text">
-            <h3>GPS تلقائي</h3>
-            <p>بيحدد موقعك تلقائياً ويعرض أقرب مركز — لو مفيش قريب، يعرض أقرب نتيجة حتى لو محافظة تانية.</p>
-          </div>
-        </div>
-        <div class="feature-card anim-right" style="animation-delay:0.15s">
-          <div class="feature-icon fi-red">🔔</div>
-          <div class="feature-text">
-            <h3>تنبيهات ذكية</h3>
-            <p>بيقعد يفتّح كل 6 ساعات على المراكز المقفولة: "هل لسه ممتلئة؟" — عشان يضمن أقصى استفادة.</p>
-          </div>
-        </div>
-        <div class="feature-card anim-left" style="animation-delay:0.15s">
-          <div class="feature-icon fi-purple">🌍</div>
-          <div class="feature-text">
-            <h3>عربي وإنجليزي</h3>
-            <p>بيشتغل بالعربي والإنجليزي تلقائي حسب لغة الموبايل — ومصمم RTL للعربي من الأساس.</p>
-          </div>
-        </div>
+      <div class="form-group">
+        <label>كلمة المرور</label>
+        <input type="password" id="loginPass" placeholder="••••••••">
       </div>
+      <button class="form-submit" onclick="doLogin()">تسجيل الدخول</button>
+      <p class="auth-switch">ليس لديك حساب؟ <a onclick="showScreen('register')">إنشاء حساب</a></p>
+      <p class="auth-switch" style="margin-top:8px"><a onclick="showScreen('home')">← رجوع للرئيسية</a></p>
     </div>
-  </section>
+  </div>
 
-  <!-- PROVIDER CTA -->
-  <section class="provider-cta" id="providers">
-    <div class="container">
-      <div class="cta-content anim-up">
-        <h2>عندك مركز طبي؟ 🏥</h2>
-        <p>
-          سجّل مركزك في دقيقة واحدة وساعد المحتاجين.
-          ستحصل على لوحة تحكم سهلة للتحكم في كل خدمة.
+  <!-- SCREEN: REGISTER -->
+  <div class="screen" id="screen-register">
+    <div class="auth-box">
+      <h2>إنشاء حساب مركز</h2>
+      <p class="subtitle">سجّل مركزك وساعد المحتاجين</p>
+      <div class="form-group">
+        <label>اسم المركز *</label>
+        <input type="text" id="regName" placeholder="اسم المركز الطبي">
+      </div>
+      <div class="form-group">
+        <label>البريد الإلكتروني *</label>
+        <input type="email" id="regEmail" placeholder="example@center.com">
+      </div>
+      <div class="form-group">
+        <label>كلمة المرور *</label>
+        <input type="password" id="regPass" placeholder="••••••••">
+      </div>
+      <div class="form-group">
+        <label>رقم الهاتف *</label>
+        <input type="tel" id="regPhone" placeholder="01xxxxxxxxx">
+      </div>
+      <div class="form-group">
+        <label>الخط الساخن</label>
+        <input type="tel" id="regHotline" placeholder="123">
+      </div>
+      <button class="form-submit" onclick="doRegister()">إنشاء الحساب</button>
+      <p class="auth-switch">لديك حساب؟ <a onclick="showScreen('login')">تسجيل الدخول</a></p>
+    </div>
+  </div>
+
+  <!-- SCREEN: PROVIDER SETUP -->
+  <div class="screen" id="screen-setup">
+    <div class="auth-box" style="box-shadow:none;padding:0;">
+      <div class="setup-progress">
+        <div class="progress-dot active" id="pdot1"></div>
+        <div class="progress-line" id="pline1"></div>
+        <div class="progress-dot" id="pdot2"></div>
+      </div>
+
+      <h2 style="margin-bottom:20px;" id="setupStepTitle">إعداد المركز - الخطوة 1</h2>
+
+      <!-- Step 1: Address + Photo -->
+      <div id="setupStep1">
+        <div class="photo-upload" id="photoUpload" onclick="document.getElementById('photoInput').click()">
+          <span class="icon">📷</span>
+          <span>أضف صورة المركز</span>
+          <img id="photoPreview" style="display:none">
+        </div>
+        <input type="file" id="photoInput" accept="image/*" style="display:none" onchange="previewPhoto(event)">
+        <div class="form-group">
+          <label>العنوان *</label>
+          <input type="text" id="setupAddress" placeholder="العنوان التفصيلي للمركز...">
+        </div>
+        <button class="form-submit" onclick="goToSetupStep2()">التالي: تحديد الموقع ←</button>
+      </div>
+
+      <!-- Step 2: GPS -->
+      <div id="setupStep2" style="display:none">
+        <p style="text-align:center;color:var(--text2);margin-bottom:20px;">
+          📍 وقف أمام باب المركز واضغط على الزر
         </p>
-        <button class="btn-white" onclick="window.open('#','_blank')">
-          سجّل كمركز طبي ←
+        <button class="gps-btn" id="gpsBtn" onclick="captureGPS()">
+          <span class="big-icon">📡</span>
+          <span>اضغط لتحديد الموقع</span>
         </button>
-        <div class="cta-features">
-          <div class="cta-feat"><span>✅</span> تسجيل مجاني</div>
-          <div class="cta-feat"><span>📍</span> تحديد الموقع GPS</div>
-          <div class="cta-feat"><span>🎛️</span> تحكم بزر واحد</div>
-          <div class="cta-feat"><span>🔔</span> تنبيهات ذكية</div>
+        <div class="coords-display" id="coordsDisplay" style="display:none">
+          <div class="label">الإحداثيات</div>
+          <div class="value" id="coordsValue"></div>
         </div>
+        <button class="save-btn" id="saveSetupBtn" onclick="saveSetup()" disabled>حفظ البيانات</button>
       </div>
     </div>
-  </section>
+  </div>
 
-  <!-- DOWNLOAD -->
-  <section class="download-section" id="download">
-    <div class="container">
-      <div class="section-title">
-        <h2>حمّل التطبيق الآن</h2>
-        <p>متاح مجاناً على Android و iOS</p>
-      </div>
-      <div class="download-buttons">
-        <button class="store-btn">
-          <span class="store-icon">🤖</span>
-          <div class="store-text">
-            <small>حمّل من</small>
-            <strong>Google Play</strong>
-          </div>
-        </button>
-        <button class="store-btn">
-          <span class="store-icon">🍎</span>
-          <div class="store-text">
-            <small>حمّل من</small>
-            <strong>App Store</strong>
-          </div>
-        </button>
-      </div>
+  <!-- SCREEN: DASHBOARD -->
+  <div class="screen" id="screen-dashboard">
+    <button class="dash-logout" onclick="doLogout()">🚪 تسجيل الخروج</button>
+    <div class="dash-header">
+      <h2>لوحة التحكم</h2>
+      <p id="dashCenterName"></p>
     </div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer class="footer">
-    <div class="container">
-      <div class="footer-grid">
-        <div class="footer-brand">
-          <h3>🏥 الحقونا</h3>
-          <p>
-            تطبيق مجاني يربط المحتاج لخدمة طبية بأقرب مركز يقدمها مجاناً أو بخصم.
-            لأن كل ثانية مهمة.
-          </p>
-        </div>
-        <div class="footer-col">
-          <h4>روابط سريعة</h4>
-          <a href="#how">كيف يعمل</a>
-          <a href="#services">الخدمات</a>
-          <a href="#features">المميزات</a>
-          <a href="#download">حمّل التطبيق</a>
-        </div>
-        <div class="footer-col">
-          <h4>للمراكز</h4>
-          <a href="#providers">سجّل كمركز</a>
-          <a href="#">لوحة التحكم</a>
-          <a href="#">الدعم الفني</a>
-        </div>
-        <div class="footer-col">
-          <h4>تواصل معنا</h4>
-          <a href="#">📧 support@elhaquna.com</a>
-          <a href="#">📞 123 (الخط الساخن)</a>
-          <a href="#">📍 القاهرة، مصر</a>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <p>© 2026 الحقونا. جميع الحقوق محفوظة.</p>
-        <div class="footer-social">
-          <a href="#" title="فيسبوك">📘</a>
-          <a href="#" title="تويتر">🐦</a>
-          <a href="#" title="إنستجرام">📸</a>
-          <a href="#" title="يوتيوب">📺</a>
-        </div>
-      </div>
+    <div id="dashServices"></div>
+    <div style="background:#FEF3C7;border-radius:12px;padding:14px;margin-top:16px;display:flex;gap:8px;align-items:center;">
+      <span style="font-size:1.2rem">🔔</span>
+      <span style="font-size:0.85rem;color:#92400E;text-align:right;">ستتلقى تنبيهاً كل 6 ساعات عند إغلاق أي خدمة</span>
     </div>
-  </footer>
+  </div>
 
-  <!-- SCROLL TO TOP -->
-  <button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script>
+// ==================== FIREBASE CONFIG ====================
+// ⚠️ استبدل بالإعدادات بتاعتك
+const firebaseConfig = {
+  apiKey: "AIzaSyDummyKey_ReplaceWithReal",
+  authDomain: "el-haquna.firebaseapp.com",
+  projectId: "el-haquna",
+  storageBucket: "el-haquna.appspot.com",
+  messagingSenderId: "123456789",
+  appId: "1:123456789:web:abcdef"
+};
 
-  <script>
-    // Navbar scroll effect
-    const navbar = document.getElementById('navbar');
-    const scrollTop = document.getElementById('scrollTop');
-    window.addEventListener('scroll', () => {
-      navbar.classList.toggle('scrolled', window.scrollY > 50);
-      scrollTop.classList.toggle('visible', window.scrollY > 400);
-    });
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+const storage = firebase.storage();
 
-    // Mobile menu toggle
-    function toggleMenu() {
-      const links = document.getElementById('navLinks');
-      links.style.display = links.style.display === 'flex' ? 'none' : 'flex';
+// ==================== STATE ====================
+let currentScreen = 'home';
+let currentServiceType = '';
+let userLocation = null;
+let currentUser = null;
+let currentProviderData = null;
+let setupCoords = null;
+let setupPhotoFile = null;
+
+// ==================== DEMO DATA ====================
+// بيانات تجريبية (لما Firebase يتشغل هتتشال)
+const DEMO_CENTERS = [
+  {
+    id:'1', name:'مستشفى النيل التخصصي',
+    address:'شارع الهرم، الجيزة', phone:'01012345678', hotline:'123',
+    lat:30.0444, lon:31.2357,
+    services:{
+      icu:{available:true, discount:0},
+      incubator:{available:true, discount:50},
+      radiation:{available:false, discount:0}
     }
+  },
+  {
+    id:'2', name:'مركز الشفاء الطبي',
+    address:'شارع التحرير، وسط البلد', phone:'01098765432', hotline:'162',
+    lat:30.0561, lon:31.2394,
+    services:{
+      icu:{available:true, discount:30},
+      incubator:{available:false, discount:0},
+      radiation:{available:true, discount:0}
+    }
+  },
+  {
+    id:'3', name:'مستشفى السلام الدولي',
+    address:'مدينة نصر، القاهرة', phone:'01111222333', hotline:'123',
+    lat:30.0626, lon:31.3333,
+    services:{
+      icu:{available:false, discount:0},
+      incubator:{available:true, discount:100},
+      radiation:{available:true, discount:40}
+    }
+  },
+  {
+    id:'4', name:'معهد الأورام',
+    address:'قصر العيني، القاهرة', phone:'01223334444', hotline:'16345',
+    lat:30.0285, lon:31.2336,
+    services:{
+      icu:{available:false, discount:0},
+      incubator:{available:false, discount:0},
+      radiation:{available:true, discount:100}
+    }
+  },
+  {
+    id:'5', name:'مستشفى دار الحكمة',
+    address:'المعادي، القاهرة', phone:'01556667777', hotline:'123',
+    lat:29.9602, lon:31.2569,
+    services:{
+      icu:{available:true, discount:0},
+      incubator:{available:true, discount:0},
+      radiation:{available:true, discount:60}
+    }
+  }
+];
 
-    // Intersection Observer for scroll animations
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.style.animationPlayState = 'running';
-          observer.unobserve(entry.target);
+// ==================== HELPERS ====================
+function showScreen(name) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + name).classList.add('active');
+  currentScreen = name;
+  updateNav();
+  window.scrollTo(0, 0);
+}
+
+function showLoading(msg='جاري التحميل...') {
+  document.getElementById('loadingText').textContent = msg;
+  document.getElementById('loading').classList.add('show');
+}
+function hideLoading() {
+  document.getElementById('loading').classList.remove('show');
+}
+
+function showAlert(title, msg) {
+  document.getElementById('alertTitle').textContent = title;
+  document.getElementById('alertMsg').textContent = msg;
+  document.getElementById('alertBox').classList.add('show');
+}
+function closeAlert() {
+  document.getElementById('alertBox').classList.remove('show');
+}
+
+function updateNav() {
+  const btns = document.getElementById('navBtns');
+  if (currentUser) {
+    btns.innerHTML = `
+      <button class="nav-btn nav-btn-outline" onclick="showScreen('dashboard')">لوحة التحكم</button>
+      <button class="nav-btn nav-btn-fill" onclick="doLogout()">خروج</button>
+    `;
+  } else {
+    btns.innerHTML = `
+      <button class="nav-btn nav-btn-outline" onclick="showScreen('login')">🏥 دخول مراكز</button>
+    `;
+  }
+}
+
+function getDistanceKm(lat1, lon1, lat2, lon2) {
+  const R = 6371;
+  const dLat = (lat2-lat1)*Math.PI/180;
+  const dLon = (lon2-lon1)*Math.PI/180;
+  const a = Math.sin(dLat/2)**2 + Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)**2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+}
+
+// ==================== SPLASH ====================
+setTimeout(() => { document.getElementById('splash').style.display = 'none'; }, 3000);
+
+// ==================== PATIENT FLOW ====================
+async function searchService(type) {
+  currentServiceType = type;
+  showLoading('جاري تحديد الموقع...');
+
+  try {
+    const pos = await new Promise((resolve, reject) => {
+      navigator.geolocation.getCurrentPosition(resolve, reject, {
+        enableHighAccuracy: true, timeout: 10000
+      });
+    });
+    userLocation = { lat: pos.coords.latitude, lon: pos.coords.longitude };
+    document.getElementById('locationHint').textContent =
+      `📍 موقعك: ${userLocation.lat.toFixed(4)}, ${userLocation.lon.toFixed(4)}`;
+  } catch(e) {
+    // لو رفض اللوكيشن — استخدم موقع افتراضي (وسط القاهرة)
+    userLocation = { lat: 30.0444, lon: 31.2357 };
+    document.getElementById('locationHint').textContent =
+      '📍 تم استخدام موقع افتراضي (وسط القاهرة)';
+  }
+
+  // جلب البيانات
+  showLoading('جاري البحث عن المراكز...');
+  let centers = [];
+
+  try {
+    // حاول من Firestore أولاً
+    const snap = await db.collection('providers')
+      .where(`services.${type}.available`, '==', true)
+      .get();
+    snap.forEach(doc => {
+      const d = doc.data();
+      const lat = d.location?.latitude || 0;
+      const lon = d.location?.longitude || 0;
+      centers.push({
+        id: doc.id, name: d.name, address: d.address,
+        phone: d.phone, hotline: d.hotline, photo: d.photo,
+        lat, lon, services: d.services,
+        distance: getDistanceKm(userLocation.lat, userLocation.lon, lat, lon)
+      });
+    });
+  } catch(e) {
+    // استخدم البيانات التجريبية
+    DEMO_CENTERS.forEach(c => {
+      if (c.services[type]?.available) {
+        centers.push({
+          ...c,
+          distance: getDistanceKm(userLocation.lat, userLocation.lon, c.lat, c.lon)
+        });
+      }
+    });
+  }
+
+  centers.sort((a, b) => a.distance - b.distance);
+  hideLoading();
+  renderResults(centers);
+  showScreen('results');
+}
+
+function renderResults(centers) {
+  const list = document.getElementById('resultsList');
+  const typeNames = {icu:'عناية مركزة', incubator:'حضانة أطفال', radiation:'أشعة'};
+  document.getElementById('resultsTitle').textContent = typeNames[currentServiceType] || 'المراكز القريبة';
+
+  if (centers.length === 0) {
+    list.innerHTML = `
+      <div class="no-results">
+        <div class="icon">🔍</div>
+        <h3>لا توجد مراكز قريبة حالياً</h3>
+        <p>جرب البحث لاحقاً أو تواصل مع الخط الساخن 123</p>
+      </div>
+    `;
+    return;
+  }
+
+  list.innerHTML = centers.map((c, i) => {
+    const svc = c.services[currentServiceType] || {};
+    const isFree = svc.discount === 0;
+    return `
+      <div class="center-card">
+        <div class="center-top">
+          <div class="center-avatar">🏥</div>
+          <div class="center-info">
+            <div class="center-name">${c.name}</div>
+            <div class="center-dist">📍 ${c.distance.toFixed(1)} كم${i===0?' — الأقرب':''}</div>
+          </div>
+          <span class="badge ${isFree?'badge-free':'badge-discount'}">
+            ${isFree?'مجاني':'خصم '+svc.discount+'%'}
+          </span>
+        </div>
+        <div class="center-actions">
+          <button class="btn-call" onclick="callNumber('${c.phone}')">📞 اتصل</button>
+          <button class="btn-map" onclick="openMap(${c.lat},${c.lon})">🗺️ خريطة</button>
+          <button class="btn-detail" onclick='showDetail(${JSON.stringify(c)})'>تفاصيل</button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function showDetail(center) {
+  const svc = center.services[currentServiceType] || {};
+  const isFree = svc.discount === 0;
+  document.getElementById('detailContent').innerHTML = `
+    <div class="detail-photo">🏥</div>
+    <div class="detail-name">${center.name}</div>
+    <div class="detail-badge">
+      <span class="badge ${isFree?'badge-free':'badge-discount'}" style="font-size:1rem;padding:8px 20px;">
+        ${isFree?'مجاني ✨':'خصم '+svc.discount+'%'}
+      </span>
+    </div>
+    <div class="detail-info">
+      <div class="detail-row">
+        <span class="detail-label">📍 العنوان</span>
+        <span class="detail-value">${center.address}</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">📞 الهاتف</span>
+        <span class="detail-value">${center.phone}</span>
+      </div>
+      ${center.hotline ? `
+      <div class="detail-row">
+        <span class="detail-label">☎️ الخط الساخن</span>
+        <span class="detail-value">${center.hotline}</span>
+      </div>` : ''}
+      <div class="detail-row">
+        <span class="detail-label">📏 المسافة</span>
+        <span class="detail-value">${center.distance.toFixed(1)} كم</span>
+      </div>
+    </div>
+    <div class="detail-actions">
+      <button class="btn-main" onclick="callNumber('${center.phone}')">📞 اتصل الآن</button>
+      ${center.hotline ? `<button class="btn-hotline" onclick="callNumber('${center.hotline}')">☎️ الخط الساخن</button>` : ''}
+      <button class="btn-map" onclick="openMap(${center.lat},${center.lon})" style="background:var(--white);color:var(--blue);border:2px solid var(--blue)!important">🗺️ افتح الخريطة</button>
+      <button class="btn-done" onclick="showScreen('thankyou')">✅ تم التواصل</button>
+    </div>
+  `;
+  showScreen('detail');
+}
+
+function callNumber(num) { window.location.href = 'tel:' + num; }
+function openMap(lat, lon) { window.open(`https://maps.google.com/?q=${lat},${lon}`, '_blank'); }
+
+// ==================== AUTH ====================
+async function doLogin() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const pass = document.getElementById('loginPass').value;
+  if (!email || !pass) return showAlert('خطأ', 'يرجى ملء جميع الحقول');
+
+  showLoading('جاري تسجيل الدخول...');
+  try {
+    const cred = await auth.signInWithEmailAndPassword(email, pass);
+    currentUser = cred.user;
+    await loadProviderData();
+    hideLoading();
+    showScreen('dashboard');
+  } catch(e) {
+    hideLoading();
+    // Demo mode
+    if (email === 'demo@center.com' && pass === '123456') {
+      currentUser = { uid: 'demo', email };
+      currentProviderData = {
+        name: 'مركز تجريبي',
+        phone: '01000000000', hotline: '123',
+        address: 'شارع التحرير',
+        services: {
+          icu: {available:true, discount:0},
+          incubator: {available:true, discount:50},
+          radiation: {available:false, discount:0}
         }
-      });
-    }, { threshold: 0.1 });
+      };
+      showScreen('dashboard');
+      renderDashboard();
+    } else {
+      showAlert('خطأ', 'بيانات الدخول غير صحيحة — جرب: demo@center.com / 123456');
+    }
+  }
+}
 
-    document.querySelectorAll('.anim-up, .anim-right, .anim-left').forEach(el => {
-      el.style.animationPlayState = 'paused';
-      observer.observe(el);
-    });
+async function doRegister() {
+  const name = document.getElementById('regName').value.trim();
+  const email = document.getElementById('regEmail').value.trim();
+  const pass = document.getElementById('regPass').value;
+  const phone = document.getElementById('regPhone').value.trim();
+  const hotline = document.getElementById('regHotline').value.trim();
 
-    // Smooth scroll for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  if (!name || !email || !pass || !phone)
+    return showAlert('خطأ', 'يرجى ملء جميع الحقول المطلوبة');
+
+  showLoading('جاري إنشاء الحساب...');
+  try {
+    const cred = await auth.createUserWithEmailAndPassword(email, pass);
+    currentUser = cred.user;
+    currentProviderData = {
+      name, phone, hotline, email,
+      services: {
+        icu: {available:false, discount:0},
+        incubator: {available:false, discount:0},
+        radiation: {available:false, discount:0}
+      }
+    };
+    hideLoading();
+    showScreen('setup');
+  } catch(e) {
+    hideLoading();
+    // Demo mode
+    currentUser = { uid: 'demo_' + Date.now(), email };
+    currentProviderData = {
+      name, phone, hotline, email,
+      services: {
+        icu: {available:false, discount:0},
+        incubator: {available:false, discount:0},
+        radiation: {available:false, discount:0}
+      }
+    };
+    showScreen('setup');
+  }
+}
+
+async function doLogout() {
+  try { await auth.signOut(); } catch(e) {}
+  currentUser = null;
+  currentProviderData = null;
+  updateNav();
+  showScreen('home');
+}
+
+async function loadProviderData() {
+  try {
+    const doc = await db.collection('providers').doc(currentUser.uid).get();
+    if (doc.exists) {
+      currentProviderData = doc.data();
+      renderDashboard();
+    } else {
+      showScreen('setup');
+    }
+  } catch(e) {
+    // Demo
+    renderDashboard();
+  }
+}
+
+// ==================== PROVIDER SETUP ====================
+function previewPhoto(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  setupPhotoFile = file;
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    const img = document.getElementById('photoPreview');
+    img.src = ev.target.result;
+    img.style.display = 'block';
+    document.getElementById('photoUpload').querySelector('.icon').style.display = 'none';
+    document.getElementById('photoUpload').querySelector('span').style.display = 'none';
+  };
+  reader.readAsDataURL(file);
+}
+
+function goToSetupStep2() {
+  const addr = document.getElementById('setupAddress').value.trim();
+  if (!addr) return showAlert('خطأ', 'يرجى إدخال العنوان');
+  document.getElementById('setupStep1').style.display = 'none';
+  document.getElementById('setupStep2').style.display = 'block';
+  document.getElementById('setupStepTitle').textContent = 'إعداد المركز - الخطوة 2';
+  document.getElementById('pdot1').classList.remove('active');
+  document.getElementById('pdot1').classList.add('done');
+  document.getElementById('pline1').classList.add('active');
+  document.getElementById('pdot2').classList.add('active');
+}
+
+async function captureGPS() {
+  const btn = document.getElementById('gpsBtn');
+  btn.querySelector('span').textContent = 'جاري تحديد الموقع...';
+
+  try {
+    const pos = await new Promise((resolve, reject) => {
+      navigator.geolocation.getCurrentPosition(resolve, reject, {
+        enableHighAccuracy: true, timeout: 15000
       });
     });
-  </script>
+    setupCoords = { lat: pos.coords.latitude, lon: pos.coords.longitude };
+    btn.classList.add('done');
+    btn.querySelector('.big-icon').textContent = '✅';
+    btn.querySelector('span').textContent = 'تم تحديد الموقع';
+    document.getElementById('coordsDisplay').style.display = 'block';
+    document.getElementById('coordsValue').textContent =
+      `${setupCoords.lat.toFixed(6)}, ${setupCoords.lon.toFixed(6)}`;
+    document.getElementById('saveSetupBtn').disabled = false;
+  } catch(e) {
+    // Demo GPS
+    setupCoords = { lat: 30.0444 + Math.random()*0.05, lon: 31.2357 + Math.random()*0.05 };
+    btn.classList.add('done');
+    btn.querySelector('.big-icon').textContent = '✅';
+    btn.querySelector('span').textContent = 'تم (موقع تجريبي)';
+    document.getElementById('coordsDisplay').style.display = 'block';
+    document.getElementById('coordsValue').textContent =
+      `${setupCoords.lat.toFixed(6)}, ${setupCoords.lon.toFixed(6)}`;
+    document.getElementById('saveSetupBtn').disabled = false;
+  }
+}
+
+async function saveSetup() {
+  showLoading('جاري حفظ البيانات...');
+  const address = document.getElementById('setupAddress').value.trim();
+
+  try {
+    await db.collection('providers').doc(currentUser.uid).set({
+      userId: currentUser.uid,
+      name: currentProviderData.name,
+      phone: currentProviderData.phone,
+      hotline: currentProviderData.hotline,
+      email: currentUser.email,
+      address,
+      location: new firebase.firestore.GeoPoint(setupCoords.lat, setupCoords.lon),
+      services: currentProviderData.services,
+      setupComplete: true,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+  } catch(e) {
+    // Demo mode — save locally
+    currentProviderData.address = address;
+    currentProviderData.location = setupCoords;
+  }
+
+  hideLoading();
+  renderDashboard();
+  showScreen('dashboard');
+}
+
+// ==================== DASHBOARD ====================
+const SERVICE_CONFIG = [
+  {key:'icu', icon:'❤️', name:'عناية مركزة', color:'#EF4444'},
+  {key:'incubator', icon:'👶', name:'حضانة أطفال', color:'#F59E0B'},
+  {key:'radiation', icon:'☢️', name:'أشعة', color:'#8B5CF6'},
+];
+
+function renderDashboard() {
+  if (!currentProviderData) return;
+  document.getElementById('dashCenterName').textContent = currentProviderData.name || '';
+
+  const container = document.getElementById('dashServices');
+  container.innerHTML = SERVICE_CONFIG.map(svc => {
+    const data = currentProviderData.services?.[svc.key] || {available:false, discount:0};
+    return `
+      <div class="svc-control">
+        <div class="svc-control-top">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div class="toggle-switch ${data.available?'on':''}"
+                 onclick="toggleService('${svc.key}', ${!data.available})"></div>
+          </div>
+          <div class="svc-control-info">
+            <span class="name">${svc.name}</span>
+            <span class="icon">${svc.icon}</span>
+            <span class="svc-status ${data.available?'status-open':'status-closed'}">
+              ${data.available?'متاح':'مغلق'}
+            </span>
+          </div>
+        </div>
+        ${data.available ? `
+        <div class="discount-row">
+          <input type="number" class="discount-input" value="${data.discount}"
+                 min="0" max="100"
+                 onchange="updateDiscount('${svc.key}', this.value)">
+          <span style="font-size:1.3rem">%</span>
+          <label>نسبة الخصم:</label>
+        </div>` : ''}
+      </div>
+    `;
+  }).join('');
+}
+
+async function toggleService(key, value) {
+  if (!currentProviderData.services) currentProviderData.services = {};
+  currentProviderData.services[key] = {
+    ...currentProviderData.services[key],
+    available: value
+  };
+
+  try {
+    await db.collection('providers').doc(currentUser.uid).update({
+      [`services.${key}.available`]: value
+    });
+  } catch(e) {}
+
+  renderDashboard();
+}
+
+async function updateDiscount(key, value) {
+  const discount = Math.min(100, Math.max(0, parseInt(value) || 0));
+  if (!currentProviderData.services) currentProviderData.services = {};
+  currentProviderData.services[key] = {
+    ...currentProviderData.services[key],
+    discount
+  };
+
+  try {
+    await db.collection('providers').doc(currentUser.uid).update({
+      [`services.${key}.discount`]: discount
+    });
+  } catch(e) {}
+
+  renderDashboard();
+}
+
+// ==================== AUTH STATE LISTENER ====================
+auth.onAuthStateChanged(async (user) => {
+  if (user) {
+    currentUser = user;
+    await loadProviderData();
+    if (currentProviderData?.setupComplete || currentProviderData?.name) {
+      showScreen('dashboard');
+    }
+    updateNav();
+  }
+});
+</script>
 </body>
 </html>
