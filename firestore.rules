@@ -1,0 +1,25 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Providers collection
+    match /providers/{providerId} {
+      // Anyone can read (needed for patient search)
+      allow read: if true;
+
+      // Only the authenticated owner can write
+      allow create: if request.auth != null
+        && request.auth.uid == resource.data.userId;
+
+      allow update: if request.auth != null
+        && request.auth.uid == resource.data.userId;
+
+      allow delete: if false; // Prevent deletion
+    }
+
+    // Deny all other collections
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

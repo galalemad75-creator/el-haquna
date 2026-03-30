@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>الحقونا — لأن كل ثانية مهمة</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --blue: #1A73E8;
+      --blue-dark: #1557B0;
+      --green: #00897B;
+      --green-dark: #00695C;
+      --bg: #F8FAFB;
+      --white: #FFFFFF;
+      --text: #1A1A2E;
+      --text-sec: #6B7280;
+      --border: #E5E7EB;
+      --red: #EF4444;
+      --purple: #8B5CF6;
+      --gold: #F59E0B;
+      --shadow: 0 4px 24px rgba(0,0,0,0.08);
+      --shadow-lg: 0 12px 40px rgba(0,0,0,0.12);
+      --radius: 16px;
+      --radius-lg: 24px;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Cairo', 'Roboto', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+    a { text-decoration: none; color: inherit; }
+    img { max-width: 100%; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+    /* ===== ANIMATIONS ===== */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    @keyframes slideRight {
+      from { opacity: 0; transform: translateX(-60px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes slideLeft {
+      from { opacity: 0; transform: translateX(60px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      14% { transform: scale(1.15); }
+      28% { transform: scale(1); }
+      42% { transform: scale(1.1); }
+      56% { transform: scale(1); }
+    }
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .anim-up { animation: fadeInUp 0.8s ease-out both; }
+    .anim-fade { animation: fadeIn 1s ease-out both; }
+    .anim-float { animation: float 3s ease-in-out infinite; }
+    .anim-pulse { animation: pulse 2s ease-in-out infinite; }
+    .anim-heart { animation: heartbeat 1.5s ease-in-out infinite; }
+    .anim-right { animation: slideRight 0.8s ease-out both; }
+    .anim-left { animation: slideLeft 0.8s ease-out both; }
+
+    /* ===== NAVBAR ===== */
+    .navbar {
+      position: fixed; top: 0; right: 0; left: 0;
+      z-index: 1000;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      transition: box-shadow 0.3s;
+    }
+    .navbar.scrolled { box-shadow: 0 2px 20px rgba(0,0,0,0.08); }
+    .nav-inner {
+      max-width: 1100px; margin: 0 auto; padding: 0 24px;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 70px;
+    }
+    .nav-logo {
+      font-size: 1.5rem; font-weight: 900;
+      color: var(--blue);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .nav-logo span { font-size: 1.8rem; }
+    .nav-links { display: flex; gap: 32px; align-items: center; }
+    .nav-links a {
+      font-weight: 600; font-size: 0.95rem;
+      color: var(--text-sec);
+      transition: color 0.3s;
+      position: relative;
+    }
+    .nav-links a:hover { color: var(--blue); }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: -4px; right: 0;
+      width: 0; height: 2px; background: var(--blue);
+      transition: width 0.3s;
+    }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-cta {
+      background: var(--blue) !important; color: var(--white) !important;
+      padding: 10px 24px; border-radius: 50px;
+      font-weight: 700 !important;
+      transition: all 0.3s !important;
+      box-shadow: 0 4px 12px rgba(26,115,232,0.3);
+    }
+    .nav-cta:hover {
+      background: var(--blue-dark) !important;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(26,115,232,0.4) !important;
+    }
+    .nav-cta::after { display: none !important; }
+    .hamburger {
+      display: none; cursor: pointer; flex-direction: column; gap: 5px;
+    }
+    .hamburger span {
+      width: 28px; height: 3px; background: var(--text);
+      border-radius: 2px; transition: 0.3s;
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      padding-top: 70px;
+      background: linear-gradient(135deg, #f0f7ff 0%, var(--bg) 50%, #e8f5e9 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: ''; position: absolute;
+      top: -200px; left: -200px;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(26,115,232,0.08) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    .hero::after {
+      content: ''; position: absolute;
+      bottom: -150px; right: -150px;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(0,137,123,0.06) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    .hero-inner {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 60px; align-items: center;
+      position: relative; z-index: 1;
+    }
+    .hero-text h1 {
+      font-size: 3.2rem; font-weight: 900;
+      line-height: 1.3; margin-bottom: 20px;
+    }
+    .hero-text h1 .highlight {
+      background: linear-gradient(135deg, var(--blue), var(--green));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-text p {
+      font-size: 1.2rem; color: var(--text-sec);
+      margin-bottom: 32px; max-width: 480px;
+    }
+    .hero-buttons { display: flex; gap: 16px; flex-wrap: wrap; }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+      color: var(--white); padding: 16px 36px;
+      border-radius: 50px; font-weight: 700; font-size: 1.05rem;
+      border: none; cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 6px 20px rgba(26,115,232,0.35);
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(26,115,232,0.45);
+    }
+    .btn-secondary {
+      background: var(--white); color: var(--blue);
+      padding: 16px 36px; border-radius: 50px;
+      font-weight: 700; font-size: 1.05rem;
+      border: 2px solid var(--blue); cursor: pointer;
+      transition: all 0.3s;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .btn-secondary:hover {
+      background: var(--blue); color: var(--white);
+      transform: translateY(-3px);
+    }
+    .hero-visual {
+      display: flex; justify-content: center; align-items: center;
+      position: relative;
+    }
+    .phone-mockup {
+      width: 300px; height: 600px;
+      background: var(--white);
+      border-radius: 40px;
+      box-shadow: var(--shadow-lg);
+      border: 8px solid #1a1a2e;
+      position: relative;
+      overflow: hidden;
+      animation: float 4s ease-in-out infinite;
+    }
+    .phone-notch {
+      width: 120px; height: 28px;
+      background: #1a1a2e;
+      border-radius: 0 0 16px 16px;
+      margin: 0 auto;
+      position: relative; z-index: 2;
+    }
+    .phone-screen {
+      padding: 20px 16px;
+      height: calc(100% - 28px);
+      display: flex; flex-direction: column;
+      background: linear-gradient(180deg, #f0f7ff, var(--white));
+    }
+    .phone-header {
+      text-align: center; margin-bottom: 16px;
+    }
+    .phone-header h3 {
+      font-size: 1.1rem; font-weight: 900; color: var(--blue);
+    }
+    .phone-header p { font-size: 0.7rem; color: var(--text-sec); }
+    .phone-services { display: flex; flex-direction: column; gap: 10px; flex: 1; }
+    .phone-service {
+      background: var(--white);
+      border-radius: 14px;
+      padding: 14px;
+      display: flex; align-items: center; gap: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      border-right: 4px solid;
+      animation: slideLeft 0.6s ease-out both;
+    }
+    .phone-service:nth-child(1) { border-color: var(--red); animation-delay: 0.3s; }
+    .phone-service:nth-child(2) { border-color: var(--gold); animation-delay: 0.5s; }
+    .phone-service:nth-child(3) { border-color: var(--purple); animation-delay: 0.7s; }
+    .phone-service .icon { font-size: 2rem; }
+    .phone-service .name { font-weight: 700; font-size: 0.85rem; }
+    .phone-service .arrow { margin-right: auto; color: var(--text-sec); font-size: 0.8rem; }
+    .floating-badge {
+      position: absolute;
+      background: var(--white);
+      border-radius: 16px;
+      padding: 12px 18px;
+      box-shadow: var(--shadow);
+      font-weight: 700; font-size: 0.85rem;
+      display: flex; align-items: center; gap: 8px;
+      z-index: 3;
+    }
+    .badge-location {
+      top: 40px; left: -40px;
+      animation: slideRight 1s 0.5s ease-out both;
+    }
+    .badge-call {
+      bottom: 80px; right: -30px;
+      animation: slideLeft 1s 0.8s ease-out both;
+    }
+    .badge-green { color: var(--green); }
+    .badge-blue { color: var(--blue); }
+
+    /* ===== STATS ===== */
+    .stats {
+      padding: 80px 0;
+      background: var(--white);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .stats-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 32px; text-align: center;
+    }
+    .stat-item { padding: 20px; }
+    .stat-number {
+      font-size: 2.8rem; font-weight: 900;
+      background: linear-gradient(135deg, var(--blue), var(--green));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.2;
+    }
+    .stat-label { font-size: 1rem; color: var(--text-sec); font-weight: 600; margin-top: 4px; }
+
+    /* ===== HOW IT WORKS ===== */
+    .how-it-works { padding: 100px 0; }
+    .section-title {
+      text-align: center; margin-bottom: 60px;
+    }
+    .section-title h2 {
+      font-size: 2.4rem; font-weight: 900; margin-bottom: 12px;
+    }
+    .section-title p {
+      font-size: 1.1rem; color: var(--text-sec); max-width: 600px; margin: 0 auto;
+    }
+    .steps-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+    }
+    .step-card {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      padding: 40px 28px;
+      text-align: center;
+      box-shadow: var(--shadow);
+      transition: all 0.4s;
+      position: relative;
+    }
+    .step-card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-lg);
+    }
+    .step-number {
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--blue), var(--green));
+      color: var(--white);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: 1.4rem;
+      margin: 0 auto 20px;
+    }
+    .step-icon { font-size: 3rem; margin-bottom: 16px; display: block; }
+    .step-card h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: 10px; }
+    .step-card p { font-size: 0.95rem; color: var(--text-sec); }
+    .step-connector {
+      position: absolute; top: 68px; left: -32px;
+      font-size: 1.5rem; color: var(--border);
+    }
+    .step-card:nth-child(1) .step-connector { display: none; }
+
+    /* ===== SERVICES SECTION ===== */
+    .services-section {
+      padding: 100px 0;
+      background: linear-gradient(180deg, var(--white), var(--bg));
+    }
+    .services-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
+    .service-card {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: all 0.4s;
+      border-top: 5px solid;
+    }
+    .service-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: var(--shadow-lg);
+    }
+    .service-card.card-icu { border-color: var(--red); }
+    .service-card.card-incubator { border-color: var(--gold); }
+    .service-card.card-radiation { border-color: var(--purple); }
+    .service-top {
+      padding: 32px 24px 20px;
+      text-align: center;
+    }
+    .service-emoji {
+      font-size: 4rem; margin-bottom: 12px;
+      display: block;
+    }
+    .service-card h3 {
+      font-size: 1.3rem; font-weight: 900; margin-bottom: 8px;
+    }
+    .service-card .desc {
+      font-size: 0.9rem; color: var(--text-sec); padding: 0 8px;
+    }
+    .service-bottom {
+      padding: 16px 24px;
+      background: var(--bg);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .service-tag {
+      font-size: 0.8rem; font-weight: 700;
+      padding: 6px 14px; border-radius: 50px;
+      color: var(--white);
+    }
+    .tag-free { background: var(--green); }
+    .tag-discount { background: var(--blue); }
+    .service-arrow {
+      font-size: 1.4rem; color: var(--text-sec);
+      transition: 0.3s;
+    }
+    .service-card:hover .service-arrow { color: var(--blue); transform: translateX(-6px); }
+
+    /* ===== FEATURES ===== */
+    .features { padding: 100px 0; }
+    .features-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr);
+      gap: 32px;
+    }
+    .feature-card {
+      display: flex; gap: 20px; align-items: flex-start;
+      background: var(--white);
+      padding: 32px; border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      transition: all 0.3s;
+    }
+    .feature-card:hover { transform: translateX(-8px); box-shadow: var(--shadow-lg); }
+    .feature-icon {
+      width: 60px; height: 60px; min-width: 60px;
+      border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.8rem;
+    }
+    .fi-blue { background: rgba(26,115,232,0.1); }
+    .fi-green { background: rgba(0,137,123,0.1); }
+    .fi-red { background: rgba(239,68,68,0.1); }
+    .fi-purple { background: rgba(139,92,246,0.1); }
+    .feature-text h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 6px; }
+    .feature-text p { font-size: 0.9rem; color: var(--text-sec); }
+
+    /* ===== PROVIDER CTA ===== */
+    .provider-cta {
+      padding: 100px 0;
+      background: linear-gradient(135deg, var(--blue), var(--green));
+      position: relative; overflow: hidden;
+    }
+    .provider-cta::before {
+      content: ''; position: absolute;
+      top: -100px; right: -100px;
+      width: 400px; height: 400px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 50%;
+    }
+    .provider-cta::after {
+      content: ''; position: absolute;
+      bottom: -80px; left: -80px;
+      width: 300px; height: 300px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 50%;
+    }
+    .cta-content {
+      text-align: center; color: var(--white);
+      position: relative; z-index: 1;
+    }
+    .cta-content h2 {
+      font-size: 2.6rem; font-weight: 900; margin-bottom: 16px;
+    }
+    .cta-content p {
+      font-size: 1.2rem; opacity: 0.9;
+      max-width: 600px; margin: 0 auto 36px;
+    }
+    .btn-white {
+      background: var(--white);
+      color: var(--blue);
+      padding: 18px 44px;
+      border-radius: 50px;
+      font-weight: 900; font-size: 1.1rem;
+      border: none; cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    }
+    .btn-white:hover {
+      transform: translateY(-3px) scale(1.03);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+    .cta-features {
+      display: flex; justify-content: center; gap: 48px;
+      margin-top: 48px; flex-wrap: wrap;
+    }
+    .cta-feat {
+      display: flex; align-items: center; gap: 10px;
+      font-weight: 600; font-size: 1rem;
+    }
+    .cta-feat span { font-size: 1.4rem; }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      background: var(--text);
+      color: rgba(255,255,255,0.7);
+      padding: 60px 0 30px;
+    }
+    .footer-grid {
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 40px; margin-bottom: 40px;
+    }
+    .footer-brand h3 {
+      color: var(--white); font-size: 1.4rem;
+      font-weight: 900; margin-bottom: 12px;
+    }
+    .footer-brand p { font-size: 0.9rem; line-height: 1.8; }
+    .footer-col h4 {
+      color: var(--white); font-weight: 700;
+      margin-bottom: 16px; font-size: 1rem;
+    }
+    .footer-col a {
+      display: block; margin-bottom: 10px;
+      font-size: 0.9rem;
+      transition: color 0.3s;
+    }
+    .footer-col a:hover { color: var(--white); }
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding-top: 24px;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 16px;
+    }
+    .footer-bottom p { font-size: 0.85rem; }
+    .footer-social { display: flex; gap: 16px; }
+    .footer-social a {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+      transition: all 0.3s;
+    }
+    .footer-social a:hover {
+      background: var(--blue);
+      transform: translateY(-3px);
+    }
+
+    /* ===== DOWNLOAD SECTION ===== */
+    .download-section {
+      padding: 80px 0;
+      text-align: center;
+      background: var(--bg);
+    }
+    .download-buttons { display: flex; gap: 16px; justify-content: center; margin-top: 32px; flex-wrap: wrap; }
+    .store-btn {
+      background: var(--text);
+      color: var(--white);
+      padding: 14px 32px;
+      border-radius: 14px;
+      display: flex; align-items: center; gap: 12px;
+      transition: all 0.3s;
+      border: none; cursor: pointer;
+    }
+    .store-btn:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+    .store-btn .store-icon { font-size: 2rem; }
+    .store-btn .store-text { text-align: right; }
+    .store-btn .store-text small { font-size: 0.7rem; opacity: 0.7; display: block; }
+    .store-btn .store-text strong { font-size: 1rem; }
+
+    /* ===== SCROLL TO TOP ===== */
+    .scroll-top {
+      position: fixed; bottom: 30px; left: 30px;
+      width: 50px; height: 50px;
+      border-radius: 50%;
+      background: var(--blue);
+      color: var(--white);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+      opacity: 0; visibility: hidden;
+      transition: all 0.3s;
+      z-index: 999;
+      border: none;
+    }
+    .scroll-top.visible { opacity: 1; visibility: visible; }
+    .scroll-top:hover { transform: translateY(-3px); background: var(--blue-dark); }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      .hero-inner { grid-template-columns: 1fr; text-align: center; gap: 40px; }
+      .hero-text h1 { font-size: 2.2rem; }
+      .hero-text p { margin: 0 auto 32px; }
+      .hero-buttons { justify-content: center; }
+      .hero-visual { margin-top: 20px; }
+      .phone-mockup { width: 240px; height: 480px; }
+      .floating-badge { display: none; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .steps-grid { grid-template-columns: 1fr; }
+      .step-connector { display: none !important; }
+      .services-grid { grid-template-columns: 1fr; }
+      .features-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .cta-features { gap: 24px; }
+      .cta-content h2 { font-size: 1.8rem; }
+      .section-title h2 { font-size: 1.8rem; }
+    }
+
+    @media (max-width: 480px) {
+      .stats-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
+      .stat-number { font-size: 2rem; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .hero-buttons { flex-direction: column; align-items: center; }
+      .download-buttons { flex-direction: column; align-items: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-inner">
+      <a href="#" class="nav-logo">
+        <span>🏥</span> الحقونا
+      </a>
+      <div class="nav-links" id="navLinks">
+        <a href="#how">كيف يعمل</a>
+        <a href="#services">الخدمات</a>
+        <a href="#features">المميزات</a>
+        <a href="#providers">انضم كمركز</a>
+        <a href="#download" class="nav-cta">حمّل التطبيق</a>
+      </div>
+      <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="container">
+      <div class="hero-inner">
+        <div class="hero-text anim-up">
+          <h1>
+            ابحث عن أقرب<br>
+            <span class="highlight">خدمة طبية مجانية</span><br>
+            بضغطة واحدة
+          </h1>
+          <p>
+            تطبيق مجاني يربط المحتاج لعناية مركزة أو حضانة أطفال أو أشعة
+            بأقرب مركز يقدمها — بدون تسجيل.
+          </p>
+          <div class="hero-buttons">
+            <button class="btn-primary" onclick="document.getElementById('download').scrollIntoView()">
+              📱 حمّل التطبيق
+            </button>
+            <button class="btn-secondary" onclick="document.getElementById('how').scrollIntoView()">
+              ℹ️ كيف يعمل؟
+            </button>
+          </div>
+        </div>
+        <div class="hero-visual anim-fade" style="animation-delay: 0.3s;">
+          <div class="phone-mockup">
+            <div class="phone-notch"></div>
+            <div class="phone-screen">
+              <div class="phone-header">
+                <h3>الحقونا</h3>
+                <p>ماذا تحتاج؟</p>
+              </div>
+              <div class="phone-services">
+                <div class="phone-service">
+                  <span class="icon">❤️</span>
+                  <span class="name">عناية مركزة</span>
+                  <span class="arrow">←</span>
+                </div>
+                <div class="phone-service">
+                  <span class="icon">👶</span>
+                  <span class="name">حضانة أطفال</span>
+                  <span class="arrow">←</span>
+                </div>
+                <div class="phone-service">
+                  <span class="icon">☢️</span>
+                  <span class="name">أشعة</span>
+                  <span class="arrow">←</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="floating-badge badge-location">
+            <span>📍</span>
+            <span class="badge-green">0.5 كم</span>
+          </div>
+          <div class="floating-badge badge-call">
+            <span>📞</span>
+            <span class="badge-blue">اتصل الآن</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section class="stats">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat-item anim-up">
+          <div class="stat-number" data-count="500">500+</div>
+          <div class="stat-label">مركز طبي مسجل</div>
+        </div>
+        <div class="stat-item anim-up" style="animation-delay:0.1s">
+          <div class="stat-number" data-count="12000">12,000+</div>
+          <div class="stat-label">حالة تم مساعدتها</div>
+        </div>
+        <div class="stat-item anim-up" style="animation-delay:0.2s">
+          <div class="stat-number" data-count="27">27</div>
+          <div class="stat-label">محافظة مصرية</div>
+        </div>
+        <div class="stat-item anim-up" style="animation-delay:0.3s">
+          <div class="stat-number">24/7</div>
+          <div class="stat-label">متاح على مدار الساعة</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how-it-works" id="how">
+    <div class="container">
+      <div class="section-title">
+        <h2>كيف يعمل التطبيق؟</h2>
+        <p>ثلاث خطوات بسيطة للوصول للخدمة الطبية — بدون أي تعقيد</p>
+      </div>
+      <div class="steps-grid">
+        <div class="step-card anim-up">
+          <div class="step-number">1</div>
+          <span class="step-icon">📱</span>
+          <h3>افتح التطبيق</h3>
+          <p>حمّل التطبيق وافتحه — لا حاجة لتسجيل. اختار نوع الخدمة المطلوبة.</p>
+        </div>
+        <div class="step-card anim-up" style="animation-delay:0.15s">
+          <div class="step-number">2</div>
+          <span class="step-icon">📍</span>
+          <h3>شوف الأقرب</h3>
+          <p>هيشتغل GPS تلقائي ويعرض أقرب مركز متاح مع نسبة الخصم ورقم الهاتف.</p>
+        </div>
+        <div class="step-card anim-up" style="animation-delay:0.3s">
+          <div class="step-number">3</div>
+          <span class="step-icon">📞</span>
+          <h3>اتصل على طول</h3>
+          <p>اضغط زر الاتصال مباشرة — بدون أي خطوات إضافية. كل ثانية مهمة.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="services-section" id="services">
+    <div class="container">
+      <div class="section-title">
+        <h2>الخدمات المتوفرة</h2>
+        <p>نوفر لك الوصول لأهم ثلاث خدمات طبية طارئة</p>
+      </div>
+      <div class="services-grid">
+        <div class="service-card card-icu anim-up">
+          <div class="service-top">
+            <span class="service-emoji anim-heart">❤️</span>
+            <h3>العناية المركزة</h3>
+            <p class="desc">أسرة عناية مركزة متاحة للحالات الحرجة — قلب، تنفس، جراحة</p>
+          </div>
+          <div class="service-bottom">
+            <span class="service-tag tag-free">مجاني / مخفض</span>
+            <span class="service-arrow">←</span>
+          </div>
+        </div>
+        <div class="service-card card-incubator anim-up" style="animation-delay:0.15s">
+          <div class="service-top">
+            <span class="service-emoji">👶</span>
+            <h3>الحضانة</h3>
+            <p class="desc">حاضنات للأطفال الخدج والمواليد المحتاجين لرعاية خاصة</p>
+          </div>
+          <div class="service-bottom">
+            <span class="service-tag tag-free">مجاني / مخفض</span>
+            <span class="service-arrow">←</span>
+          </div>
+        </div>
+        <div class="service-card card-radiation anim-up" style="animation-delay:0.3s">
+          <div class="service-top">
+            <span class="service-emoji">☢️</span>
+            <h3>الأشعة والعلاج الإشعاعي</h3>
+            <p class="desc">جلسات أشعة وعلاج إشعاعي للمرضى بأقل التكاليف</p>
+          </div>
+          <div class="service-bottom">
+            <span class="service-tag tag-discount">خصم 50%+</span>
+            <span class="service-arrow">←</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features" id="features">
+    <div class="container">
+      <div class="section-title">
+        <h2>ليه الحقونا؟</h2>
+        <p>مميزات تخلي التطبيق هو الخيار الأول في حالة الطوارئ</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card anim-right">
+          <div class="feature-icon fi-blue">⚡</div>
+          <div class="feature-text">
+            <h3>بدون تسجيل</h3>
+            <p>المريض يفتح التطبيق ويلاقي الخدمة فوراً — مفيش أي إنشاء حساب أو بيانات.</p>
+          </div>
+        </div>
+        <div class="feature-card anim-left">
+          <div class="feature-icon fi-green">📍</div>
+          <div class="feature-text">
+            <h3>GPS تلقائي</h3>
+            <p>بيحدد موقعك تلقائياً ويعرض أقرب مركز — لو مفيش قريب، يعرض أقرب نتيجة حتى لو محافظة تانية.</p>
+          </div>
+        </div>
+        <div class="feature-card anim-right" style="animation-delay:0.15s">
+          <div class="feature-icon fi-red">🔔</div>
+          <div class="feature-text">
+            <h3>تنبيهات ذكية</h3>
+            <p>بيقعد يفتّح كل 6 ساعات على المراكز المقفولة: "هل لسه ممتلئة؟" — عشان يضمن أقصى استفادة.</p>
+          </div>
+        </div>
+        <div class="feature-card anim-left" style="animation-delay:0.15s">
+          <div class="feature-icon fi-purple">🌍</div>
+          <div class="feature-text">
+            <h3>عربي وإنجليزي</h3>
+            <p>بيشتغل بالعربي والإنجليزي تلقائي حسب لغة الموبايل — ومصمم RTL للعربي من الأساس.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROVIDER CTA -->
+  <section class="provider-cta" id="providers">
+    <div class="container">
+      <div class="cta-content anim-up">
+        <h2>عندك مركز طبي؟ 🏥</h2>
+        <p>
+          سجّل مركزك في دقيقة واحدة وساعد المحتاجين.
+          ستحصل على لوحة تحكم سهلة للتحكم في كل خدمة.
+        </p>
+        <button class="btn-white" onclick="window.open('#','_blank')">
+          سجّل كمركز طبي ←
+        </button>
+        <div class="cta-features">
+          <div class="cta-feat"><span>✅</span> تسجيل مجاني</div>
+          <div class="cta-feat"><span>📍</span> تحديد الموقع GPS</div>
+          <div class="cta-feat"><span>🎛️</span> تحكم بزر واحد</div>
+          <div class="cta-feat"><span>🔔</span> تنبيهات ذكية</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DOWNLOAD -->
+  <section class="download-section" id="download">
+    <div class="container">
+      <div class="section-title">
+        <h2>حمّل التطبيق الآن</h2>
+        <p>متاح مجاناً على Android و iOS</p>
+      </div>
+      <div class="download-buttons">
+        <button class="store-btn">
+          <span class="store-icon">🤖</span>
+          <div class="store-text">
+            <small>حمّل من</small>
+            <strong>Google Play</strong>
+          </div>
+        </button>
+        <button class="store-btn">
+          <span class="store-icon">🍎</span>
+          <div class="store-text">
+            <small>حمّل من</small>
+            <strong>App Store</strong>
+          </div>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h3>🏥 الحقونا</h3>
+          <p>
+            تطبيق مجاني يربط المحتاج لخدمة طبية بأقرب مركز يقدمها مجاناً أو بخصم.
+            لأن كل ثانية مهمة.
+          </p>
+        </div>
+        <div class="footer-col">
+          <h4>روابط سريعة</h4>
+          <a href="#how">كيف يعمل</a>
+          <a href="#services">الخدمات</a>
+          <a href="#features">المميزات</a>
+          <a href="#download">حمّل التطبيق</a>
+        </div>
+        <div class="footer-col">
+          <h4>للمراكز</h4>
+          <a href="#providers">سجّل كمركز</a>
+          <a href="#">لوحة التحكم</a>
+          <a href="#">الدعم الفني</a>
+        </div>
+        <div class="footer-col">
+          <h4>تواصل معنا</h4>
+          <a href="#">📧 support@elhaquna.com</a>
+          <a href="#">📞 123 (الخط الساخن)</a>
+          <a href="#">📍 القاهرة، مصر</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 الحقونا. جميع الحقوق محفوظة.</p>
+        <div class="footer-social">
+          <a href="#" title="فيسبوك">📘</a>
+          <a href="#" title="تويتر">🐦</a>
+          <a href="#" title="إنستجرام">📸</a>
+          <a href="#" title="يوتيوب">📺</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- SCROLL TO TOP -->
+  <button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+  <script>
+    // Navbar scroll effect
+    const navbar = document.getElementById('navbar');
+    const scrollTop = document.getElementById('scrollTop');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 50);
+      scrollTop.classList.toggle('visible', window.scrollY > 400);
+    });
+
+    // Mobile menu toggle
+    function toggleMenu() {
+      const links = document.getElementById('navLinks');
+      links.style.display = links.style.display === 'flex' ? 'none' : 'flex';
+    }
+
+    // Intersection Observer for scroll animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.animationPlayState = 'running';
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.anim-up, .anim-right, .anim-left').forEach(el => {
+      el.style.animationPlayState = 'paused';
+      observer.observe(el);
+    });
+
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+  </script>
+</body>
+</html>
