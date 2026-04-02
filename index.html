@@ -1125,6 +1125,7 @@ const translations = {
     'home.radiation': 'Radiation Therapy',
     'home.locationHint': '📍 Tap a service and your location will be detected automatically',
     'home.disclaimer': '⚠️ This app is a helper tool only and not a substitute for emergency medical services. In emergencies, call your local emergency number.',
+    'footer.about': 'About Us',
     'footer.privacy': 'Privacy Policy',
     'footer.terms': 'Terms of Service',
     'footer.disclaimer': 'Disclaimer',
@@ -1358,6 +1359,7 @@ function toggleLang() {
   currentLang = currentLang === 'ar' ? 'en' : 'ar';
   localStorage.setItem('elhaquna_lang', currentLang);
   applyLang();
+  updateNav();
   // Re-render dynamic content
   if (lastRenderedCenters) renderResults(lastRenderedCenters);
   if (currentProviderData) renderDashboard();
