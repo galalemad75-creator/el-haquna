@@ -527,6 +527,7 @@
     <!-- FOOTER -->
     <div class="footer">
       <div>
+        <a onclick="showLegal('about')" data-i18n="footer.about">من نحن</a>
         <a onclick="showLegal('privacy')" data-i18n="footer.privacy">سياسة الخصوصية</a>
         <a onclick="showLegal('terms')" data-i18n="footer.terms">الشروط والأحكام</a>
         <a onclick="showLegal('disclaimer')" data-i18n="footer.disclaimer">إخلاء المسؤولية</a>
@@ -842,6 +843,40 @@
     </div>
   </div>
 
+  <!-- SCREEN: ABOUT US -->
+  <div class="screen" id="screen-about" aria-label="من نحن">
+    <div class="legal-page">
+      <h1>🏥 <span data-i18n="legal.about.title">من نحن</span></h1>
+      <p class="last-update" data-i18n="legal.lastUpdate">آخر تحديث: أبريل 2026</p>
+
+      <h2 data-i18n="legal.about.s1.title">1. ما هو الحقونا؟</h2>
+      <p data-i18n="legal.about.s1.text">الحقونا هو تطبيق مجتمعي مجاني ومفتوح المصدر، صُمم لتوصيل المرضى بأسرع ما يمكن بأقرب مراكز طبية توفر خدمات العناية المركزة، حضانة الأطفال المولودين، والعلاج الإشعاعي — سواء مجانًا أو بخصومات كبيرة.</p>
+
+      <h2 data-i18n="legal.about.s2.title">2. رؤيتنا</h2>
+      <p data-i18n="legal.about.s2.text">نؤمن أن كل ثانية مهمة في حالات الطوارئ الطبية. رؤيتنا هي بناء شبكة عالمية تربط المحتاجين بالمراكز الطبية المتاحة، لتقليل وقت البحث والحصول على الرعاية في اللحظة المناسبة.</p>
+
+      <h2 data-i18n="legal.about.s3.title">3. كيف يعمل التطبيق؟</h2>
+      <ul>
+        <li data-i18n="legal.about.s3.item1">اختر نوع الخدمة المطلوبة (عناية مركزة / حضانة / أشعة)</li>
+        <li data-i18n="legal.about.s3.item2">يحدد التطبيق موقعك ويعرض أقرب المراكز المتاحة</li>
+        <li data-i18n="legal.about.s3.item3">تواصل مباشرة مع المركز عبر الهاتف أو الخريطة</li>
+        <li data-i18n="legal.about.s3.item4">لا يتطلب تسجيل — работает بضغطة واحدة</li>
+      </ul>
+
+      <h2 data-i18n="legal.about.s4.title">4. لماذا مجاني؟</h2>
+      <p data-i18n="legal.about.s4.text">الحقونا مشروع مجتمعي مفتوح المصدر. نؤمن أن الوصول للمعلومات الطبية في لحظات الأزمات حق للجميع. المراكز الطبية المسجلة تُحدّث بياناتها طوعًا لمساعدة من يحتاجها.</p>
+
+      <h2 data-i18n="legal.about.s5.title">5. للمراكز الطبية</h2>
+      <p data-i18n="legal.about.s5.text">يمكن لأي مركز طبي مرخص التسجيل في التطبيق وإضافة خدماته. التسجيل مجاني بالكامل ويساعد المراكز على الوصول لمرضى جدد بحاجة لخدماتها.</p>
+
+      <h2 data-i18n="legal.about.s6.title">6. تواصل معنا</h2>
+      <p data-i18n="legal.about.s6.text">لأي استفسار أو اقتراح: <strong>support@el-haquna.com</strong></p>
+      <p data-i18n="legal.about.s6.follow">تابعنا على وسائل التواصل الاجتماعي للبقاء على اطلاع بالتحديثات.</p>
+
+      <a class="back-link" onclick="goBackFromLegal()" data-i18n="common.back">← رجوع</a>
+    </div>
+  </div>
+
 <script>
 // ==================== I18N ====================
 const translations = {
@@ -862,6 +897,7 @@ const translations = {
     'home.radiation': 'أشعة وعلاج إشعاعي',
     'home.locationHint': '📍 اضغط على الخدمة وسيتم تحديد موقعك تلقائياً',
     'home.disclaimer': '⚠️ هذا التطبيق أداة مساعدة فقط وليس بديلاً عن الطوارئ الطبية. في حالة الطوارئ اتصل بخدمات الطوارئ المحلية.',
+    'footer.about': 'من نحن',
     'footer.privacy': 'سياسة الخصوصية',
     'footer.terms': 'الشروط والأحكام',
     'footer.disclaimer': 'إخلاء المسؤولية',
@@ -1054,6 +1090,23 @@ const translations = {
     'auth.licenseLabel': 'ترخيص مزاولة المهنة الطبية *',
     'auth.licenseHint': 'يجب رفع صورة واضحة لترخيص مزاولة المهنة الطبية الصادر من الجهة المختصة',
     'error.licenseRequired': 'يجب رفع صورة الترخيص الطبي',
+    'legal.about.title': 'من نحن',
+    'legal.about.s1.title': '1. ما هو الحقونا؟',
+    'legal.about.s1.text': 'الحقونا هو تطبيق مجتمعي مجاني ومفتوح المصدر، صُمم لتوصيل المرضى بأسرع ما يمكن بأقرب مراكز طبية توفر خدمات العناية المركزة، حضانة الأطفال المولودين، والعلاج الإشعاعي — سواء مجانًا أو بخصومات كبيرة.',
+    'legal.about.s2.title': '2. رؤيتنا',
+    'legal.about.s2.text': 'نؤمن أن كل ثانية مهمة في حالات الطوارئ الطبية. رؤيتنا هي بناء شبكة عالمية تربط المحتاجين بالمراكز الطبية المتاحة، لتقليل وقت البحث والحصول على الرعاية في اللحظة المناسبة.',
+    'legal.about.s3.title': '3. كيف يعمل التطبيق؟',
+    'legal.about.s3.item1': 'اختر نوع الخدمة المطلوبة (عناية مركزة / حضانة / أشعة)',
+    'legal.about.s3.item2': 'يحدد التطبيق موقعك ويعرض أقرب المراكز المتاحة',
+    'legal.about.s3.item3': 'تواصل مباشرة مع المركز عبر الهاتف أو الخريطة',
+    'legal.about.s3.item4': 'لا يتطلب تسجيل — يعمل بضغطة واحدة',
+    'legal.about.s4.title': '4. لماذا مجاني؟',
+    'legal.about.s4.text': 'الحقونا مشروع مجتمعي مفتوح المصدر. نؤمن أن الوصول للمعلومات الطبية في لحظات الأزمات حق للجميع. المراكز الطبية المسجلة تُحدّث بياناتها طوعًا لمساعدة من يحتاجها.',
+    'legal.about.s5.title': '5. للمراكز الطبية',
+    'legal.about.s5.text': 'يمكن لأي مركز طبي مرخص التسجيل في التطبيق وإضافة خدماته. التسجيل مجاني بالكامل ويساعد المراكز على الوصول لمرضى جدد بحاجة لخدماتها.',
+    'legal.about.s6.title': '6. تواصل معنا',
+    'legal.about.s6.text': 'لأي استفسار أو اقتراح: support@el-haquna.com',
+    'legal.about.s6.follow': 'تابعنا على وسائل التواصل الاجتماعي للبقاء على اطلاع بالتحديثات.',
   },
   en: {
     'app.name': 'El-Haquna',
@@ -1264,6 +1317,23 @@ const translations = {
     'auth.licenseLabel': 'Medical Practice License *',
     'auth.licenseHint': 'Please upload a clear image of your medical practice license issued by the competent authority',
     'error.licenseRequired': 'Medical license upload is required',
+    'legal.about.title': 'About Us',
+    'legal.about.s1.title': '1. What is El-Haquna?',
+    'legal.about.s1.text': 'El-Haquna is a free, open-source community app designed to connect patients as quickly as possible with the nearest medical centers offering ICU, neonatal incubator, and radiation therapy services — whether free or at significant discounts.',
+    'legal.about.s2.title': '2. Our Vision',
+    'legal.about.s2.text': 'We believe every second matters in medical emergencies. Our vision is to build a global network connecting those in need with available medical centers, reducing search time and ensuring care is received at the right moment.',
+    'legal.about.s3.title': '3. How Does It Work?',
+    'legal.about.s3.item1': 'Choose the service you need (ICU / Incubator / Radiation)',
+    'legal.about.s3.item2': 'The app detects your location and shows the nearest available centers',
+    'legal.about.s3.item3': 'Contact the center directly via phone or map',
+    'legal.about.s3.item4': 'No registration required — works with a single tap',
+    'legal.about.s4.title': '4. Why Is It Free?',
+    'legal.about.s4.text': 'El-Haquna is a free, open-source community project. We believe access to medical information during crises is a right for everyone. Registered medical centers voluntarily update their data to help those who need it.',
+    'legal.about.s5.title': '5. For Medical Centers',
+    'legal.about.s5.text': 'Any licensed medical center can register and add its services. Registration is completely free and helps centers reach new patients who need their services.',
+    'legal.about.s6.title': '6. Contact Us',
+    'legal.about.s6.text': 'For any inquiries or suggestions: support@el-haquna.com',
+    'legal.about.s6.follow': 'Follow us on social media to stay updated.',
   }
 };
 
