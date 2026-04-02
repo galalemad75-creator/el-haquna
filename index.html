@@ -7,7 +7,21 @@
   <meta name="description" content="El-Haquna — Find the nearest available medical centers (ICU, Neonatal Incubator, Radiation Therapy) quickly and easily.">
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
   <!-- Firebase (الإعدادات تُحمّل من firebase-config.js — لا تضع أسراراً هنا) -->
-  <script src="firebase-config.js"></script>
+  <script>
+    // Firebase config — inlined for GitHub Pages deployment
+    // (firebase-config.js is gitignored and won't deploy to Pages)
+    // TODO: Replace these placeholders with your real Firebase values from Firebase Console
+    if (!window.__FIREBASE_CONFIG__) {
+      window.__FIREBASE_CONFIG__ = {
+        apiKey:            "REPLACE_WITH_REAL_API_KEY",
+        authDomain:        "REPLACE_WITH_REAL.firebaseapp.com",
+        projectId:         "REPLACE_WITH_REAL",
+        storageBucket:     "REPLACE_WITH_REAL.appspot.com",
+        messagingSenderId: "REPLACE_WITH_REAL",
+        appId:             "REPLACE_WITH_REAL"
+      };
+    }
+  </script>
   <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
@@ -378,6 +392,7 @@
       max-width:500px; margin:20px auto 0; padding:12px 16px;
       background:#FEF3C7; border-radius:12px; font-size:0.8rem;
       color:#92400E; text-align:center; line-height:1.6;
+      word-break:break-word;
     }
     [data-theme="dark"] .disclaimer-bar { background:#422006; color:#FCD34D; }
     /* EMAIL VERIFY BANNER */
@@ -1082,8 +1097,7 @@ const translations = {
   }
 };
 
-let currentLang = localStorage.getItem('elhaquna_lang') ||
-  (navigator.language?.startsWith('ar') ? 'ar' : 'en');
+let currentLang = localStorage.getItem('elhaquna_lang') || 'ar';
 
 function t(key) {
   return translations[currentLang]?.[key] || translations.ar[key] || key;
