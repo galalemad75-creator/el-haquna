@@ -233,6 +233,17 @@
       width:20px; height:20px; accent-color:var(--blue); flex-shrink:0; margin-top:2px;
     }
     .consent-row a { color:var(--blue); font-weight:700; cursor:pointer; text-decoration:underline; }
+    /* LICENSE UPLOAD */
+    .license-upload {
+      width:100%; height:120px; border-radius:14px;
+      border:2px dashed var(--border); display:flex; flex-direction:column;
+      align-items:center; justify-content:center; cursor:pointer;
+      margin-bottom:4px; transition:0.3s; background:var(--card-bg);
+      font-size:0.85rem; color:var(--text2); text-align:center; padding:12px;
+    }
+    .license-upload:hover { border-color:var(--blue); }
+    .license-upload .license-icon { font-size:2rem; margin-bottom:6px; }
+    .license-upload.has-file { border-color:var(--green); border-style:solid; }
     /* DASHBOARD */
     .dash-header {
       text-align:center; margin-bottom:24px;
@@ -598,6 +609,17 @@
         <input type="tel" id="regHotline" placeholder="XXX">
       </div>
 
+      <!-- ترخيص مزاولة المهنة الطبية — إلزامي -->
+      <div class="form-group">
+        <label data-i18n="auth.licenseLabel">ترخيص مزاولة المهنة الطبية *</label>
+        <div class="license-upload" id="licenseUpload" onclick="document.getElementById('licenseInput').click()" role="button" tabindex="0">
+          <span class="license-icon" id="licenseIcon">📄</span>
+          <span id="licenseText" data-i18n="auth.licenseHint">يجب رفع صورة واضحة لترخيص مزاولة المهنة الطبية الصادر من الجهة المختصة</span>
+          <img id="licensePreview" style="display:none;width:100%;height:100%;object-fit:cover;border-radius:12px;" alt="معاينة الترخيص">
+        </div>
+        <input type="file" id="licenseInput" accept="image/*,.pdf" style="display:none" onchange="previewLicense(event)">
+      </div>
+
       <!-- شروط الاستخدام — إلزامي -->
       <div class="consent-row">
         <input type="checkbox" id="acceptTerms" aria-label="أوافق على الشروط والأحكام">
@@ -958,6 +980,80 @@ const translations = {
     'svc.available': 'متاح',
     'svc.closed': 'مغلق',
     'discount.label': 'نسبة الخصم:',
+    'legal.privacy.title': 'سياسة الخصوصية',
+    'legal.lastUpdate': 'آخر تحديث: أبريل 2026',
+    'legal.privacy.s1.title': '1. مقدمة',
+    'legal.privacy.s1.text': 'تطبيق "الحقونا" (El-Haquna) يحترم خصوصيتك ويحمي بياناتك الشخصية. تشرح هذه السياسة كيف نجمع ونستخدم ونحمي معلوماتك عند استخدامك للتطبيق.',
+    'legal.privacy.s2.title': '2. البيانات التي نجمعها',
+    'legal.privacy.s2.item1': 'بيانات الموقع: نجمع موقعك الجغرافي (GPS) فقط عند الضغط على خدمة طبية، وذلك لإيجاد أقرب المراكز إليك. لا نخزن موقعك على خوادمنا.',
+    'legal.privacy.s2.item2': 'بيانات مقدمي الخدمة: عند التسجيل كمركز طبي، نجمع: الاسم، البريد الإلكتروني، رقم الهاتف، العنوان، وموقع GPS للمركز.',
+    'legal.privacy.s2.item3': 'بيانات الاستخدام: قد نجمع معلومات مجهولة عن كيفية استخدامك للتطبيق لتحسين الخدمة.',
+    'legal.privacy.s3.title': '3. كيف نستخدم بياناتك',
+    'legal.privacy.s3.item1': 'لإيجاد أقرب المراكز الطبية إليك بناءً على موقعك الحالي',
+    'legal.privacy.s3.item2': 'لحساب المسافة بينك وبين المركز',
+    'legal.privacy.s3.item3': 'لإدارة حسابات مقدمي الخدمات الطبية',
+    'legal.privacy.s3.item4': 'لتحسين أداء التطبيق وتجربة المستخدم',
+    'legal.privacy.s4.title': '4. مشاركة البيانات',
+    'legal.privacy.s4.text': 'لا نبيع أو نشارك بياناتك الشخصية مع أي طرف ثالث، إلا في الحالات التالية:',
+    'legal.privacy.s4.item1': 'عند موافقتك الصريحة',
+    'legal.privacy.s4.item2': 'للامتثال للقوانين والأنظمة المعمول بها في بلدك',
+    'legal.privacy.s4.item3': 'لحماية حقوق使用者或 الآخرين',
+    'legal.privacy.s5.title': '5. حماية البيانات',
+    'legal.privacy.s5.text': 'نستخدم Firebase من Google كمنصة خلفية، مع تشفير البيانات أثناء النقل (TLS) وعند التخزين. بيانات المصادقة محمية بمعايير أمان Google Cloud.',
+    'legal.privacy.s6.title': '6. حقوقك',
+    'legal.privacy.s6.item1': 'الوصول إلى بياناتك الشخصية',
+    'legal.privacy.s6.item2': 'طلب تصحيح أو حذف بياناتك',
+    'legal.privacy.s6.item3': 'سحب موافقتك على جمع الموقع في أي وقت (عبر إعدادات الجهاز)',
+    'legal.privacy.s6.item4': 'حذف حسابك وبياناتك بالكامل',
+    'legal.privacy.s7.title': '7. الاتصال بنا',
+    'legal.privacy.s7.text': 'لأي استفسار حول الخصوصية: privacy@el-haquna.com',
+    'legal.terms.title': 'الشروط والأحكام',
+    'legal.terms.s1.title': '1. القبول بالشروط',
+    'legal.terms.s1.text': 'باستخدامك تطبيق "الحقونا" (El-Haquna)، فإنك توافق على هذه الشروط والأحكام. إذا كنت لا توافق، يرجى عدم استخدام التطبيق.',
+    'legal.terms.s2.title': '2. وصف الخدمة',
+    'legal.terms.s2.text': 'الحقونا هو تطبيق عالمي يربط المرضى بمراكز طبية قريبة تقدم خدمات العناية المركزة، حضانة الأطفال، والعلاج الإشعاعي. التطبيق يعمل كوسيط إعلامي وليس مقدمًا للخدمات الطبية.',
+    'legal.terms.s3.title': '3. إخلاء المسؤولية الطبية',
+    'legal.terms.s3.item1': 'التطبيق ليس بديلاً عن خدمات الطوارئ الطبية',
+    'legal.terms.s3.item2': 'في حالة الطوارئ الحقيقية، اتصل بخدمات الطوارئ المحلية في بلدك فورًا',
+    'legal.terms.s3.item3': 'البيانات المعروضة تعتمد على تحديثات مقدمي الخدمة وقد لا تكون دقيقة دائمًا',
+    'legal.terms.s3.item4': 'التطبيق لا يقدم تشخيصًا أو علاجًا طبيًا',
+    'legal.terms.s4.title': '4. التزامات مقدمي الخدمة',
+    'legal.terms.s4.item1': 'يجب أن يكون المركز الطبي مُرخّصًا من الجهات المختصة في بلد الإقامة',
+    'legal.terms.s4.item2': 'يجب تحديث حالة الخدمات المتاحة بشكل دقيق',
+    'legal.terms.s4.item3': 'عدم تقديم معلومات مضللة أو كاذبة',
+    'legal.terms.s4.item4': 'المسؤولية الكاملة عن دقة المعلومات المقدمة',
+    'legal.terms.s5.title': '5. التزامات المستخدم',
+    'legal.terms.s5.item1': 'عدم استخدام التطبيق لأغراض غير مشروعة',
+    'legal.terms.s5.item2': 'عدم محاولة اختراق أو تعطيل التطبيق',
+    'legal.terms.s5.item3': 'عدم التلاعب بالمعلومات المعروضة',
+    'legal.terms.s6.title': '6. حدود المسؤولية',
+    'legal.terms.s6.text': 'لا يتحمل التطبيق أو فريقه أي مسؤولية عن أية أضرار مباشرة أو غير مباشرة ناتجة عن استخدام التطبيق أو الاعتماد على المعلومات المعروضة فيه.',
+    'legal.terms.s7.title': '7. التعديلات',
+    'legal.terms.s7.text': 'نحتفظ بالحق في تعديل هذه الشروط في أي وقت. الاستمرار في استخدام التطبيق يعني قبولك للتعديلات.',
+    'legal.terms.s8.title': '8. القانون الحاكم',
+    'legal.terms.s8.text': 'تخضع هذه الشروط لقوانين بلد إقامة المستخدم المعمول بها، وأي نزاع يُحال للمحاكم المختصة.',
+    'legal.disclaimer.title': 'إخلاء المسؤولية',
+    'legal.disclaimer.s1.title': 'تحذير هام',
+    'legal.disclaimer.s1.text': 'تطبيق "الحقونا" (El-Haquna) هو أداة مساعدة إعلامية فقط وليس تطبيقًا طبيًا بالمعنى القانوني أو المهني.',
+    'legal.disclaimer.s2.title': 'في حالة الطوارئ',
+    'legal.disclaimer.s2.intro': 'إذا كنت أو أحد أقاربك في حالة طوارئ حقيقية:',
+    'legal.disclaimer.s2.item1': 'اتصل فورًا بخدمات الطوارئ المحلية في بلدك',
+    'legal.disclaimer.s2.item2': 'لا تعتمد على التطبيق وحده',
+    'legal.disclaimer.s2.item3': 'توجه لأقرب مستشفى مباشرة',
+    'legal.disclaimer.s3.title': 'معلومات المراكز',
+    'legal.disclaimer.s3.item1': 'المعلومات المعروضة (التوفر، الخصومات، المسافة) مصدرها مقدمي الخدمة',
+    'legal.disclaimer.s3.item2': 'لا نضمن دقة هذه المعلومات لحظيًا',
+    'legal.disclaimer.s3.item3': 'قد تتغير حالة التوفر في أي وقت',
+    'legal.disclaimer.s3.item4': 'يجب الاتصال بالمركز للتأكد قبل التوجه',
+    'legal.disclaimer.s4.title': 'عدم الإفصاح الطبي',
+    'legal.disclaimer.s4.item1': 'التطبيق لا يقدم نصائح أو تشخيصات طبية',
+    'legal.disclaimer.s4.item2': 'التطبيق لا يحل محل الطبيب أو المختص',
+    'legal.disclaimer.s4.item3': 'أي قرارات طبية يجب أن تتخذ بعد استشارة طبيب مختص',
+    'legal.disclaimer.s5.title': 'المسؤولية',
+    'legal.disclaimer.s5.text': 'باستخدام التطبيق، فإنك تقر بأنك تفهم並同意 أن فريق "الحقونا" غير مسؤول عن أي عواقب صحية أو أضرار قد تنتج عن استخدام المعلومات المعروضة في التطبيق.',
+    'auth.licenseLabel': 'ترخيص مزاولة المهنة الطبية *',
+    'auth.licenseHint': 'يجب رفع صورة واضحة لترخيص مزاولة المهنة الطبية الصادر من الجهة المختصة',
+    'error.licenseRequired': 'يجب رفع صورة الترخيص الطبي',
   },
   en: {
     'app.name': 'El-Haquna',
@@ -1094,6 +1190,80 @@ const translations = {
     'svc.available': 'Available',
     'svc.closed': 'Closed',
     'discount.label': 'Discount:',
+    'legal.privacy.title': 'Privacy Policy',
+    'legal.lastUpdate': 'Last updated: April 2026',
+    'legal.privacy.s1.title': '1. Introduction',
+    'legal.privacy.s1.text': 'El-Haquna respects your privacy and protects your personal data. This policy explains how we collect, use, and safeguard your information.',
+    'legal.privacy.s2.title': '2. Data We Collect',
+    'legal.privacy.s2.item1': 'Location Data: We collect your GPS location only when you tap a medical service, to find the nearest centers. We do not store your location on our servers.',
+    'legal.privacy.s2.item2': 'Provider Data: When registering as a medical center, we collect: name, email, phone number, address, and GPS location.',
+    'legal.privacy.s2.item3': 'Usage Data: We may collect anonymous information about app usage to improve the service.',
+    'legal.privacy.s3.title': '3. How We Use Your Data',
+    'legal.privacy.s3.item1': 'To find the nearest medical centers based on your current location',
+    'legal.privacy.s3.item2': 'To calculate the distance between you and the center',
+    'legal.privacy.s3.item3': 'To manage medical service provider accounts',
+    'legal.privacy.s3.item4': 'To improve app performance and user experience',
+    'legal.privacy.s4.title': '4. Data Sharing',
+    'legal.privacy.s4.text': 'We do not sell or share your personal data with any third party, except in the following cases:',
+    'legal.privacy.s4.item1': 'With your explicit consent',
+    'legal.privacy.s4.item2': 'To comply with applicable laws and regulations',
+    'legal.privacy.s4.item3': 'To protect the rights of users or others',
+    'legal.privacy.s5.title': '5. Data Protection',
+    'legal.privacy.s5.text': 'We use Google Firebase as our backend platform, with data encryption in transit (TLS) and at rest. Authentication data is protected by Google Cloud security standards.',
+    'legal.privacy.s6.title': '6. Your Rights',
+    'legal.privacy.s6.item1': 'Access your personal data',
+    'legal.privacy.s6.item2': 'Request correction or deletion of your data',
+    'legal.privacy.s6.item3': 'Withdraw consent for location collection at any time (via device settings)',
+    'legal.privacy.s6.item4': 'Delete your account and all data completely',
+    'legal.privacy.s7.title': '7. Contact Us',
+    'legal.privacy.s7.text': 'For any privacy inquiries: privacy@el-haquna.com',
+    'legal.terms.title': 'Terms of Service',
+    'legal.terms.s1.title': '1. Acceptance of Terms',
+    'legal.terms.s1.text': 'By using El-Haquna, you agree to these Terms of Service. If you do not agree, please do not use the app.',
+    'legal.terms.s2.title': '2. Service Description',
+    'legal.terms.s2.text': 'El-Haquna is a global app connecting patients with nearby medical centers offering ICU, neonatal incubator, and radiation therapy services. The app acts as an informational intermediary and does not provide medical services.',
+    'legal.terms.s3.title': '3. Medical Disclaimer',
+    'legal.terms.s3.item1': 'The app is NOT a substitute for emergency medical services',
+    'legal.terms.s3.item2': 'In real emergencies, call your local emergency services immediately',
+    'legal.terms.s3.item3': 'Displayed data depends on provider updates and may not always be accurate',
+    'legal.terms.s3.item4': 'The app does not provide medical diagnosis or treatment',
+    'legal.terms.s4.title': '4. Provider Obligations',
+    'legal.terms.s4.item1': 'Medical centers must be licensed by the relevant authorities in their country',
+    'legal.terms.s4.item2': 'Available services must be updated accurately',
+    'legal.terms.s4.item3': 'No misleading or false information',
+    'legal.terms.s4.item4': 'Full responsibility for accuracy of provided information',
+    'legal.terms.s5.title': '5. User Obligations',
+    'legal.terms.s5.item1': 'Do not use the app for unlawful purposes',
+    'legal.terms.s5.item2': 'Do not attempt to hack or disable the app',
+    'legal.terms.s5.item3': 'Do not tamper with displayed information',
+    'legal.terms.s6.title': '6. Limitation of Liability',
+    'legal.terms.s6.text': 'The app and its team accept no liability for any direct or indirect damages resulting from using the app or relying on displayed information.',
+    'legal.terms.s7.title': '7. Modifications',
+    'legal.terms.s7.text': 'We reserve the right to modify these terms at any time. Continued use of the app constitutes acceptance of modifications.',
+    'legal.terms.s8.title': '8. Governing Law',
+    'legal.terms.s8.text': "These terms are governed by the laws of the user's country of residence, and disputes shall be referred to competent courts.",
+    'legal.disclaimer.title': 'Disclaimer',
+    'legal.disclaimer.s1.title': 'Important Warning',
+    'legal.disclaimer.s1.text': 'El-Haquna is an informational helper tool only and is NOT a medical application in the legal or professional sense.',
+    'legal.disclaimer.s2.title': 'In Case of Emergency',
+    'legal.disclaimer.s2.intro': 'If you or a loved one is in a real emergency:',
+    'legal.disclaimer.s2.item1': 'Call your local emergency services immediately',
+    'legal.disclaimer.s2.item2': 'Do not rely on the app alone',
+    'legal.disclaimer.s2.item3': 'Go to the nearest hospital directly',
+    'legal.disclaimer.s3.title': 'Center Information',
+    'legal.disclaimer.s3.item1': 'Displayed information (availability, discounts, distance) comes from service providers',
+    'legal.disclaimer.s3.item2': 'We do not guarantee real-time accuracy',
+    'legal.disclaimer.s3.item3': 'Availability status may change at any time',
+    'legal.disclaimer.s3.item4': 'Call the center to confirm before visiting',
+    'legal.disclaimer.s4.title': 'No Medical Advice',
+    'legal.disclaimer.s4.item1': 'The app does not provide medical advice or diagnosis',
+    'legal.disclaimer.s4.item2': 'The app does not replace a doctor or specialist',
+    'legal.disclaimer.s4.item3': 'Any medical decisions should be made after consulting a specialist',
+    'legal.disclaimer.s5.title': 'Liability',
+    'legal.disclaimer.s5.text': 'By using the app, you acknowledge that the El-Haquna team is not responsible for any health consequences or damages resulting from using the displayed information.',
+    'auth.licenseLabel': 'Medical Practice License *',
+    'auth.licenseHint': 'Please upload a clear image of your medical practice license issued by the competent authority',
+    'error.licenseRequired': 'Medical license upload is required',
   }
 };
 
@@ -1172,6 +1342,7 @@ let currentUser = null;
 let currentProviderData = null;
 let setupCoords = null;
 let setupPhotoFile = null;
+let licenseFile = null;
 let pendingServiceType = null;
 let legalReturnScreen = 'home';
 let lastRenderedCenters = null;
@@ -1565,6 +1736,8 @@ async function doRegister() {
 
   if (!accepted)
     return showAlert(t('common.notice'), t('error.acceptTerms'));
+  if (!licenseFile)
+    return showAlert(t('common.notice'), t('error.licenseRequired'));
   if (!firebaseReady || !auth) return showAlert(t('common.notice'), t('error.noFirebase'));
 
   showLoading(t('loading.registering'));
@@ -1574,8 +1747,19 @@ async function doRegister() {
 
     await currentUser.sendEmailVerification();
 
+    // Upload medical license to Firebase Storage
+    let licenseUrl = null;
+    try {
+      showLoading(t('loading.uploadingPhoto'));
+      const ref = storage.ref('licenses/' + currentUser.uid + '/license.' + (licenseFile.type.startsWith('image/') ? 'jpg' : 'pdf'));
+      await ref.put(licenseFile);
+      licenseUrl = await ref.getDownloadURL();
+    } catch(uploadErr) {
+      console.error('[الحقونا] License upload error:', uploadErr);
+    }
+
     currentProviderData = {
-      name, phone, hotline, email,
+      name, phone, hotline, email, licenseUrl,
       services: {
         icu: {available:false, discount:0},
         incubator: {available:false, discount:0},
@@ -1675,6 +1859,34 @@ function previewPhoto(e) {
   reader.readAsDataURL(file);
 }
 
+function previewLicense(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  if (file.size > 5 * 1024 * 1024) {
+    showAlert(t('common.notice'), t('error.photoSize'));
+    return;
+  }
+  licenseFile = file;
+  const box = document.getElementById('licenseUpload');
+  const preview = document.getElementById('licensePreview');
+  const icon = document.getElementById('licenseIcon');
+  const text = document.getElementById('licenseText');
+  box.classList.add('has-file');
+  if (file.type.startsWith('image/')) {
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      preview.src = ev.target.result;
+      preview.style.display = 'block';
+      icon.style.display = 'none';
+      text.style.display = 'none';
+    };
+    reader.readAsDataURL(file);
+  } else {
+    icon.textContent = '✅';
+    text.textContent = file.name;
+  }
+}
+
 function goToSetupStep2() {
   const addr = document.getElementById('setupAddress').value.trim();
   if (!addr) return showAlert(t('common.notice'), t('error.enterAddress'));
@@ -1740,6 +1952,7 @@ async function saveSetup() {
       location: new firebase.firestore.GeoPoint(setupCoords.lat, setupCoords.lon),
       services: currentProviderData.services,
       photo: photoUrl,
+      licenseUrl: currentProviderData.licenseUrl || null,
       setupComplete: true,
       emailVerified: currentUser.emailVerified,
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
