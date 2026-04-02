@@ -1,0 +1,13 @@
+// ==================== FIREBASE CONFIG — TEMPLATE ====================
+// 1. انسخ هذا الملف إلى firebase-config.js
+// 2. ضع إعدادات Firebase الحقيقية من Firebase Console
+// 3. تأكد أن firebase-config.js موجود في .gitignore
+
+window.__FIREBASE_CONFIG__ = {
+  apiKey: "AIzaSyXXXXXXXXXXXXXXXXXXXXXXXXX",
+  authDomain: "el-haquna.firebaseapp.com",
+  projectId: "el-haquna",
+  storageBucket: "el-haquna.appspot.com",
+  messagingSenderId: "123456789012",
+  appId: "1:123456789012:web:abcdef1234567890"
+};

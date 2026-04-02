@@ -4,8 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>الحقونا — لأن كل ثانية مهمة</title>
+  <meta name="description" content="الحقونا - تطبيق للعثور على أقرب مراكز طبية متاحة (عناية مركزة، حضانة أطفال، علاج إشعاعي) بسرعة وسهولة.">
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
-  <!-- Firebase -->
+  <!-- Firebase (الإعدادات تُحمّل من firebase-config.js — لا تضع أسراراً هنا) -->
+  <!-- Firebase config (loaded externally — never put keys in source) -->
+  <script src="firebase-config.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
@@ -177,9 +180,18 @@
       border:none; border-radius:12px; font-weight:700; font-size:1rem;
       cursor:pointer; font-family:inherit; margin-top:8px; transition:0.3s;
     }
-    .form-submit:disabled { opacity:0.5; }
+    .form-submit:disabled { opacity:0.5; cursor:not-allowed; }
     .auth-switch { text-align:center; margin-top:16px; color:var(--text2); font-size:0.9rem; }
     .auth-switch a { color:var(--blue); font-weight:700; cursor:pointer; }
+    /* CHECKBOX */
+    .consent-row {
+      display:flex; align-items:flex-start; gap:10px; margin:16px 0;
+      font-size:0.85rem; color:var(--text2); text-align:right;
+    }
+    .consent-row input[type="checkbox"] {
+      width:20px; height:20px; accent-color:var(--blue); flex-shrink:0; margin-top:2px;
+    }
+    .consent-row a { color:var(--blue); font-weight:700; cursor:pointer; text-decoration:underline; }
     /* DASHBOARD */
     .dash-header {
       text-align:center; margin-bottom:24px;
@@ -222,7 +234,6 @@
       border-radius:10px; text-align:center; font-family:inherit;
       font-size:1.1rem; font-weight:700;
     }
-    .discount-hint { font-size:0.8rem; color:var(--text2); }
     /* PROVIDER SETUP */
     .setup-progress {
       display:flex; align-items:center; justify-content:center; gap:8px;
@@ -265,7 +276,7 @@
       border:none; border-radius:12px; font-weight:700; font-size:1.1rem;
       cursor:pointer; font-family:inherit;
     }
-    .save-btn:disabled { opacity:0.5; }
+    .save-btn:disabled { opacity:0.5; cursor:not-allowed; }
     /* LOADING */
     .loading-screen {
       display:none; position:fixed; inset:0; z-index:200;
@@ -291,11 +302,62 @@
       max-width:340px; width:90%; text-align:center;
     }
     .alert-content h3 { font-size:1.2rem; margin-bottom:8px; }
-    .alert-content p { color:var(--text2); font-size:0.9rem; margin-bottom:16px; }
+    .alert-content p { color:var(--text2); font-size:0.9rem; margin-bottom:16px; line-height:1.6; }
     .alert-content button {
       padding:10px 32px; border-radius:50px; border:none;
       background:var(--blue); color:var(--white); font-weight:700;
       cursor:pointer; font-family:inherit;
+    }
+    /* LOCATION EXPLAIN MODAL */
+    .loc-explain-box {
+      background:var(--white); border-radius:var(--rl); padding:24px;
+      max-width:380px; width:92%; text-align:center;
+    }
+    .loc-explain-box h3 { font-size:1.2rem; margin-bottom:10px; }
+    .loc-explain-box ul {
+      text-align:right; margin:12px 0; padding-right:20px; color:var(--text2); line-height:2;
+    }
+    .loc-explain-box .btns { display:flex; gap:10px; margin-top:16px; }
+    .loc-explain-box .btns button {
+      flex:1; padding:12px; border-radius:12px; font-weight:700;
+      cursor:pointer; font-family:inherit; font-size:0.95rem; border:none;
+    }
+    .btn-allow { background:var(--blue); color:var(--white); }
+    .btn-deny { background:var(--bg); color:var(--text2); border:1px solid var(--border)!important; }
+    /* PRIVACY / TERMS / DISCLAIMER PAGES */
+    .legal-page {
+      max-width:600px; margin:0 auto; background:var(--white);
+      border-radius:var(--rl); padding:28px 20px; box-shadow:var(--shadow);
+      line-height:1.9; font-size:0.95rem;
+    }
+    .legal-page h1 { font-size:1.5rem; text-align:center; margin-bottom:6px; }
+    .legal-page .last-update { text-align:center; color:var(--text2); font-size:0.8rem; margin-bottom:20px; }
+    .legal-page h2 { font-size:1.1rem; margin:20px 0 8px; color:var(--blue); }
+    .legal-page ul { padding-right:20px; }
+    .legal-page li { margin-bottom:6px; }
+    .legal-page .back-link { display:block; text-align:center; margin-top:24px; color:var(--blue); font-weight:700; cursor:pointer; }
+    /* FOOTER */
+    .footer {
+      text-align:center; padding:24px 16px 40px; color:var(--text2); font-size:0.8rem;
+    }
+    .footer a { color:var(--blue); margin:0 8px; cursor:pointer; text-decoration:none; }
+    .footer a:hover { text-decoration:underline; }
+    .disclaimer-bar {
+      max-width:500px; margin:20px auto 0; padding:12px 16px;
+      background:#FEF3C7; border-radius:12px; font-size:0.8rem;
+      color:#92400E; text-align:center; line-height:1.6;
+    }
+    /* EMAIL VERIFY BANNER */
+    .verify-banner {
+      background:#FEF3C7; border-radius:12px; padding:14px; margin-bottom:16px;
+      display:flex; gap:10px; align-items:flex-start;
+    }
+    .verify-banner .icon { font-size:1.3rem; flex-shrink:0; }
+    .verify-banner .text { font-size:0.85rem; color:#92400E; text-align:right; line-height:1.6; }
+    .verify-banner button {
+      background:#92400E; color:#fff; border:none; padding:8px 16px;
+      border-radius:8px; font-weight:700; cursor:pointer; font-family:inherit;
+      font-size:0.8rem; white-space:nowrap;
     }
     /* RESPONSIVE */
     @media(min-width:768px) {
@@ -306,80 +368,112 @@
 <body>
 
   <!-- SPLASH -->
-  <div class="splash show" id="splash">
-    <div class="splash-emoji">🏥</div>
+  <div class="splash show" id="splash" role="status" aria-label="شاشة الترحيب">
+    <div class="splash-emoji" aria-hidden="true">🏥</div>
     <h1>الحقونا</h1>
     <p>لأن كل ثانية مهمة</p>
   </div>
 
   <!-- LOADING -->
-  <div class="loading-screen" id="loading">
-    <div class="spinner"></div>
+  <div class="loading-screen" id="loading" role="alert" aria-live="polite">
+    <div class="spinner" aria-hidden="true"></div>
     <p id="loadingText">جاري التحميل...</p>
   </div>
 
   <!-- ALERT -->
-  <div class="alert-box" id="alertBox">
+  <div class="alert-box" id="alertBox" role="dialog" aria-modal="true" aria-labelledby="alertTitle">
     <div class="alert-content">
       <h3 id="alertTitle">تنبيه</h3>
       <p id="alertMsg"></p>
-      <button onclick="closeAlert()">حسناً</button>
+      <button onclick="closeAlert()" aria-label="إغلاق التنبيه">حسناً</button>
+    </div>
+  </div>
+
+  <!-- LOCATION EXPLAIN MODAL -->
+  <div class="alert-box" id="locExplainBox" role="dialog" aria-modal="true" aria-labelledby="locExplainTitle">
+    <div class="loc-explain-box">
+      <h3 id="locExplainTitle">📍 لماذا نحتاج موقعك؟</h3>
+      <p style="color:var(--text2);font-size:0.9rem;">نستخدم موقعك فقط لـ:</p>
+      <ul>
+        <li>إيجاد أقرب المراكز الطبية إليك</li>
+        <li>حساب المسافة بينك وبين المركز</li>
+        <li>لا نخزن موقعك أو نشاركه مع أي جهة</li>
+      </ul>
+      <p style="color:var(--text2);font-size:0.8rem;">يمكنك رفض الإذن وسيتم استخدام موقع افتراضي (وسط القاهرة).</p>
+      <div class="btns">
+        <button class="btn-deny" onclick="denyLocation()">رفض</button>
+        <button class="btn-allow" id="locAllowBtn" onclick="allowLocation()">السماح بالموقع</button>
+      </div>
     </div>
   </div>
 
   <!-- NAVBAR -->
-  <nav class="nav" id="navbar">
-    <div class="nav-logo">🏥 الحقونا</div>
+  <nav class="nav" id="navbar" role="navigation" aria-label="القائمة الرئيسية">
+    <div class="nav-logo" role="banner">🏥 الحقونا</div>
     <div class="nav-btns" id="navBtns">
-      <button class="nav-btn nav-btn-outline" onclick="showScreen('login')">🏥 دخول مراكز</button>
+      <button class="nav-btn nav-btn-outline" onclick="showScreen('login')" aria-label="دخول المراكز الطبية">🏥 دخول مراكز</button>
     </div>
   </nav>
 
   <!-- SCREEN: HOME (Patient) -->
-  <div class="screen active" id="screen-home">
+  <div class="screen active" id="screen-home" role="main" aria-label="الصفحة الرئيسية">
     <h1 class="home-title">ماذا تحتاج؟</h1>
-    <div class="service-cards">
-      <div class="svc-card" onclick="searchService('icu')">
-        <span class="svc-icon">❤️</span>
+    <div class="service-cards" role="list">
+      <div class="svc-card" role="listitem" tabindex="0" onclick="searchService('icu')" onkeydown="if(event.key==='Enter')searchService('icu')" aria-label="البحث عن عناية مركزة">
+        <span class="svc-icon" aria-hidden="true">❤️</span>
         <span class="svc-name">عناية مركزة</span>
-        <span class="svc-arrow">←</span>
+        <span class="svc-arrow" aria-hidden="true">←</span>
       </div>
-      <div class="svc-card" onclick="searchService('incubator')">
-        <span class="svc-icon">👶</span>
+      <div class="svc-card" role="listitem" tabindex="0" onclick="searchService('incubator')" onkeydown="if(event.key==='Enter')searchService('incubator')" aria-label="البحث عن حضانة أطفال">
+        <span class="svc-icon" aria-hidden="true">👶</span>
         <span class="svc-name">حضانة أطفال</span>
-        <span class="svc-arrow">←</span>
+        <span class="svc-arrow" aria-hidden="true">←</span>
       </div>
-      <div class="svc-card" onclick="searchService('radiation')">
-        <span class="svc-icon">☢️</span>
+      <div class="svc-card" role="listitem" tabindex="0" onclick="searchService('radiation')" onkeydown="if(event.key==='Enter')searchService('radiation')" aria-label="البحث عن علاج إشعاعي">
+        <span class="svc-icon" aria-hidden="true">☢️</span>
         <span class="svc-name">أشعة وعلاج إشعاعي</span>
-        <span class="svc-arrow">←</span>
+        <span class="svc-arrow" aria-hidden="true">←</span>
       </div>
     </div>
     <p class="location-hint" id="locationHint">📍 اضغط على الخدمة وسيتم تحديد موقعك تلقائياً</p>
+
+    <div class="disclaimer-bar" role="note">
+      ⚠️ هذا التطبيق أداة مساعدة فقط وليس بديلاً عن الطوارئ الطبية. في حالة الطوارئ اتصل بـ <strong>123</strong>.
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+      <div>
+        <a onclick="showScreen('privacy')">سياسة الخصوصية</a>
+        <a onclick="showScreen('terms')">الشروط والأحكام</a>
+        <a onclick="showScreen('disclaimer')">إخلاء المسؤولية</a>
+      </div>
+      <p style="margin-top:8px;">الحقونا © 2026 — جميع الحقوق محفوظة</p>
+    </div>
   </div>
 
   <!-- SCREEN: RESULTS -->
-  <div class="screen" id="screen-results">
+  <div class="screen" id="screen-results" aria-label="نتائج البحث">
     <div class="results-header">
-      <button class="back-btn" onclick="showScreen('home')">← رجوع</button>
+      <button class="back-btn" onclick="showScreen('home')" aria-label="العودة للصفحة الرئيسية">← رجوع</button>
       <h2 id="resultsTitle">المراكز القريبة</h2>
     </div>
-    <div id="resultsList"></div>
+    <div id="resultsList" role="list" aria-label="قائمة المراكز الطبية"></div>
   </div>
 
   <!-- SCREEN: CENTER DETAIL -->
-  <div class="screen" id="screen-detail">
+  <div class="screen" id="screen-detail" aria-label="تفاصيل المركز">
     <div class="results-header">
-      <button class="back-btn" onclick="showScreen('results')">← رجوع</button>
+      <button class="back-btn" onclick="showScreen('results')" aria-label="العودة للنتائج">← رجوع</button>
       <h2>تفاصيل المركز</h2>
     </div>
     <div id="detailContent"></div>
   </div>
 
   <!-- SCREEN: THANK YOU -->
-  <div class="screen" id="screen-thankyou">
+  <div class="screen" id="screen-thankyou" aria-label="صفحة الشكر">
     <div class="thankyou">
-      <div class="emoji">🤲</div>
+      <div class="emoji" aria-hidden="true">🤲</div>
       <h2>شكراً لاستخدامك الحقونا</h2>
       <p>نتمنى السلامة لمن تحب</p>
       <button onclick="showScreen('home')">العودة للرئيسية</button>
@@ -387,76 +481,87 @@
   </div>
 
   <!-- SCREEN: LOGIN -->
-  <div class="screen" id="screen-login">
+  <div class="screen" id="screen-login" aria-label="تسجيل الدخول">
     <div class="auth-box">
       <h2>تسجيل الدخول</h2>
       <p class="subtitle">بوابة المراكز الطبية</p>
       <div class="form-group">
-        <label>البريد الإلكتروني</label>
-        <input type="email" id="loginEmail" placeholder="example@center.com">
+        <label for="loginEmail">البريد الإلكتروني</label>
+        <input type="email" id="loginEmail" placeholder="example@center.com" autocomplete="email" aria-required="true">
       </div>
       <div class="form-group">
-        <label>كلمة المرور</label>
-        <input type="password" id="loginPass" placeholder="••••••••">
+        <label for="loginPass">كلمة المرور</label>
+        <input type="password" id="loginPass" placeholder="••••••••" autocomplete="current-password" aria-required="true">
       </div>
-      <button class="form-submit" onclick="doLogin()">تسجيل الدخول</button>
-      <p class="auth-switch">ليس لديك حساب؟ <a onclick="showScreen('register')">إنشاء حساب</a></p>
-      <p class="auth-switch" style="margin-top:8px"><a onclick="showScreen('home')">← رجوع للرئيسية</a></p>
+      <button class="form-submit" onclick="doLogin()" aria-label="تسجيل الدخول">تسجيل الدخول</button>
+      <p class="auth-switch">ليس لديك حساب؟ <a onclick="showScreen('register')" tabindex="0" role="link">إنشاء حساب</a></p>
+      <p class="auth-switch" style="margin-top:8px"><a onclick="showScreen('home')" tabindex="0" role="link">← رجوع للرئيسية</a></p>
     </div>
   </div>
 
   <!-- SCREEN: REGISTER -->
-  <div class="screen" id="screen-register">
+  <div class="screen" id="screen-register" aria-label="إنشاء حساب مركز">
     <div class="auth-box">
       <h2>إنشاء حساب مركز</h2>
       <p class="subtitle">سجّل مركزك وساعد المحتاجين</p>
       <div class="form-group">
-        <label>اسم المركز *</label>
-        <input type="text" id="regName" placeholder="اسم المركز الطبي">
+        <label for="regName">اسم المركز *</label>
+        <input type="text" id="regName" placeholder="اسم المركز الطبي" aria-required="true">
       </div>
       <div class="form-group">
-        <label>البريد الإلكتروني *</label>
-        <input type="email" id="regEmail" placeholder="example@center.com">
+        <label for="regEmail">البريد الإلكتروني *</label>
+        <input type="email" id="regEmail" placeholder="example@center.com" autocomplete="email" aria-required="true">
       </div>
       <div class="form-group">
-        <label>كلمة المرور *</label>
-        <input type="password" id="regPass" placeholder="••••••••">
+        <label for="regPass">كلمة المرور *</label>
+        <input type="password" id="regPass" placeholder="••••••••" autocomplete="new-password" aria-required="true" minlength="6">
       </div>
       <div class="form-group">
-        <label>رقم الهاتف *</label>
-        <input type="tel" id="regPhone" placeholder="01xxxxxxxxx">
+        <label for="regPhone">رقم الهاتف *</label>
+        <input type="tel" id="regPhone" placeholder="01xxxxxxxxx" aria-required="true">
       </div>
       <div class="form-group">
-        <label>الخط الساخن</label>
+        <label for="regHotline">الخط الساخن</label>
         <input type="tel" id="regHotline" placeholder="123">
       </div>
-      <button class="form-submit" onclick="doRegister()">إنشاء الحساب</button>
-      <p class="auth-switch">لديك حساب؟ <a onclick="showScreen('login')">تسجيل الدخول</a></p>
+
+      <!-- شروط الاستخدام — إلزامي -->
+      <div class="consent-row">
+        <input type="checkbox" id="acceptTerms" aria-label="أوافق على الشروط والأحكام">
+        <label for="acceptTerms">
+          أوافق على <a onclick="showScreen('terms')" tabindex="0">الشروط والأحكام</a> و
+          <a onclick="showScreen('privacy')" tabindex="0">سياسة الخصوصية</a> *
+        </label>
+      </div>
+
+      <button class="form-submit" id="registerBtn" onclick="doRegister()" disabled>إنشاء الحساب</button>
+      <p class="auth-switch">لديك حساب؟ <a onclick="showScreen('login')" tabindex="0" role="link">تسجيل الدخول</a></p>
+      <p class="auth-switch" style="margin-top:8px"><a onclick="showScreen('home')" tabindex="0" role="link">← رجوع للرئيسية</a></p>
     </div>
   </div>
 
   <!-- SCREEN: PROVIDER SETUP -->
-  <div class="screen" id="screen-setup">
+  <div class="screen" id="screen-setup" aria-label="إعداد المركز">
     <div class="auth-box" style="box-shadow:none;padding:0;">
-      <div class="setup-progress">
-        <div class="progress-dot active" id="pdot1"></div>
-        <div class="progress-line" id="pline1"></div>
-        <div class="progress-dot" id="pdot2"></div>
+      <div class="setup-progress" aria-label="تقدم الإعداد">
+        <div class="progress-dot active" id="pdot1" aria-hidden="true"></div>
+        <div class="progress-line" id="pline1" aria-hidden="true"></div>
+        <div class="progress-dot" id="pdot2" aria-hidden="true"></div>
       </div>
 
       <h2 style="margin-bottom:20px;" id="setupStepTitle">إعداد المركز - الخطوة 1</h2>
 
       <!-- Step 1: Address + Photo -->
       <div id="setupStep1">
-        <div class="photo-upload" id="photoUpload" onclick="document.getElementById('photoInput').click()">
-          <span class="icon">📷</span>
+        <div class="photo-upload" id="photoUpload" onclick="document.getElementById('photoInput').click()" role="button" tabindex="0" aria-label="رفع صورة المركز">
+          <span class="icon" aria-hidden="true">📷</span>
           <span>أضف صورة المركز</span>
-          <img id="photoPreview" style="display:none">
+          <img id="photoPreview" style="display:none" alt="معاينة صورة المركز">
         </div>
-        <input type="file" id="photoInput" accept="image/*" style="display:none" onchange="previewPhoto(event)">
+        <input type="file" id="photoInput" accept="image/*" style="display:none" onchange="previewPhoto(event)" aria-label="اختر صورة">
         <div class="form-group">
-          <label>العنوان *</label>
-          <input type="text" id="setupAddress" placeholder="العنوان التفصيلي للمركز...">
+          <label for="setupAddress">العنوان *</label>
+          <input type="text" id="setupAddress" placeholder="العنوان التفصيلي للمركز..." aria-required="true">
         </div>
         <button class="form-submit" onclick="goToSetupStep2()">التالي: تحديد الموقع ←</button>
       </div>
@@ -464,46 +569,194 @@
       <!-- Step 2: GPS -->
       <div id="setupStep2" style="display:none">
         <p style="text-align:center;color:var(--text2);margin-bottom:20px;">
-          📍 وقف أمام باب المركز واضغط على الزر
+          📍 نحتاج تحديد موقع المركز بدقة لعرضه للمرضى القريبين
         </p>
-        <button class="gps-btn" id="gpsBtn" onclick="captureGPS()">
-          <span class="big-icon">📡</span>
+        <button class="gps-btn" id="gpsBtn" onclick="captureGPS()" aria-label="تحديد موقع المركز عبر GPS">
+          <span class="big-icon" aria-hidden="true">📡</span>
           <span>اضغط لتحديد الموقع</span>
         </button>
-        <div class="coords-display" id="coordsDisplay" style="display:none">
+        <div class="coords-display" id="coordsDisplay" style="display:none" aria-live="polite">
           <div class="label">الإحداثيات</div>
           <div class="value" id="coordsValue"></div>
         </div>
-        <button class="save-btn" id="saveSetupBtn" onclick="saveSetup()" disabled>حفظ البيانات</button>
+        <button class="save-btn" id="saveSetupBtn" onclick="saveSetup()" disabled aria-label="حفظ بيانات المركز">حفظ البيانات</button>
       </div>
     </div>
   </div>
 
   <!-- SCREEN: DASHBOARD -->
-  <div class="screen" id="screen-dashboard">
-    <button class="dash-logout" onclick="doLogout()">🚪 تسجيل الخروج</button>
+  <div class="screen" id="screen-dashboard" aria-label="لوحة التحكم">
+    <button class="dash-logout" onclick="doLogout()" aria-label="تسجيل الخروج">🚪 تسجيل الخروج</button>
+
+    <!-- Email verification banner -->
+    <div class="verify-banner" id="verifyBanner" style="display:none" role="alert">
+      <span class="icon" aria-hidden="true">✉️</span>
+      <span class="text">حسابك غير موثّق. يرجى تأكيد بريدك الإلكتروني لتفعيل جميع الميزات.</span>
+      <button onclick="resendVerification()" aria-label="إرسال رابط التحقق">إرسال رابط</button>
+    </div>
+
     <div class="dash-header">
       <h2>لوحة التحكم</h2>
       <p id="dashCenterName"></p>
     </div>
     <div id="dashServices"></div>
     <div style="background:#FEF3C7;border-radius:12px;padding:14px;margin-top:16px;display:flex;gap:8px;align-items:center;">
-      <span style="font-size:1.2rem">🔔</span>
+      <span style="font-size:1.2rem" aria-hidden="true">🔔</span>
       <span style="font-size:0.85rem;color:#92400E;text-align:right;">ستتلقى تنبيهاً كل 6 ساعات عند إغلاق أي خدمة</span>
+    </div>
+  </div>
+
+  <!-- ==================== LEGAL PAGES ==================== -->
+
+  <!-- SCREEN: PRIVACY POLICY -->
+  <div class="screen" id="screen-privacy" aria-label="سياسة الخصوصية">
+    <div class="legal-page">
+      <h1>سياسة الخصوصية</h1>
+      <p class="last-update">آخر تحديث: أبريل 2026</p>
+
+      <h2>1. مقدمة</h2>
+      <p>تطبيق "الحقونا" (以下简称 "التطبيق") يحترم خصوصيتك ويحمي بياناتك الشخصية. تشرح هذه السياسة كيف نجمع ونستخدم ونحمي معلوماتك عند استخدامك للتطبيق.</p>
+
+      <h2>2. البيانات التي نجمعها</h2>
+      <ul>
+        <li><strong>بيانات الموقع:</strong> نجمع موقعك الجغرافي (GPS) فقط عند الضغط على خدمة طبية، وذلك لإيجاد أقرب المراكز إليك. لا نخزن موقعك على خوادمنا.</li>
+        <li><strong>بيانات مقدمي الخدمة:</strong> عند التسجيل كمركز طبي، نجمع: الاسم، البريد الإلكتروني، رقم الهاتف، العنوان، وموقع GPS للمركز.</li>
+        <li><strong>بيانات الاستخدام:</strong> قد نجمع معلومات مجهولة عن كيفية استخدامك للتطبيق لتحسين الخدمة.</li>
+      </ul>
+
+      <h2>3. كيف نستخدم بياناتك</h2>
+      <ul>
+        <li>لإيجاد أقرب المراكز الطبية إليك بناءً على موقعك الحالي</li>
+        <li>لحساب المسافة بينك وبين المركز</li>
+        <li>لإدارة حسابات مقدمي الخدمات الطبية</li>
+        <li>لتحسين أداء التطبيق وتجربة المستخدم</li>
+      </ul>
+
+      <h2>4. مشاركة البيانات</h2>
+      <p><strong>لا نبيع أو نشارك بياناتك الشخصية مع أي طرف ثالث</strong>، إلا في الحالات التالية:</p>
+      <ul>
+        <li>عند موافقتك الصريحة</li>
+        <li>للامتثال للقوانين والأنظمة المعمول بها</li>
+        <li>لحماية حقوق使用者或 الآخرين</li>
+      </ul>
+
+      <h2>5. حماية البيانات</h2>
+      <p>نستخدم Firebase من Google كمنصة خلفية، مع تشفير البيانات أثناء النقل (TLS) وعند التخزين. بيانات المصادقة محمية بمعايير أمان Google Cloud.</p>
+
+      <h2>6. حقوقك</h2>
+      <ul>
+        <li>الوصول إلى بياناتك الشخصية</li>
+        <li>طلب تصحيح أو حذف بياناتك</li>
+        <li>سحب موافقتك على جمع الموقع في أي وقت (عبر إعدادات الجهاز)</li>
+        <li>حذف حسابك وبياناتك بالكامل</li>
+      </ul>
+
+      <h2>7. الاتصال بنا</h2>
+      <p>لأي استفسار حول الخصوصية: <strong>privacy@el-haquna.com</strong></p>
+
+      <a class="back-link" onclick="goBackFromLegal()">← رجوع</a>
+    </div>
+  </div>
+
+  <!-- SCREEN: TERMS OF SERVICE -->
+  <div class="screen" id="screen-terms" aria-label="الشروط والأحكام">
+    <div class="legal-page">
+      <h1>الشروط والأحكام</h1>
+      <p class="last-update">آخر تحديث: أبريل 2026</p>
+
+      <h2>1. القبول بالشروط</h2>
+      <p>باستخدامك تطبيق "الحقونا"، فإنك توافق على هذه الشروط والأحكام. إذا كنت لا توافق، يرجى عدم استخدام التطبيق.</p>
+
+      <h2>2. وصف الخدمة</h2>
+      <p>الحقونا هو تطبيق يربط المرضى بمراكز طبية قريبة تقدم خدمات العناية المركزة، حضانة الأطفال، والعلاج الإشعاعي. التطبيق يعمل كوسيط إعلامي وليس مقدمًا للخدمات الطبية.</p>
+
+      <h2>3. إخلاء المسؤولية الطبية</h2>
+      <ul>
+        <li>التطبيق <strong>ليس بديلاً</strong> عن خدمات الطوارئ الطبية</li>
+        <li>في حالة الطوارئ الحقيقية، اتصل بـ <strong>123</strong> فورًا</li>
+        <li>البيانات المعروضة تعتمد على تحديثات مقدمي الخدمة وقد لا تكون دقيقة دائمًا</li>
+        <li>التطبيق لا يقدم تشخيصًا أو علاجًا طبيًا</li>
+      </ul>
+
+      <h2>4. التزامات مقدمي الخدمة</h2>
+      <ul>
+        <li>يجب أن يكون المركز الطبي مُرخّصًا من الجهات المختصة</li>
+        <li>يجب تحديث حالة الخدمات المتاحة بشكل دقيق</li>
+        <li>عدم تقديم معلومات مضللة أو كاذبة</li>
+        <li>المسؤولية الكاملة عن دقة المعلومات المقدمة</li>
+      </ul>
+
+      <h2>5. التزامات المستخدم</h2>
+      <ul>
+        <li>عدم استخدام التطبيق لأغراض غير مشروعة</li>
+        <li>عدم محاولة اختراق أو تعطيل التطبيق</li>
+        <li>عدم التلاعب بالمعلومات المعروضة</li>
+      </ul>
+
+      <h2>6. حدود المسؤولية</h2>
+      <p>لا يتحمل التطبيق أو فريقه أي مسؤولية عن أية أضرار مباشرة أو غير مباشرة ناتجة عن استخدام التطبيق أو الاعتماد على المعلومات المعروضة فيه.</p>
+
+      <h2>7. التعديلات</h2>
+      <p>نحتفظ بالحق في تعديل هذه الشروط في أي وقت. الاستمرار في استخدام التطبيق يعني قبولك للتعديلات.</p>
+
+      <h2>8. القانون الحاكم</h2>
+      <p>تخضع هذه الشروط لقوانين جمهورية مصر العربية، وأي نزاع يُحال للمحاكم المصرية المختصة.</p>
+
+      <a class="back-link" onclick="goBackFromLegal()">← رجوع</a>
+    </div>
+  </div>
+
+  <!-- SCREEN: DISCLAIMER -->
+  <div class="screen" id="screen-disclaimer" aria-label="إخلاء المسؤولية">
+    <div class="legal-page">
+      <h1>إخلاء المسؤولية</h1>
+      <p class="last-update">آخر تحديث: أبريل 2026</p>
+
+      <h2>⚠️ تحذير هام</h2>
+      <p>تطبيق "الحقونا" هو <strong>أداة مساعدة إعلامية فقط</strong> وليس تطبيقًا طبيًا بالمعنى القانوني أو المهني.</p>
+
+      <h2>🚨 في حالة الطوارئ</h2>
+      <p>إذا كنت أو أحد أقاربك في حالة طوارئ حقيقية:</p>
+      <ul>
+        <li><strong>اتصل فورًا بـ 123</strong> (الإسعاف المصري)</li>
+        <li>لا تعتمد على التطبيق وحده</li>
+        <li>توجه لأقرب مستشفى حكومي مباشرة</li>
+      </ul>
+
+      <h2>📋 معلومات المراكز</h2>
+      <ul>
+        <li>المعلومات المعروضة (التوفر، الخصومات، المسافة) مصدرها مقدمي الخدمة</li>
+        <li>لا نضمن دقة هذه المعلومات لحظيًا</li>
+        <li>قد تتغير حالة التوفر في أي وقت</li>
+        <li>يجب الاتصال بالمركز للتأكد قبل التوجه</li>
+      </ul>
+
+      <h2>🔒 عدم الإفصاح الطبي</h2>
+      <ul>
+        <li>التطبيق لا يقدم نصائح أو تشخيصات طبية</li>
+        <li>التطبيق لا يحل محل الطبيب أو المختص</li>
+        <li>أي قرارات طبية يجب أن تتخذ بعد استشارة طبيب مختص</li>
+      </ul>
+
+      <h2>⚖️ المسؤولية</h2>
+      <p>باستخدام التطبيق، فإنك تقر بأنك تفهم並同意 أن فريق "الحقونا" غير مسؤول عن أي عواقب صحية أو أضرار قد تنتج عن استخدام المعلومات المعروضة في التطبيق.</p>
+
+      <a class="back-link" onclick="goBackFromLegal()">← رجوع</a>
     </div>
   </div>
 
 <script>
 // ==================== FIREBASE CONFIG ====================
-// ⚠️ استبدل بالإعدادات بتاعتك
-const firebaseConfig = {
-  apiKey: "AIzaSyDummyKey_ReplaceWithReal",
-  authDomain: "el-haquna.firebaseapp.com",
-  projectId: "el-haquna",
-  storageBucket: "el-haquna.appspot.com",
-  messagingSenderId: "123456789",
-  appId: "1:123456789:web:abcdef"
+// الإعدادات تُحمّل من ملف خارجي firebase-config.js
+// هذا يمنع كشف أي مفاتيح في المصدر
+const firebaseConfig = window.__FIREBASE_CONFIG__ || {
+  apiKey: "", authDomain: "", projectId: "", storageBucket: "", messagingSenderId: "", appId: ""
 };
+
+// تحقق من وجود الإعدادات
+if (!firebaseConfig.apiKey) {
+  console.warn('[الحقونا] ⚠️ Firebase config not found. Create firebase-config.js with your credentials.');
+}
 
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
@@ -518,73 +771,25 @@ let currentUser = null;
 let currentProviderData = null;
 let setupCoords = null;
 let setupPhotoFile = null;
-
-// ==================== DEMO DATA ====================
-// بيانات تجريبية (لما Firebase يتشغل هتتشال)
-const DEMO_CENTERS = [
-  {
-    id:'1', name:'مستشفى النيل التخصصي',
-    address:'شارع الهرم، الجيزة', phone:'01012345678', hotline:'123',
-    lat:30.0444, lon:31.2357,
-    services:{
-      icu:{available:true, discount:0},
-      incubator:{available:true, discount:50},
-      radiation:{available:false, discount:0}
-    }
-  },
-  {
-    id:'2', name:'مركز الشفاء الطبي',
-    address:'شارع التحرير، وسط البلد', phone:'01098765432', hotline:'162',
-    lat:30.0561, lon:31.2394,
-    services:{
-      icu:{available:true, discount:30},
-      incubator:{available:false, discount:0},
-      radiation:{available:true, discount:0}
-    }
-  },
-  {
-    id:'3', name:'مستشفى السلام الدولي',
-    address:'مدينة نصر، القاهرة', phone:'01111222333', hotline:'123',
-    lat:30.0626, lon:31.3333,
-    services:{
-      icu:{available:false, discount:0},
-      incubator:{available:true, discount:100},
-      radiation:{available:true, discount:40}
-    }
-  },
-  {
-    id:'4', name:'معهد الأورام',
-    address:'قصر العيني، القاهرة', phone:'01223334444', hotline:'16345',
-    lat:30.0285, lon:31.2336,
-    services:{
-      icu:{available:false, discount:0},
-      incubator:{available:false, discount:0},
-      radiation:{available:true, discount:100}
-    }
-  },
-  {
-    id:'5', name:'مستشفى دار الحكمة',
-    address:'المعادي، القاهرة', phone:'01556667777', hotline:'123',
-    lat:29.9602, lon:31.2569,
-    services:{
-      icu:{available:true, discount:0},
-      incubator:{available:true, discount:0},
-      radiation:{available:true, discount:60}
-    }
-  }
-];
+let pendingServiceType = null;   // نوع الخدمة المعلقة قبل طلب الموقع
+let legalReturnScreen = 'home';  // الشاشة التي جاء منها المستخدم للقانونية
 
 // ==================== HELPERS ====================
 function showScreen(name) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById('screen-' + name).classList.add('active');
-  currentScreen = name;
-  updateNav();
-  window.scrollTo(0, 0);
+  const el = document.getElementById('screen-' + name);
+  if (el) {
+    el.classList.add('active');
+    currentScreen = name;
+    updateNav();
+    window.scrollTo(0, 0);
+  } else {
+    console.error('[الحقونا] Screen not found:', name);
+  }
 }
 
-function showLoading(msg='جاري التحميل...') {
-  document.getElementById('loadingText').textContent = msg;
+function showLoading(msg) {
+  document.getElementById('loadingText').textContent = msg || 'جاري التحميل...';
   document.getElementById('loading').classList.add('show');
 }
 function hideLoading() {
@@ -604,12 +809,12 @@ function updateNav() {
   const btns = document.getElementById('navBtns');
   if (currentUser) {
     btns.innerHTML = `
-      <button class="nav-btn nav-btn-outline" onclick="showScreen('dashboard')">لوحة التحكم</button>
-      <button class="nav-btn nav-btn-fill" onclick="doLogout()">خروج</button>
+      <button class="nav-btn nav-btn-outline" onclick="showScreen('dashboard')" aria-label="لوحة التحكم">لوحة التحكم</button>
+      <button class="nav-btn nav-btn-fill" onclick="doLogout()" aria-label="تسجيل الخروج">خروج</button>
     `;
   } else {
     btns.innerHTML = `
-      <button class="nav-btn nav-btn-outline" onclick="showScreen('login')">🏥 دخول مراكز</button>
+      <button class="nav-btn nav-btn-outline" onclick="showScreen('login')" aria-label="دخول المراكز الطبية">🏥 دخول مراكز</button>
     `;
   }
 }
@@ -622,12 +827,39 @@ function getDistanceKm(lat1, lon1, lat2, lon2) {
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 }
 
+// Legal page navigation helper
+function goBackFromLegal() {
+  showScreen(legalReturnScreen);
+}
+
 // ==================== SPLASH ====================
 setTimeout(() => { document.getElementById('splash').style.display = 'none'; }, 3000);
 
+// ==================== TERMS CHECKBOX ENABLER ====================
+const acceptTermsCheckbox = document.getElementById('acceptTerms');
+if (acceptTermsCheckbox) {
+  acceptTermsCheckbox.addEventListener('change', function() {
+    document.getElementById('registerBtn').disabled = !this.checked;
+  });
+}
+
 // ==================== PATIENT FLOW ====================
-async function searchService(type) {
+
+// الخطوة 1: عرض شرح الموقع أولاً
+function searchService(type) {
+  pendingServiceType = type;
+  // عرض شرح سبب جمع الموقع
+  document.getElementById('locExplainBox').classList.add('show');
+}
+
+// الخطوة 2: المستخدم وافق على الموقع
+async function allowLocation() {
+  document.getElementById('locExplainBox').classList.remove('show');
+  if (!pendingServiceType) return;
+  const type = pendingServiceType;
+  pendingServiceType = null;
   currentServiceType = type;
+
   showLoading('جاري تحديد الموقع...');
 
   try {
@@ -640,20 +872,46 @@ async function searchService(type) {
     document.getElementById('locationHint').textContent =
       `📍 موقعك: ${userLocation.lat.toFixed(4)}, ${userLocation.lon.toFixed(4)}`;
   } catch(e) {
-    // لو رفض اللوكيشن — استخدم موقع افتراضي (وسط القاهرة)
+    // المستخدم رفض أو فشل — نستخدم موقع افتراضي
     userLocation = { lat: 30.0444, lon: 31.2357 };
     document.getElementById('locationHint').textContent =
       '📍 تم استخدام موقع افتراضي (وسط القاهرة)';
   }
 
-  // جلب البيانات
+  await fetchAndShowResults(type);
+}
+
+// الخطوة 2 (بديل): المستخدم رفض الموقع
+async function denyLocation() {
+  document.getElementById('locExplainBox').classList.remove('show');
+  if (!pendingServiceType) return;
+  const type = pendingServiceType;
+  pendingServiceType = null;
+  currentServiceType = type;
+
+  // موقع افتراضي بدون سؤال
+  userLocation = { lat: 30.0444, lon: 31.2357 };
+  document.getElementById('locationHint').textContent =
+    '📍 تم استخدام موقع افتراضي (وسط القاهرة)';
+
+  await fetchAndShowResults(type);
+}
+
+// جلب النتائج وعرضها
+async function fetchAndShowResults(type) {
   showLoading('جاري البحث عن المراكز...');
   let centers = [];
 
+  // فحص الاتصال
+  if (!navigator.onLine) {
+    hideLoading();
+    showAlert('لا يوجد اتصال', 'تأكد من اتصالك بالإنترنت وحاول مرة أخرى.');
+    return;
+  }
+
   try {
-    // حاول من Firestore أولاً
     const snap = await db.collection('providers')
-      .where(`services.${type}.available`, '==', true)
+      .where('services.' + type + '.available', '==', true)
       .get();
     snap.forEach(doc => {
       const d = doc.data();
@@ -667,15 +925,17 @@ async function searchService(type) {
       });
     });
   } catch(e) {
-    // استخدم البيانات التجريبية
-    DEMO_CENTERS.forEach(c => {
-      if (c.services[type]?.available) {
-        centers.push({
-          ...c,
-          distance: getDistanceKm(userLocation.lat, userLocation.lon, c.lat, c.lon)
-        });
-      }
-    });
+    console.error('[الحقونا] Error fetching data:', e);
+    hideLoading();
+    showAlert('خطأ في الاتصال', 'تعذر جلب البيانات. تأكد من اتصالك بالإنترنت وحاول مرة أخرى.');
+    return;
+  }
+
+  if (centers.length === 0) {
+    hideLoading();
+    renderResults([]);
+    showScreen('results');
+    return;
   }
 
   centers.sort((a, b) => a.distance - b.distance);
@@ -689,10 +949,10 @@ function renderResults(centers) {
   const typeNames = {icu:'عناية مركزة', incubator:'حضانة أطفال', radiation:'أشعة'};
   document.getElementById('resultsTitle').textContent = typeNames[currentServiceType] || 'المراكز القريبة';
 
-  if (centers.length === 0) {
+  if (!centers || centers.length === 0) {
     list.innerHTML = `
-      <div class="no-results">
-        <div class="icon">🔍</div>
+      <div class="no-results" role="status">
+        <div class="icon" aria-hidden="true">🔍</div>
         <h3>لا توجد مراكز قريبة حالياً</h3>
         <p>جرب البحث لاحقاً أو تواصل مع الخط الساخن 123</p>
       </div>
@@ -704,21 +964,21 @@ function renderResults(centers) {
     const svc = c.services[currentServiceType] || {};
     const isFree = svc.discount === 0;
     return `
-      <div class="center-card">
+      <div class="center-card" role="listitem">
         <div class="center-top">
-          <div class="center-avatar">🏥</div>
+          <div class="center-avatar" aria-hidden="true">🏥</div>
           <div class="center-info">
-            <div class="center-name">${c.name}</div>
+            <div class="center-name">${escapeHtml(c.name)}</div>
             <div class="center-dist">📍 ${c.distance.toFixed(1)} كم${i===0?' — الأقرب':''}</div>
           </div>
-          <span class="badge ${isFree?'badge-free':'badge-discount'}">
+          <span class="badge ${isFree?'badge-free':'badge-discount'}" aria-label="${isFree?'مجاني':'خصم '+svc.discount+'%'}">
             ${isFree?'مجاني':'خصم '+svc.discount+'%'}
           </span>
         </div>
         <div class="center-actions">
-          <button class="btn-call" onclick="callNumber('${c.phone}')">📞 اتصل</button>
-          <button class="btn-map" onclick="openMap(${c.lat},${c.lon})">🗺️ خريطة</button>
-          <button class="btn-detail" onclick='showDetail(${JSON.stringify(c)})'>تفاصيل</button>
+          <button class="btn-call" onclick="callNumber('${escapeAttr(c.phone)}')" aria-label="الاتصال بـ ${escapeAttr(c.name)}">📞 اتصل</button>
+          <button class="btn-map" onclick="openMap(${c.lat},${c.lon})" aria-label="فتح الموقع على الخريطة">🗺️ خريطة</button>
+          <button class="btn-detail" onclick='showDetail(${JSON.stringify(c).replace(/'/g, "&#39;")})' aria-label="عرض تفاصيل ${escapeAttr(c.name)}">تفاصيل</button>
         </div>
       </div>
     `;
@@ -729,8 +989,8 @@ function showDetail(center) {
   const svc = center.services[currentServiceType] || {};
   const isFree = svc.discount === 0;
   document.getElementById('detailContent').innerHTML = `
-    <div class="detail-photo">🏥</div>
-    <div class="detail-name">${center.name}</div>
+    <div class="detail-photo" aria-hidden="true">🏥</div>
+    <div class="detail-name">${escapeHtml(center.name)}</div>
     <div class="detail-badge">
       <span class="badge ${isFree?'badge-free':'badge-discount'}" style="font-size:1rem;padding:8px 20px;">
         ${isFree?'مجاني ✨':'خصم '+svc.discount+'%'}
@@ -739,16 +999,16 @@ function showDetail(center) {
     <div class="detail-info">
       <div class="detail-row">
         <span class="detail-label">📍 العنوان</span>
-        <span class="detail-value">${center.address}</span>
+        <span class="detail-value">${escapeHtml(center.address)}</span>
       </div>
       <div class="detail-row">
         <span class="detail-label">📞 الهاتف</span>
-        <span class="detail-value">${center.phone}</span>
+        <span class="detail-value">${escapeHtml(center.phone)}</span>
       </div>
       ${center.hotline ? `
       <div class="detail-row">
         <span class="detail-label">☎️ الخط الساخن</span>
-        <span class="detail-value">${center.hotline}</span>
+        <span class="detail-value">${escapeHtml(center.hotline)}</span>
       </div>` : ''}
       <div class="detail-row">
         <span class="detail-label">📏 المسافة</span>
@@ -756,17 +1016,20 @@ function showDetail(center) {
       </div>
     </div>
     <div class="detail-actions">
-      <button class="btn-main" onclick="callNumber('${center.phone}')">📞 اتصل الآن</button>
-      ${center.hotline ? `<button class="btn-hotline" onclick="callNumber('${center.hotline}')">☎️ الخط الساخن</button>` : ''}
-      <button class="btn-map" onclick="openMap(${center.lat},${center.lon})" style="background:var(--white);color:var(--blue);border:2px solid var(--blue)!important">🗺️ افتح الخريطة</button>
-      <button class="btn-done" onclick="showScreen('thankyou')">✅ تم التواصل</button>
+      <button class="btn-main" onclick="callNumber('${escapeAttr(center.phone)}')" aria-label="الاتصال بـ ${escapeAttr(center.name)}">📞 اتصل الآن</button>
+      ${center.hotline ? `<button class="btn-hotline" onclick="callNumber('${escapeAttr(center.hotline)}')" aria-label="الاتصال بالخط الساخن">☎️ الخط الساخن</button>` : ''}
+      <button class="btn-map" onclick="openMap(${center.lat},${center.lon})" style="background:var(--white);color:var(--blue);border:2px solid var(--blue)!important" aria-label="فتح الموقع على خرائط جوجل">🗺️ افتح الخريطة</button>
+      <button class="btn-done" onclick="showScreen('thankyou')" aria-label="تأكيد التواصل">✅ تم التواصل</button>
+    </div>
+    <div class="disclaimer-bar" style="margin-top:20px;">
+      ⚠️ تأكد من الاتصال بالمركز قبل التوجه. هذه المعلومات مصدرها مقدم الخدمة وقد تتغير.
     </div>
   `;
   showScreen('detail');
 }
 
 function callNumber(num) { window.location.href = 'tel:' + num; }
-function openMap(lat, lon) { window.open(`https://maps.google.com/?q=${lat},${lon}`, '_blank'); }
+function openMap(lat, lon) { window.open('https://maps.google.com/?q=' + lat + ',' + lon, '_blank'); }
 
 // ==================== AUTH ====================
 async function doLogin() {
@@ -778,29 +1041,21 @@ async function doLogin() {
   try {
     const cred = await auth.signInWithEmailAndPassword(email, pass);
     currentUser = cred.user;
+
+    // التحقق من تأكيد الإيميل
+    if (!currentUser.emailVerified) {
+      document.getElementById('verifyBanner').style.display = 'flex';
+    } else {
+      document.getElementById('verifyBanner').style.display = 'none';
+    }
+
     await loadProviderData();
     hideLoading();
     showScreen('dashboard');
   } catch(e) {
     hideLoading();
-    // Demo mode
-    if (email === 'demo@center.com' && pass === '123456') {
-      currentUser = { uid: 'demo', email };
-      currentProviderData = {
-        name: 'مركز تجريبي',
-        phone: '01000000000', hotline: '123',
-        address: 'شارع التحرير',
-        services: {
-          icu: {available:true, discount:0},
-          incubator: {available:true, discount:50},
-          radiation: {available:false, discount:0}
-        }
-      };
-      showScreen('dashboard');
-      renderDashboard();
-    } else {
-      showAlert('خطأ', 'بيانات الدخول غير صحيحة — جرب: demo@center.com / 123456');
-    }
+    const msg = getFirebaseErrorMessage(e.code);
+    showAlert('خطأ في تسجيل الدخول', msg);
   }
 }
 
@@ -810,14 +1065,25 @@ async function doRegister() {
   const pass = document.getElementById('regPass').value;
   const phone = document.getElementById('regPhone').value.trim();
   const hotline = document.getElementById('regHotline').value.trim();
+  const accepted = document.getElementById('acceptTerms').checked;
 
   if (!name || !email || !pass || !phone)
     return showAlert('خطأ', 'يرجى ملء جميع الحقول المطلوبة');
+
+  if (pass.length < 6)
+    return showAlert('خطأ', 'كلمة المرور يجب أن تكون 6 أحرف على الأقل');
+
+  if (!accepted)
+    return showAlert('خطأ', 'يجب الموافقة على الشروط والأحكام');
 
   showLoading('جاري إنشاء الحساب...');
   try {
     const cred = await auth.createUserWithEmailAndPassword(email, pass);
     currentUser = cred.user;
+
+    // إرسال رابط تأكيد الإيميل
+    await currentUser.sendEmailVerification();
+
     currentProviderData = {
       name, phone, hotline, email,
       services: {
@@ -826,21 +1092,14 @@ async function doRegister() {
         radiation: {available:false, discount:0}
       }
     };
+
     hideLoading();
+    showAlert('تم إنشاء الحساب', 'تم إرسال رابط تأكيد إلى بريدك الإلكتروني. يرجى التحقق من بريدك.');
     showScreen('setup');
   } catch(e) {
     hideLoading();
-    // Demo mode
-    currentUser = { uid: 'demo_' + Date.now(), email };
-    currentProviderData = {
-      name, phone, hotline, email,
-      services: {
-        icu: {available:false, discount:0},
-        incubator: {available:false, discount:0},
-        radiation: {available:false, discount:0}
-      }
-    };
-    showScreen('setup');
+    const msg = getFirebaseErrorMessage(e.code);
+    showAlert('خطأ في التسجيل', msg);
   }
 }
 
@@ -852,7 +1111,34 @@ async function doLogout() {
   showScreen('home');
 }
 
+// إرسال رابط تحقق مجدداً
+async function resendVerification() {
+  if (!currentUser) return;
+  try {
+    await currentUser.sendEmailVerification();
+    showAlert('تم الإرسال', 'تم إرسال رابط تحقق جديد إلى بريدك الإلكتروني.');
+  } catch(e) {
+    showAlert('خطأ', 'تعذر إرسال رابط التحقق. حاول لاحقاً.');
+  }
+}
+
+// ترجمة أخطاء Firebase
+function getFirebaseErrorMessage(code) {
+  const messages = {
+    'auth/email-already-in-use': 'هذا البريد الإلكتروني مستخدم بالفعل.',
+    'auth/invalid-email': 'البريد الإلكتروني غير صالح.',
+    'auth/weak-password': 'كلمة المرور ضعيفة. استخدم 6 أحرف على الأقل.',
+    'auth/user-not-found': 'لا يوجد حساب مرتبط بهذا البريد.',
+    'auth/wrong-password': 'كلمة المرور غير صحيحة.',
+    'auth/too-many-requests': 'محاولات كثيرة جداً. حاول بعد دقائق.',
+    'auth/network-request-failed': 'خطأ في الاتصال. تحقق من الإنترنت.',
+    'auth/invalid-credential': 'بيانات الدخول غير صحيحة.',
+  };
+  return messages[code] || 'حدث خطأ غير متوقع. حاول مرة أخرى.';
+}
+
 async function loadProviderData() {
+  if (!currentUser) return;
   try {
     const doc = await db.collection('providers').doc(currentUser.uid).get();
     if (doc.exists) {
@@ -862,8 +1148,8 @@ async function loadProviderData() {
       showScreen('setup');
     }
   } catch(e) {
-    // Demo
-    renderDashboard();
+    console.error('[الحقونا] Error loading provider data:', e);
+    showAlert('خطأ', 'تعذر تحميل بيانات المركز. تحقق من الاتصال.');
   }
 }
 
@@ -871,6 +1157,13 @@ async function loadProviderData() {
 function previewPhoto(e) {
   const file = e.target.files[0];
   if (!file) return;
+
+  // التحقق من حجم الملف (5MB max)
+  if (file.size > 5 * 1024 * 1024) {
+    showAlert('خطأ', 'حجم الصورة يجب ألا يتجاوز 5 ميجابايت.');
+    return;
+  }
+
   setupPhotoFile = file;
   const reader = new FileReader();
   reader.onload = (ev) => {
@@ -897,9 +1190,11 @@ function goToSetupStep2() {
 
 async function captureGPS() {
   const btn = document.getElementById('gpsBtn');
-  btn.querySelector('span').textContent = 'جاري تحديد الموقع...';
 
+  // عرض شرح قبل طلب الموقع
   try {
+    btn.querySelector('span').textContent = 'جاري تحديد الموقع...';
+
     const pos = await new Promise((resolve, reject) => {
       navigator.geolocation.getCurrentPosition(resolve, reject, {
         enableHighAccuracy: true, timeout: 15000
@@ -911,47 +1206,59 @@ async function captureGPS() {
     btn.querySelector('span').textContent = 'تم تحديد الموقع';
     document.getElementById('coordsDisplay').style.display = 'block';
     document.getElementById('coordsValue').textContent =
-      `${setupCoords.lat.toFixed(6)}, ${setupCoords.lon.toFixed(6)}`;
+      setupCoords.lat.toFixed(6) + ', ' + setupCoords.lon.toFixed(6);
     document.getElementById('saveSetupBtn').disabled = false;
   } catch(e) {
-    // Demo GPS
-    setupCoords = { lat: 30.0444 + Math.random()*0.05, lon: 31.2357 + Math.random()*0.05 };
-    btn.classList.add('done');
-    btn.querySelector('.big-icon').textContent = '✅';
-    btn.querySelector('span').textContent = 'تم (موقع تجريبي)';
-    document.getElementById('coordsDisplay').style.display = 'block';
-    document.getElementById('coordsValue').textContent =
-      `${setupCoords.lat.toFixed(6)}, ${setupCoords.lon.toFixed(6)}`;
-    document.getElementById('saveSetupBtn').disabled = false;
+    btn.querySelector('.big-icon').textContent = '❌';
+    btn.querySelector('span').textContent = 'فشل تحديد الموقع';
+    showAlert('خطأ', 'تعذر تحديد موقعك. تأكد من تفعيل GPS في جهازك وإعطاء الإذن للمتصفح.');
   }
 }
 
 async function saveSetup() {
+  if (!setupCoords) return showAlert('خطأ', 'يجب تحديد موقع المركز أولاً');
+  if (!currentUser) return showAlert('خطأ', 'يجب تسجيل الدخول أولاً');
+
   showLoading('جاري حفظ البيانات...');
   const address = document.getElementById('setupAddress').value.trim();
 
   try {
+    // رفع الصورة إذا وُجدت
+    let photoUrl = null;
+    if (setupPhotoFile) {
+      showLoading('جاري رفع الصورة...');
+      const ref = storage.ref('centers/' + currentUser.uid + '/photo.jpg');
+      await ref.put(setupPhotoFile);
+      photoUrl = await ref.getDownloadURL();
+    }
+
     await db.collection('providers').doc(currentUser.uid).set({
       userId: currentUser.uid,
       name: currentProviderData.name,
       phone: currentProviderData.phone,
-      hotline: currentProviderData.hotline,
+      hotline: currentProviderData.hotline || '',
       email: currentUser.email,
       address,
       location: new firebase.firestore.GeoPoint(setupCoords.lat, setupCoords.lon),
       services: currentProviderData.services,
+      photo: photoUrl,
       setupComplete: true,
+      emailVerified: currentUser.emailVerified,
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
     });
-  } catch(e) {
-    // Demo mode — save locally
+
     currentProviderData.address = address;
     currentProviderData.location = setupCoords;
-  }
+    currentProviderData.setupComplete = true;
 
-  hideLoading();
-  renderDashboard();
-  showScreen('dashboard');
+    hideLoading();
+    renderDashboard();
+    showScreen('dashboard');
+  } catch(e) {
+    hideLoading();
+    console.error('[الحقونا] Save setup error:', e);
+    showAlert('خطأ', 'تعذر حفظ البيانات. تحقق من الاتصال وحاول مرة أخرى.');
+  }
 }
 
 // ==================== DASHBOARD ====================
@@ -965,6 +1272,11 @@ function renderDashboard() {
   if (!currentProviderData) return;
   document.getElementById('dashCenterName').textContent = currentProviderData.name || '';
 
+  // عرض banner التحقق من الإيميل
+  if (currentUser && !currentUser.emailVerified) {
+    document.getElementById('verifyBanner').style.display = 'flex';
+  }
+
   const container = document.getElementById('dashServices');
   container.innerHTML = SERVICE_CONFIG.map(svc => {
     const data = currentProviderData.services?.[svc.key] || {available:false, discount:0};
@@ -973,11 +1285,15 @@ function renderDashboard() {
         <div class="svc-control-top">
           <div style="display:flex;align-items:center;gap:10px;">
             <div class="toggle-switch ${data.available?'on':''}"
-                 onclick="toggleService('${svc.key}', ${!data.available})"></div>
+                 role="switch" aria-checked="${data.available}" aria-label="تفعيل ${svc.name}"
+                 tabindex="0"
+                 onclick="toggleService('${svc.key}', ${!data.available})"
+                 onkeydown="if(event.key==='Enter')toggleService('${svc.key}', ${!data.available})">
+            </div>
           </div>
           <div class="svc-control-info">
             <span class="name">${svc.name}</span>
-            <span class="icon">${svc.icon}</span>
+            <span class="icon" aria-hidden="true">${svc.icon}</span>
             <span class="svc-status ${data.available?'status-open':'status-closed'}">
               ${data.available?'متاح':'مغلق'}
             </span>
@@ -986,9 +1302,9 @@ function renderDashboard() {
         ${data.available ? `
         <div class="discount-row">
           <input type="number" class="discount-input" value="${data.discount}"
-                 min="0" max="100"
+                 min="0" max="100" aria-label="نسبة الخصم لـ ${svc.name}"
                  onchange="updateDiscount('${svc.key}', this.value)">
-          <span style="font-size:1.3rem">%</span>
+          <span style="font-size:1.3rem" aria-hidden="true">%</span>
           <label>نسبة الخصم:</label>
         </div>` : ''}
       </div>
@@ -1005,9 +1321,12 @@ async function toggleService(key, value) {
 
   try {
     await db.collection('providers').doc(currentUser.uid).update({
-      [`services.${key}.available`]: value
+      ['services.' + key + '.available']: value
     });
-  } catch(e) {}
+  } catch(e) {
+    console.error('[الحقونا] Toggle error:', e);
+    showAlert('خطأ', 'تعذر تحديث الحالة. تحقق من الاتصال.');
+  }
 
   renderDashboard();
 }
@@ -1022,9 +1341,12 @@ async function updateDiscount(key, value) {
 
   try {
     await db.collection('providers').doc(currentUser.uid).update({
-      [`services.${key}.discount`]: discount
+      ['services.' + key + '.discount']: discount
     });
-  } catch(e) {}
+  } catch(e) {
+    console.error('[الحقونا] Discount update error:', e);
+    showAlert('خطأ', 'تعذر تحديث الخصم. تحقق من الاتصال.');
+  }
 
   renderDashboard();
 }
@@ -1033,14 +1355,31 @@ async function updateDiscount(key, value) {
 auth.onAuthStateChanged(async (user) => {
   if (user) {
     currentUser = user;
+    updateNav();
     await loadProviderData();
     if (currentProviderData?.setupComplete || currentProviderData?.name) {
       showScreen('dashboard');
     }
-    updateNav();
   }
+});
+
+// ==================== SECURITY HELPERS ====================
+function escapeHtml(str) {
+  if (!str) return '';
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+function escapeAttr(str) {
+  if (!str) return '';
+  return str.replace(/'/g, '&#39;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+// ==================== OFFLINE HANDLING ====================
+window.addEventListener('offline', () => {
+  showAlert('انقطع الاتصال', 'تأكد من اتصالك بالإنترنت للاستمرار في استخدام التطبيق.');
 });
 </script>
 </body>
 </html>
-
