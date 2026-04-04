@@ -5,6 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>الحقونا — لأن كل ثانية مهمة</title>
   <meta name="description" content="El-Haquna — Find the nearest available medical centers (ICU, Neonatal Incubator, Radiation Therapy) quickly and easily.">
+  <meta name="robots" content="index, follow">
+  <meta name="keywords" content="El-Haquna, الحقونا, medical center, ICU, incubator, radiation therapy, emergency, healthcare">
+  <meta property="og:title" content="الحقونا — لأن كل ثانية مهمة">
+  <meta property="og:description" content="اعثر على أقرب المراكز الطبية المتاحة (عناية مركزة، حضانة أطفال، أشعة) بسرعة وسهولة.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="El-Haquna — Because every second matters">
+  <meta name="twitter:description" content="Find the nearest available medical centers quickly and easily.">
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
   <!-- Firebase (الإعدادات تُحمّل من firebase-config.js — لا تضع أسراراً هنا) -->
   <script>
@@ -530,6 +538,8 @@
         <a onclick="showLegal('about')" data-i18n="footer.about">من نحن</a>
         <a onclick="showLegal('privacy')" data-i18n="footer.privacy">سياسة الخصوصية</a>
         <a onclick="showLegal('terms')" data-i18n="footer.terms">الشروط والأحكام</a>
+        <a onclick="showLegal('refund')" data-i18n="footer.refund">سياسة الاسترجاع</a>
+        <a onclick="showLegal('contact')" data-i18n="footer.contact">تواصل معنا</a>
         <a onclick="showLegal('disclaimer')" data-i18n="footer.disclaimer">إخلاء المسؤولية</a>
       </div>
       <p style="margin-top:8px;" data-i18n="footer.copyright">الحقونا © 2026 — جميع الحقوق محفوظة</p>
@@ -720,6 +730,7 @@
         <li data-i18n="legal.privacy.s2.item1"><strong>بيانات الموقع:</strong> نجمع موقعك الجغرافي (GPS) فقط عند الضغط على خدمة طبية، وذلك لإيجاد أقرب المراكز إليك. لا نخزن موقعك على خوادمنا.</li>
         <li data-i18n="legal.privacy.s2.item2"><strong>بيانات مقدمي الخدمة:</strong> عند التسجيل كمركز طبي، نجمع: الاسم، البريد الإلكتروني، رقم الهاتف، العنوان، وموقع GPS للمركز.</li>
         <li data-i18n="legal.privacy.s2.item3"><strong>بيانات الاستخدام:</strong> قد نجمع معلومات مجهولة عن كيفية استخدامك للتطبيق لتحسين الخدمة.</li>
+        <li data-i18n="legal.privacy.s2.item4"><strong>بيانات الجهاز:</strong> نجمع معلومات عن نوع الجهاز ونظام التشغيل وعنوان IP لتحسين أداء التطبيق.</li>
       </ul>
 
       <h2 data-i18n="legal.privacy.s3.title">3. كيف نستخدم بياناتك</h2>
@@ -728,6 +739,35 @@
         <li data-i18n="legal.privacy.s3.item2">لحساب المسافة بينك وبين المركز</li>
         <li data-i18n="legal.privacy.s3.item3">لإدارة حسابات مقدمي الخدمات الطبية</li>
         <li data-i18n="legal.privacy.s3.item4">لتحسين أداء التطبيق وتجربة المستخدم</li>
+        <li data-i18n="legal.privacy.s3.item5">لإرسال إشعارات تتعلق بالخدمة (تنبيهات الصيانة، التحديثات)</li>
+      </ul>
+
+      <h2 data-i18n="legal.privacy.s8.title">8. ملفات تعريف الارتباط (Cookies) وتقنيات التتبع</h2>
+      <p data-i18n="legal.privacy.s8.intro">نستخدم ملفات تعريف الارتباط وتقنيات مماثلة لتحسين تجربتك:</p>
+      <ul>
+        <li data-i18n="legal.privacy.s8.item1"><strong>ملفات تعريف الارتباط الأساسية:</strong> مطلوبة لعمل التطبيق (المصادقة، الجلسات).</li>
+        <li data-i18n="legal.privacy.s8.item2"><strong>ملفات تعريف الارتباط التحليلية:</strong> تساعدنا على فهم استخدام التطبيق (Google Analytics).</li>
+        <li data-i18n="legal.privacy.s8.item3"><strong>ملفات تعريف الارتباط الإعلانية:</strong> تستخدمها Google AdSense لتقديم إعلانات ذات صلة.</li>
+        <li data-i18n="legal.privacy.s8.item4"><strong>ملفات تعريف الارتباط التفضيلية:</strong> تذكر إعداداتك (اللغة، المظهر).</li>
+      </ul>
+      <p data-i18n="legal.privacy.s8.control">يمكنك التحكم في ملفات تعريف الارتباط من خلال إعدادات متصفحك.</p>
+
+      <h2 data-i18n="legal.privacy.s9.title">9. الإعلانات و Google AdSense</h2>
+      <p data-i18n="legal.privacy.s9.text1">قد يعرض التطبيق إعلانات من خلال Google AdSense. يستخدم Google AdSense ملفات تعريف الارتباط لتقديم إعلانات بناءً على زياراتك السابقة للتطبيق أو مواقع أخرى.</p>
+      <ul>
+        <li data-i18n="legal.privacy.s9.item1">يمكنك إلغاء الاشتراك في الإعلانات المخصصة من خلال <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener">إعدادات إعلانات Google</a>.</li>
+        <li data-i18n="legal.privacy.s9.item2">يستخدم البائعون сторонيون، بما في ذلك Google، ملفات تعريف الارتباط (بما في ذلك ملف DART) لتقديم إعلانات بناءً على زيارات المستخدم.</li>
+        <li data-i18n="legal.privacy.s9.item3">يمكن للمستخدمين إلغاء استخدام ملف DART بزيارة <a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener">سياسة إعلانات Google</a>.</li>
+      </ul>
+
+      <h2 data-i18n="legal.privacy.s10.title">10. خدمات الطرف الثالث</h2>
+      <p data-i18n="legal.privacy.s10.intro">يستخدم التطبيق الخدمات التالية من الطرف الثالث:</p>
+      <ul>
+        <li data-i18n="legal.privacy.s10.item1"><strong>Firebase (Google):</strong> الخدمات الخلفية، المصادقة، قاعدة البيانات، التخزين. <a href="https://firebase.google.com/support/privacy" target="_blank" rel="noopener">سياسة الخصوصية</a></li>
+        <li data-i18n="legal.privacy.s10.item2"><strong>Google Maps:</strong> خدمات الموقع والخرائط. <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">سياسة الخصوصية</a></li>
+        <li data-i18n="legal.privacy.s10.item3"><strong>Google AdSense:</strong> خدمات الإعلانات. <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">سياسة الخصوصية</a></li>
+        <li data-i18n="legal.privacy.s10.item4"><strong>Google Analytics:</strong> تحليلات الاستخدام. <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">سياسة الخصوصية</a></li>
+        <li data-i18n="legal.privacy.s10.item5"><strong>Expo:</strong> بنية التطبيقات المحمولة. <a href="https://expo.dev/privacy" target="_blank" rel="noopener">سياسة الخصوصية</a></li>
       </ul>
 
       <h2 data-i18n="legal.privacy.s4.title">4. مشاركة البيانات</h2>
@@ -750,7 +790,21 @@
       </ul>
 
       <h2 data-i18n="legal.privacy.s7.title">7. الاتصال بنا</h2>
-      <p data-i18n="legal.privacy.s7.text">لأي استفسار حول الخصوصية: <strong>privacy@el-haquna.com</strong></p>
+      <p data-i18n="legal.privacy.s7.text">لأي استفسار حول الخصوصية: <strong>emadh5156@gmail.com</strong></p>
+
+      <h2 data-i18n="legal.privacy.s11.title">11. خصوصية الأطفال</h2>
+      <p data-i18n="legal.privacy.s11.text1">تطبيق الحقونا غير مخصص للمستخدمين أقل من 16 عاماً. لا نجمع معلومات شخصية من الأطفال أقل من 16 عاماً عمداً.</p>
+      <p data-i18n="legal.privacy.s11.text2">إذا اكتشفنا أن طفلاً أقل من 16 عاماً قدّم لنا بيانات شخصية، سنحذف هذه المعلومات فوراً. إذا كنت والداً أو وصياً وتعتقد أن طفلك قدّم بيانات للتطبيق، يرجى التواصل معنا على emadh5156@gmail.com.</p>
+
+      <h2 data-i18n="legal.privacy.s12.title">12. التغييرات على هذه السياسة</h2>
+      <p data-i18n="legal.privacy.s12.text">قد نقوم بتحديث سياسة الخصوصية هذه من وقت لآخر. سنخطرك بأي تغييرات جوهرية عن طريق تحديث تاريخ آخر تحديث في أعلى هذه الصفحة. الاستمرار في استخدام التطبيق بعد التغييرات يعتبر قبولاً.</p>
+
+      <div style="margin-top:24px;padding-top:16px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:8px;">
+        <a onclick="showLegal('terms')" style="color:var(--blue);cursor:pointer;font-weight:700;" data-i18n="crossLinks.terms">📄 اطلع على الشروط والأحكام</a>
+        <a onclick="showLegal('refund')" style="color:var(--blue);cursor:pointer;font-weight:700;" data-i18n="crossLinks.refund">💰 سياسة الاسترجاع والاستبدال</a>
+        <a onclick="showLegal('contact')" style="color:var(--blue);cursor:pointer;font-weight:700;" data-i18n="crossLinks.contact">📬 تواصل معنا</a>
+        <a onclick="showLegal('about')" style="color:var(--blue);cursor:pointer;font-weight:700;" data-i18n="crossLinks.about">ℹ️ تعرف علينا</a>
+      </div>
 
       <a class="back-link" onclick="goBackFromLegal()" data-i18n="common.back">← رجوع</a>
     </div>
@@ -800,6 +854,66 @@
       <h2 data-i18n="legal.terms.s8.title">8. القانون الحاكم</h2>
       <p data-i18n="legal.terms.s8.text">تخضع هذه الشروط لقوانين بلد إقامة المستخدم المعمول بها، وأي نزاع يُحال للمحاكم المختصة.</p>
 
+      <h2 data-i18n="legal.terms.gp.title">9. التوافق مع متجر Google Play</h2>
+      <ul>
+        <li data-i18n="legal.terms.gp.1">يتوافق التطبيق مع سياسات برنامج مطوري Google Play.</li>
+        <li data-i18n="legal.terms.gp.2">لا نجمع أو نشارك بيانات شخصية تتجاوز ما هو ضروري لتشغيل الخدمة.</li>
+        <li data-i18n="legal.terms.gp.3">التطبيق لا يحتوي على برامج ضارة أو تجسس أو أي كود خبيث.</li>
+        <li data-i18n="legal.terms.gp.4">يتم جمع بيانات الموقع فقط بموافقة صريحة من المستخدم ولأغراض تقديم الخدمة.</li>
+        <li data-i18n="legal.terms.gp.5">يوفر التطبيق آلية واضحة لطلب حذف الحساب والبيانات.</li>
+        <li data-i18n="legal.terms.gp.6">لا نبيع البيانات الشخصية لأطراف ثالثة.</li>
+        <li data-i18n="legal.terms.gp.7">جميع الإعلانات تتوافق مع سياسات إعلانات Google Play.</li>
+        <li data-i18n="legal.terms.gp.8">تُستخدم الإشعارات الفورية فقط للتنبيهات المتعلقة بالخدمة.</li>
+        <li data-i18n="legal.terms.gp.9">يدعم التطبيق تصنيفات المحتوى المناسبة لجميع الجماهير.</li>
+        <li data-i18n="legal.terms.gp.10">نتعامل مع بيانات المستخدم وفقاً لسياسة عائلات Google Play.</li>
+        <li data-i18n="legal.terms.gp.11">التطبيق خالٍ من السلوك المضلل أو الادعاءات الخادعة.</li>
+        <li data-i18n="legal.terms.gp.12">يطلب التطبيق فقط الأذونات الضرورية (الموقع، الكاميرا، التخزين).</li>
+        <li data-i18n="legal.terms.gp.13">نوفر رابط لسياسة الخصوصية داخل التطبيق وقائمة المتجر.</li>
+        <li data-i18n="legal.terms.gp.14">التطبيق يحترم إشارات عدم التتبع وتفضيلات إلغاء الاشتراك.</li>
+        <li data-i18n="legal.terms.gp.15">نلتزم بمعايير الجودة والأمان المطلوبة من Google Play.</li>
+      </ul>
+
+      <h2 data-i18n="legal.terms.as.title">10. التوافق مع متجر Apple App Store</h2>
+      <ul>
+        <li data-i18n="legal.terms.as.1">يتوافق التطبيق مع إرشادات مراجعة Apple App Store.</li>
+        <li data-i18n="legal.terms.as.2">التطبيق لا يصل إلى بيانات الجهاز تتجاوز وظائفه المذكورة.</li>
+        <li data-i18n="legal.terms.as.3">نوفر سياسة خصوصية واضحة وسهلة الوصول وفقاً لإرشادات App Store.</li>
+        <li data-i18n="legal.terms.as.4">التطبيق لا يحتوي على ميزات خفية أو وظائف غير موثقة.</li>
+        <li data-i18n="legal.terms.as.5">نحترم خصوصية المستخدم ونتبع متطلبات تسميات خصوصية Apple.</li>
+        <li data-i18n="legal.terms.as.6">التطبيق مناسب لتصنيف العمر المخصص له.</li>
+        <li data-i18n="legal.terms.as.7">يتم الإفصاح عن استخدام الموقع في الخلفية وتبريره بوضوح.</li>
+        <li data-i18n="legal.terms.as.8">التطبيق لا يستخدم واجهات برمجة التطبيقات الخاصة أو الأطر غير الموثقة.</li>
+        <li data-i18n="legal.terms.as.9">نوفر آلية للمستخدمين لإدارة أو حذف حساباتهم بياناتهم.</li>
+        <li data-i18n="legal.terms.as.10">جميع المحتويات تتوافق مع إرشادات محتوى Apple.</li>
+        <li data-i18n="legal.terms.as.11">يدعم التطبيق أحدث إصدارات iOS ويتبع إرشادات تصميم Apple.</li>
+        <li data-i18n="legal.terms.as.12">نتتعامل مع تقارير الأعطال وبيانات التحليلات بمسؤولية.</li>
+        <li data-i18n="legal.terms.as.13">التطبيق لا يؤثر على وظائف النظام أو التطبيقات الأخرى.</li>
+        <li data-i18n="legal.terms.as.14">جميع حقوق الملكية الفكرية محفوظة.</li>
+        <li data-i18n="legal.terms.as.15">نلتزم بجميع متطلبات Apple الخاصة بالخصوصية والأمان.</li>
+      </ul>
+
+      <h2 data-i18n="legal.terms.ad.title">11. التوافق مع Google AdSense</h2>
+      <ul>
+        <li data-i18n="legal.terms.ad.1">الإعلانات المعروضة عبر Google AdSense تتوافق مع سياسات برنامج Google AdSense.</li>
+        <li data-i18n="legal.terms.ad.2">لا ننقر على إعلاناتنا الخاصة أو نشجع الآخرين على ذلك.</li>
+        <li data-i18n="legal.terms.ad.3">وضع الإعلانات لا يؤثر على الوظائف الأساسية للتطبيق.</li>
+        <li data-i18n="legal.terms.ad.4">يمكن للمستخدمين إلغاء الاشتراك في الإعلانات المخصصة من خلال إعدادات إعلانات Google.</li>
+        <li data-i18n="legal.terms.ad.5">لا نعدّل كود AdSense بأي طريقة غير مصرح بها.</li>
+        <li data-i18n="legal.terms.ad.6">محتوى الإعلانات مناسب للجمهور وتصنيف العمر.</li>
+        <li data-i18n="legal.terms.ad.7">نتوافق مع متطلبات GDPR و CCPA لجمع البيانات المتعلقة بالإعلانات.</li>
+        <li data-i18n="legal.terms.ad.8">يتم استبعاد الفئات الحساسة من الإعلانات (الكحول، المقامرة، إلخ).</li>
+        <li data-i18n="legal.terms.ad.9">يتم الإفصاح عن ملفات تعريف الارتباط الخاصة بـ AdSense في سياسة الخصوصية.</li>
+        <li data-i18n="legal.terms.ad.10">لا نضع إعلانات على صفحات بدون محتوى أو صفحات الخطأ.</li>
+        <li data-i18n="legal.terms.ad.11">عدد الإعلانات في الصفحة لا يتجاوز الحدود الموصى بها من Google.</li>
+      </ul>
+
+      <div style="margin-top:24px;padding-top:16px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:8px;">
+        <a onclick="showLegal('privacy')" style="color:var(--blue);cursor:pointer;font-weight:700;" data-i18n="crossLinks.privacy">🔒 اطلع على سياسة الخصوصية</a>
+        <a onclick="showLegal('refund')" style="color:var(--blue);cursor:pointer;font-weight:700;" data-i18n="crossLinks.refund">💰 سياسة الاسترجاع والاستبدال</a>
+        <a onclick="showLegal('contact')" style="color:var(--blue);cursor:pointer;font-weight:700;" data-i18n="crossLinks.contact">📬 تواصل معنا</a>
+        <a onclick="showLegal('about')" style="color:var(--blue);cursor:pointer;font-weight:700;" data-i18n="crossLinks.about">ℹ️ تعرف علينا</a>
+      </div>
+
       <a class="back-link" onclick="goBackFromLegal()" data-i18n="common.back">← رجوع</a>
     </div>
   </div>
@@ -848,6 +962,7 @@
     <div class="legal-page">
       <h1>🏥 <span data-i18n="legal.about.title">من نحن</span></h1>
       <p class="last-update" data-i18n="legal.lastUpdate">آخر تحديث: أبريل 2026</p>
+      <p style="text-align:center;color:var(--blue);font-weight:700;font-size:1.1rem;margin-bottom:16px;" data-i18n="legal.about.vision">رؤيتنا: شبكة عالمية تربط المحتاجين بالمراكز الطبية في ثوانٍ معدودة</p>
 
       <h2 data-i18n="legal.about.s1.title">1. ما هو الحقونا؟</h2>
       <p data-i18n="legal.about.s1.text">الحقونا هو تطبيق مجتمعي مجاني ومفتوح المصدر، صُمم لتوصيل المرضى بأسرع ما يمكن بأقرب مراكز طبية توفر خدمات العناية المركزة، حضانة الأطفال المولودين، والعلاج الإشعاعي — سواء مجانًا أو بخصومات كبيرة.</p>
@@ -870,8 +985,141 @@
       <p data-i18n="legal.about.s5.text">يمكن لأي مركز طبي مرخص التسجيل في التطبيق وإضافة خدماته. التسجيل مجاني بالكامل ويساعد المراكز على الوصول لمرضى جدد بحاجة لخدماتها.</p>
 
       <h2 data-i18n="legal.about.s6.title">6. تواصل معنا</h2>
-      <p data-i18n="legal.about.s6.text">لأي استفسار أو اقتراح: <strong>support@el-haquna.com</strong></p>
+      <p data-i18n="legal.about.s6.text">لأي استفسار أو اقتراح: <strong>emadh5156@gmail.com</strong></p>
       <p data-i18n="legal.about.s6.follow">تابعنا على وسائل التواصل الاجتماعي للبقاء على اطلاع بالتحديثات.</p>
+
+      <h2 data-i18n="legal.about.s7.title">7. بالأرقام</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin:16px 0;">
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center;">
+          <div style="font-size:28px">🏥</div>
+          <div style="font-size:22px;font-weight:800;color:var(--blue);">100+</div>
+          <div style="font-size:11px;color:var(--text2);" data-i18n="legal.about.s7.centers">مركز طبي</div>
+        </div>
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center;">
+          <div style="font-size:28px">🔍</div>
+          <div style="font-size:22px;font-weight:800;color:var(--blue);">50K+</div>
+          <div style="font-size:11px;color:var(--text2);" data-i18n="legal.about.s7.searches">بحث ناجح</div>
+        </div>
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center;">
+          <div style="font-size:28px">🌍</div>
+          <div style="font-size:22px;font-weight:800;color:var(--blue);">10+</div>
+          <div style="font-size:11px;color:var(--text2);" data-i18n="legal.about.s7.countries">دول</div>
+        </div>
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center;">
+          <div style="font-size:28px">⚡</div>
+          <div style="font-size:22px;font-weight:800;color:var(--blue);">99.9%</div>
+          <div style="font-size:11px;color:var(--text2);" data-i18n="legal.about.s7.uptime">وقت التشغيل</div>
+        </div>
+      </div>
+
+      <div style="margin-top:24px;padding-top:16px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:8px;">
+        <a onclick="showLegal('privacy')" style="color:var(--blue);cursor:pointer;font-weight:700;" data-i18n="crossLinks.privacy">🔒 اطلع على سياسة الخصوصية</a>
+        <a onclick="showLegal('terms')" style="color:var(--blue);cursor:pointer;font-weight:700;" data-i18n="crossLinks.terms">📄 اطلع على الشروط والأحكام</a>
+        <a onclick="showLegal('refund')" style="color:var(--blue);cursor:pointer;font-weight:700;" data-i18n="crossLinks.refund">💰 سياسة الاسترجاع والاستبدال</a>
+        <a onclick="showLegal('contact')" style="color:var(--blue);cursor:pointer;font-weight:700;" data-i18n="crossLinks.contact">📬 تواصل معنا</a>
+      </div>
+
+      <a class="back-link" onclick="goBackFromLegal()" data-i18n="common.back">← رجوع</a>
+    </div>
+  </div>
+
+  <!-- SCREEN: REFUND POLICY -->
+  <div class="screen" id="screen-refund" aria-label="سياسة الاسترجاع والاستبدال">
+    <div class="legal-page">
+      <h1 data-i18n="legal.refund.title">سياسة الاسترجاع والاستبدال</h1>
+      <p class="last-update" data-i18n="legal.lastUpdate">آخر تحديث: أبريل 2026</p>
+
+      <h2 data-i18n="legal.refund.s1.title">1. مقدمة</h2>
+      <p data-i18n="legal.refund.s1.text">في الحقونا، نريدك أن تكون راضياً تماماً عن تجربتك. توضح هذه السياسة إجراءات الاسترجاع والاستبدال لخدماتنا.</p>
+
+      <h2 data-i18n="legal.refund.s2.title">2. أهلية الاسترجاع</h2>
+      <ul>
+        <li data-i18n="legal.refund.s2.item1">يتوفر الاسترجاع خلال 14 يوماً من تاريخ الاشتراك أو الشراء.</li>
+        <li data-i18n="legal.refund.s2.item2">يجب ألا يكون قد تم استخدام أكثر من 20% من الحصة الشهرية.</li>
+        <li data-i18n="legal.refund.s2.item3">لا يتوفر الاسترجاع للحسابات المنتهية بسبب انتهاك الشروط.</li>
+      </ul>
+
+      <h2 data-i18n="legal.refund.s3.title">3. إجراءات الاسترجاع</h2>
+      <p data-i18n="legal.refund.s3.text">لطلب استرجاع، تواصل معنا على <strong>emadh5156@gmail.com</strong> مع ذكر بريد حسابك وسبب الاسترجاع. سنراجع طلبك خلال 5 أيام عمل.</p>
+
+      <h2 data-i18n="legal.refund.s4.title">4. مدة المعالجة</h2>
+      <p data-i18n="legal.refund.s4.text">يتم معالجة طلبات الاسترجاع المعتمدة خلال 7-14 يوم عمل. سيتم إرجاع المبلغ إلى طريقة الدفع الأصلية.</p>
+
+      <h2 data-i18n="legal.refund.s5.title">5. الاسترجاع الجزئي</h2>
+      <p data-i18n="legal.refund.s5.text">إذا ألغيت الاشتراك في منتصف دورة الفوترة، قد نقدم رصيداً محسوباً نسبياً لفترة الفوترة التالية بدلاً من استرداد نقدي.</p>
+
+      <h2 data-i18n="legal.refund.s6.title">6. استبدال الخدمة</h2>
+      <p data-i18n="legal.refund.s6.text">إذا واجهت مشاكل تقنية تمنعك من استخدام التطبيق، سنحاول أولاً حل المشكلة. إذا لم يتم الحل خلال 48 ساعة، قد نقدم ترقية للباقة أو تمديد فترة الاشتراك كتعويض.</p>
+
+      <h2 data-i18n="legal.refund.s7.title">7. الإلغاء</h2>
+      <p data-i18n="legal.refund.s7.text">يمكنك إلغاء اشتراكك في أي وقت من خلال إعدادات التطبيق أو حسابك. يصبح الإلغاء سارياً في نهاية فترة الفوترة الحالية.</p>
+
+      <h2 data-i18n="legal.refund.s8.title">8. الاستثناءات</h2>
+      <ul>
+        <li data-i18n="legal.refund.s8.item1">لا يتوفر الاسترجاع للحسابات المنتهية بسبب انتهاك الشروط والأحكام.</li>
+        <li data-i18n="legal.refund.s8.item2">الباقات الترويجية أو المخفضة تخضع لشروط خاصة (ما لم يقتضي القانون خلاف ذلك).</li>
+        <li data-i18n="legal.refund.s8.item3">لا يتوفر الاسترجاع بعد انتهاء فترة الـ 14 يوماً.</li>
+      </ul>
+
+      <h2 data-i18n="legal.refund.s9.title">9. التواصل للاسترجاع</h2>
+      <p data-i18n="legal.refund.s9.text">لطلبات الاسترجاع والاستبدال، راسلنا على: <strong>emadh5156@gmail.com</strong></p>
+
+      <div style="margin-top:24px;padding-top:16px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:8px;">
+        <a onclick="showLegal('privacy')" style="color:var(--blue);cursor:pointer;font-weight:700;" data-i18n="crossLinks.privacy">🔒 اطلع على سياسة الخصوصية</a>
+        <a onclick="showLegal('terms')" style="color:var(--blue);cursor:pointer;font-weight:700;" data-i18n="crossLinks.terms">📄 اطلع على الشروط والأحكام</a>
+        <a onclick="showLegal('contact')" style="color:var(--blue);cursor:pointer;font-weight:700;" data-i18n="crossLinks.contact">📬 تواصل معنا</a>
+        <a onclick="showLegal('about')" style="color:var(--blue);cursor:pointer;font-weight:700;" data-i18n="crossLinks.about">ℹ️ تعرف علينا</a>
+      </div>
+
+      <a class="back-link" onclick="goBackFromLegal()" data-i18n="common.back">← رجوع</a>
+    </div>
+  </div>
+
+  <!-- SCREEN: CONTACT US -->
+  <div class="screen" id="screen-contact" aria-label="تواصل معنا">
+    <div class="legal-page" style="max-width:500px;">
+      <h1 data-i18n="legal.contact.title">تواصل معنا</h1>
+      <p class="last-update" data-i18n="legal.contact.subtitle">يسعدنا سماعك! أرسل لنا رسالة وسنرد عليك في أقرب وقت ممكن.</p>
+
+      <div style="background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:20px;">
+        <h3 style="margin-bottom:12px;" data-i18n="legal.contact.info">📋 معلومات التواصل</h3>
+        <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);">
+          <span style="font-size:20px;">📧</span>
+          <div>
+            <div style="font-size:12px;color:var(--text2);" data-i18n="legal.contact.directEmail">البريد المباشر</div>
+            <div style="color:var(--blue);font-weight:700;">emadh5156@gmail.com</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding:10px 0;">
+          <span style="font-size:20px;">⏰</span>
+          <div style="font-size:13px;color:var(--text2);" data-i18n="legal.contact.response">نرد عادةً خلال 24-48 ساعة.</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="contactName" data-i18n="legal.contact.name">اسمك *</label>
+        <input type="text" id="contactName" placeholder="اسمك الكامل" aria-required="true">
+      </div>
+      <div class="form-group">
+        <label for="contactEmail" data-i18n="legal.contact.email">بريدك الإلكتروني *</label>
+        <input type="email" id="contactEmail" placeholder="you@example.com" aria-required="true">
+      </div>
+      <div class="form-group">
+        <label for="contactSubject" data-i18n="legal.contact.subject">الموضوع *</label>
+        <input type="text" id="contactSubject" placeholder="موضوع الرسالة" aria-required="true">
+      </div>
+      <div class="form-group">
+        <label for="contactMessage" data-i18n="legal.contact.message">رسالتك *</label>
+        <textarea id="contactMessage" rows="5" style="width:100%;padding:12px 16px;border:1px solid var(--border);border-radius:12px;font-family:inherit;font-size:1rem;resize:vertical;outline:none;background:var(--input-bg);color:var(--text);" placeholder="اكتب رسالتك هنا..." aria-required="true"></textarea>
+      </div>
+      <button class="form-submit" onclick="handleContactSend()" data-i18n="legal.contact.send">📤 إرسال الرسالة</button>
+
+      <div style="margin-top:24px;padding-top:16px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:8px;">
+        <a onclick="showLegal('privacy')" style="color:var(--blue);cursor:pointer;font-weight:700;" data-i18n="crossLinks.privacy">🔒 اطلع على سياسة الخصوصية</a>
+        <a onclick="showLegal('terms')" style="color:var(--blue);cursor:pointer;font-weight:700;" data-i18n="crossLinks.terms">📄 اطلع على الشروط والأحكام</a>
+        <a onclick="showLegal('refund')" style="color:var(--blue);cursor:pointer;font-weight:700;" data-i18n="crossLinks.refund">💰 سياسة الاسترجاع والاستبدال</a>
+        <a onclick="showLegal('about')" style="color:var(--blue);cursor:pointer;font-weight:700;" data-i18n="crossLinks.about">ℹ️ تعرف علينا</a>
+      </div>
 
       <a class="back-link" onclick="goBackFromLegal()" data-i18n="common.back">← رجوع</a>
     </div>
@@ -1107,6 +1355,132 @@ const translations = {
     'legal.about.s6.title': '6. تواصل معنا',
     'legal.about.s6.text': 'لأي استفسار أو اقتراح: support@el-haquna.com',
     'legal.about.s6.follow': 'تابعنا على وسائل التواصل الاجتماعي للبقاء على اطلاع بالتحديثات.',
+    'legal.about.vision': 'رؤيتنا: شبكة عالمية تربط المحتاجين بالمراكز الطبية في ثوانٍ معدودة',
+    'legal.about.s7.title': '7. بالأرقام',
+    'legal.about.s7.centers': 'مركز طبي',
+    'legal.about.s7.searches': 'بحث ناجح',
+    'legal.about.s7.countries': 'دول',
+    'legal.about.s7.uptime': 'وقت التشغيل',
+    // سياسة الخصوصية - إضافات
+    'legal.privacy.s2.item4': 'بيانات الجهاز: نجمع معلومات عن نوع الجهاز ونظام التشغيل وعنوان IP لتحسين أداء التطبيق.',
+    'legal.privacy.s3.item5': 'لإرسال إشعارات تتعلق بالخدمة (تنبيهات الصيانة، التحديثات)',
+    'legal.privacy.s8.title': '8. ملفات تعريف الارتباط (Cookies) وتقنيات التتبع',
+    'legal.privacy.s8.intro': 'نستخدم ملفات تعريف الارتباط وتقنيات مماثلة لتحسين تجربتك:',
+    'legal.privacy.s8.item1': 'ملفات تعريف الارتباط الأساسية: مطلوبة لعمل التطبيق (المصادقة، الجلسات).',
+    'legal.privacy.s8.item2': 'ملفات تعريف الارتباط التحليلية: تساعدنا على فهم استخدام التطبيق (Google Analytics).',
+    'legal.privacy.s8.item3': 'ملفات تعريف الارتباط الإعلانية: تستخدمها Google AdSense لتقديم إعلانات ذات صلة.',
+    'legal.privacy.s8.item4': 'ملفات تعريف الارتباط التفضيلية: تذكر إعداداتك (اللغة، المظهر).',
+    'legal.privacy.s8.control': 'يمكنك التحكم في ملفات تعريف الارتباط من خلال إعدادات متصفحك.',
+    'legal.privacy.s9.title': '9. الإعلانات و Google AdSense',
+    'legal.privacy.s9.text1': 'قد يعرض التطبيق إعلانات من خلال Google AdSense. يستخدم Google AdSense ملفات تعريف الارتباط لتقديم إعلانات بناءً على زياراتك السابقة.',
+    'legal.privacy.s9.item1': 'يمكنك إلغاء الاشتراك في الإعلانات المخصصة من خلال إعدادات إعلانات Google.',
+    'legal.privacy.s9.item2': 'يستخدم البائعون сторонيون ملفات تعريف الارتباط لتقديم إعلانات بناءً على زياراتك.',
+    'legal.privacy.s9.item3': 'يمكنك إلغاء استخدام ملف DART بزيارة سياسة إعلانات Google.',
+    'legal.privacy.s10.title': '10. خدمات الطرف الثالث',
+    'legal.privacy.s10.intro': 'يستخدم التطبيق الخدمات التالية من الطرف الثالث:',
+    'legal.privacy.s10.item1': 'Firebase (Google): الخدمات الخلفية، المصادقة، قاعدة البيانات.',
+    'legal.privacy.s10.item2': 'Google Maps: خدمات الموقع والخرائط.',
+    'legal.privacy.s10.item3': 'Google AdSense: خدمات الإعلانات.',
+    'legal.privacy.s10.item4': 'Google Analytics: تحليلات الاستخدام.',
+    'legal.privacy.s10.item5': 'Expo: بنية التطبيقات المحمولة.',
+    'legal.privacy.s7.text': 'لأي استفسار حول الخصوصية: emadh5156@gmail.com',
+    'legal.privacy.s11.title': '11. خصوصية الأطفال',
+    'legal.privacy.s11.text1': 'تطبيق الحقونا غير مخصص للمستخدمين أقل من 16 عاماً. لا نجمع معلومات شخصية من الأطفال أقل من 16 عاماً عمداً.',
+    'legal.privacy.s11.text2': 'إذا اكتشفنا أن طفلاً قدّم لنا بيانات شخصية، سنحذف هذه المعلومات فوراً. تواصل معنا على emadh5156@gmail.com.',
+    'legal.privacy.s12.title': '12. التغييرات على هذه السياسة',
+    'legal.privacy.s12.text': 'قد نقوم بتحديث سياسة الخصوصية هذه من وقت لآخر. الاستمرار في استخدام التطبيق بعد التغييرات يعتبر قبولاً.',
+    // الشروط - إضافات
+    'legal.terms.gp.title': '9. التوافق مع متجر Google Play',
+    'legal.terms.gp.1': 'يتوافق التطبيق مع سياسات برنامج مطوري Google Play.',
+    'legal.terms.gp.2': 'لا نجمع أو نشارك بيانات شخصية تتجاوز ما هو ضروري.',
+    'legal.terms.gp.3': 'التطبيق لا يحتوي على برامج ضارة.',
+    'legal.terms.gp.4': 'يتم جمع بيانات الموقع بموافقة صريحة فقط.',
+    'legal.terms.gp.5': 'يوفر التطبيق آلية لحذف الحساب والبيانات.',
+    'legal.terms.gp.6': 'لا نبيع البيانات لأطراف ثالثة.',
+    'legal.terms.gp.7': 'جميع الإعلانات تتوافق مع سياسات Google Play.',
+    'legal.terms.gp.8': 'الإشعارات للتنبيهات المتعلقة بالخدمة فقط.',
+    'legal.terms.gp.9': 'يدعم التطبيق تصنيفات المحتوى المناسبة.',
+    'legal.terms.gp.10': 'نتعامل مع البيانات وفقاً لسياسة العائلات.',
+    'legal.terms.gp.11': 'التطبيق خالٍ من السلوك المضلل.',
+    'legal.terms.gp.12': 'يطلب التطبيق الأذونات الضرورية فقط.',
+    'legal.terms.gp.13': 'نوفر رابط سياسة الخصوصية.',
+    'legal.terms.gp.14': 'التطبيق يحترم تفضيلات إلغاء الاشتراك.',
+    'legal.terms.gp.15': 'نلتزم بمعايير الجودة والأمان من Google Play.',
+    'legal.terms.as.title': '10. التوافق مع متجر Apple App Store',
+    'legal.terms.as.1': 'يتوافق التطبيق مع إرشادات Apple.',
+    'legal.terms.as.2': 'التطبيق لا يصل لبيانات زائدة عن وظائفه.',
+    'legal.terms.as.3': 'نوفر سياسة خصوصية واضحة.',
+    'legal.terms.as.4': 'التطبيق لا يحتوي ميزات خفية.',
+    'legal.terms.as.5': 'نحترم خصوصية المستخدم.',
+    'legal.terms.as.6': 'التطبيق مناسب لتصنيف العمر.',
+    'legal.terms.as.7': 'يتم الإفصاح عن استخدام الموقع في الخلفية.',
+    'legal.terms.as.8': 'التطبيق لا يستخدم APIs خاصة.',
+    'legal.terms.as.9': 'نوفر آلية لإدارة أو حذف الحسابات.',
+    'legal.terms.as.10': 'جميع المحتويات تتوافق مع إرشادات Apple.',
+    'legal.terms.as.11': 'يدعم التطبيق أحدث إصدارات iOS.',
+    'legal.terms.as.12': 'نتعامل مع تقارير الأعطال بمسؤولية.',
+    'legal.terms.as.13': 'التطبيق لا يؤثر على وظائف النظام.',
+    'legal.terms.as.14': 'جميع حقوق الملكية الفكرية محفوظة.',
+    'legal.terms.as.15': 'نلتزم بمتطلبات Apple للخصوصية والأمان.',
+    'legal.terms.ad.title': '11. التوافق مع Google AdSense',
+    'legal.terms.ad.1': 'الإعلانات تتوافق مع سياسات Google AdSense.',
+    'legal.terms.ad.2': 'لا ننقر على إعلاناتنا الخاصة.',
+    'legal.terms.ad.3': 'وضع الإعلانات لا يؤثر على الوظائف الأساسية.',
+    'legal.terms.ad.4': 'يمكن للمستخدمين إلغاء الاشتراك في الإعلانات المخصصة.',
+    'legal.terms.ad.5': 'لا نعدّل كود AdSense.',
+    'legal.terms.ad.6': 'محتوى الإعلانات مناسب للجمهور.',
+    'legal.terms.ad.7': 'نتوافق مع متطلبات GDPR و CCPA.',
+    'legal.terms.ad.8': 'الفئات الحساسة مستبعدة من الإعلانات.',
+    'legal.terms.ad.9': 'ملفات تعريف الارتباط مذكورة في سياسة الخصوصية.',
+    'legal.terms.ad.10': 'لا نضع إعلانات على صفحات فارغة.',
+    'legal.terms.ad.11': 'عدد الإعلانات لا يتجاوز الحدود الموصى بها.',
+    // سياسة الاسترجاع
+    'legal.refund.title': 'سياسة الاسترجاع والاستبدال',
+    'legal.refund.s1.title': '1. مقدمة',
+    'legal.refund.s1.text': 'في الحقونا، نريدك أن تكون راضياً تماماً. توضح هذه السياسة إجراءات الاسترجاع والاستبدال.',
+    'legal.refund.s2.title': '2. أهلية الاسترجاع',
+    'legal.refund.s2.item1': 'يتوفر الاسترجاع خلال 14 يوماً من تاريخ الاشتراك.',
+    'legal.refund.s2.item2': 'يجب ألا يكون قد تم استخدام أكثر من 20% من الحصة الشهرية.',
+    'legal.refund.s2.item3': 'لا يتوفر للحسابات المنتهية بسبب انتهاك الشروط.',
+    'legal.refund.s3.title': '3. إجراءات الاسترجاع',
+    'legal.refund.s3.text': 'تواصل معنا على emadh5156@gmail.com مع ذكر بريد حسابك وسبب الاسترجاع.',
+    'legal.refund.s4.title': '4. مدة المعالجة',
+    'legal.refund.s4.text': 'يتم المعالجة خلال 7-14 يوم عمل إلى طريقة الدفع الأصلية.',
+    'legal.refund.s5.title': '5. الاسترجاع الجزئي',
+    'legal.refund.s5.text': 'الإلغاء في منتصف الدورة قد يحصل على رصيد محسوب نسبياً.',
+    'legal.refund.s6.title': '6. استبدال الخدمة',
+    'legal.refund.s6.text': 'للمشاكل التقنية غير المحلولة خلال 48 ساعة، قد نقدم تمديد أو ترقية.',
+    'legal.refund.s7.title': '7. الإلغاء',
+    'legal.refund.s7.text': 'يمكنك الإلغاء في أي وقت من الإعدادات. ي生效 في نهاية فترة الفوترة.',
+    'legal.refund.s8.title': '8. الاستثناءات',
+    'legal.refund.s8.item1': 'لا استرجاع للحسابات المنتهية بسبب الانتهاكات.',
+    'legal.refund.s8.item2': 'الباقات الترويجية تخضع لشروط خاصة.',
+    'legal.refund.s8.item3': 'لا استرجاع بعد 14 يوماً.',
+    'legal.refund.s9.title': '9. التواصل للاسترجاع',
+    'legal.refund.s9.text': 'لطلبات الاسترجاع: emadh5156@gmail.com',
+    // تواصل معنا
+    'legal.contact.title': 'تواصل معنا',
+    'legal.contact.subtitle': 'يسعدنا سماعك! أرسل لنا رسالة وسنرد عليك في أقرب وقت ممكن.',
+    'legal.contact.info': '📋 معلومات التواصل',
+    'legal.contact.directEmail': 'البريد المباشر',
+    'legal.contact.response': 'نرد عادةً خلال 24-48 ساعة.',
+    'legal.contact.name': 'اسمك *',
+    'legal.contact.email': 'بريدك الإلكتروني *',
+    'legal.contact.subject': 'الموضوع *',
+    'legal.contact.message': 'رسالتك *',
+    'legal.contact.send': '📤 إرسال الرسالة',
+    'legal.contact.success': 'تم إرسال الرسالة بنجاح! سنعود إليك قريباً.',
+    'legal.contact.error': 'فشل إرسال الرسالة. يرجى المحاولة مرة أخرى.',
+    'legal.contact.required': 'جميع الحقول مطلوبة',
+    // روابط متقاطعة
+    'crossLinks.privacy': '🔒 اطلع على سياسة الخصوصية',
+    'crossLinks.terms': '📄 اطلع على الشروط والأحكام',
+    'crossLinks.refund': '💰 سياسة الاسترجاع والاستبدال',
+    'crossLinks.about': 'ℹ️ تعرف علينا',
+    'crossLinks.contact': '📬 تواصل معنا',
+    // الفوتر
+    'footer.refund': 'سياسة الاسترجاع',
+    'footer.contact': 'تواصل معنا',
   },
   en: {
     'app.name': 'El-Haquna',
@@ -1335,7 +1709,133 @@ const translations = {
     'legal.about.s6.title': '6. Contact Us',
     'legal.about.s6.text': 'For any inquiries or suggestions: support@el-haquna.com',
     'legal.about.s6.follow': 'Follow us on social media to stay updated.',
-  }
+    'legal.about.vision': 'Our Vision: A global network connecting those in need with medical centers in seconds',
+    'legal.about.s7.title': '7. By The Numbers',
+    'legal.about.s7.centers': 'Medical Centers',
+    'legal.about.s7.searches': 'Successful Searches',
+    'legal.about.s7.countries': 'Countries',
+    'legal.about.s7.uptime': 'Uptime',
+    // Privacy - additions
+    'legal.privacy.s2.item4': 'Device Data: We collect device type, OS, and IP address to improve app performance.',
+    'legal.privacy.s3.item5': 'To send service-related notifications (maintenance alerts, updates)',
+    'legal.privacy.s8.title': '8. Cookies & Tracking Technologies',
+    'legal.privacy.s8.intro': 'We use cookies and similar technologies to improve your experience:',
+    'legal.privacy.s8.item1': 'Essential Cookies: Required for the app to function (authentication, sessions).',
+    'legal.privacy.s8.item2': 'Analytics Cookies: Help us understand app usage (Google Analytics).',
+    'legal.privacy.s8.item3': 'Advertising Cookies: Used by Google AdSense to deliver relevant ads.',
+    'legal.privacy.s8.item4': 'Preference Cookies: Remember your settings (language, theme).',
+    'legal.privacy.s8.control': 'You can control cookies through your browser settings.',
+    'legal.privacy.s9.title': '9. Advertising & Google AdSense',
+    'legal.privacy.s9.text1': 'The app may display ads through Google AdSense. Google AdSense uses cookies to serve ads based on your prior visits.',
+    'legal.privacy.s9.item1': 'You can opt out of personalized ads through Google Ads Settings.',
+    'legal.privacy.s9.item2': 'Third-party vendors use cookies to serve ads based on your visits.',
+    'legal.privacy.s9.item3': 'You can opt out of the DART cookie by visiting Google Ads Policy.',
+    'legal.privacy.s10.title': '10. Third-Party Services',
+    'legal.privacy.s10.intro': 'The app uses the following third-party services:',
+    'legal.privacy.s10.item1': 'Firebase (Google): Backend, authentication, database.',
+    'legal.privacy.s10.item2': 'Google Maps: Location and mapping services.',
+    'legal.privacy.s10.item3': 'Google AdSense: Advertising services.',
+    'legal.privacy.s10.item4': 'Google Analytics: Usage analytics.',
+    'legal.privacy.s10.item5': 'Expo: Mobile app infrastructure.',
+    'legal.privacy.s7.text': 'For privacy inquiries: emadh5156@gmail.com',
+    'legal.privacy.s11.title': '11. Children\'s Privacy',
+    'legal.privacy.s11.text1': 'El-Haquna is not intended for users under 16 years of age. We do not knowingly collect personal information from children under 16.',
+    'legal.privacy.s11.text2': 'If we discover a child has provided personal data, we will delete it immediately. Contact us at emadh5156@gmail.com.',
+    'legal.privacy.s12.title': '12. Changes to This Policy',
+    'legal.privacy.s12.text': 'We may update this policy from time to time. Continued use after changes constitutes acceptance.',
+    // Terms - additions
+    'legal.terms.gp.title': '9. Google Play Store Compliance',
+    'legal.terms.gp.1': 'The app complies with Google Play Developer Program Policies.',
+    'legal.terms.gp.2': 'We do not collect or share personal data beyond what is necessary.',
+    'legal.terms.gp.3': 'The app does not contain malware or malicious code.',
+    'legal.terms.gp.4': 'Location data is collected only with explicit user consent.',
+    'legal.terms.gp.5': 'The app provides a mechanism to request account and data deletion.',
+    'legal.terms.gp.6': 'We do not sell personal data to third parties.',
+    'legal.terms.gp.7': 'All ads comply with Google Play ad policies.',
+    'legal.terms.gp.8': 'Push notifications are used only for service-related alerts.',
+    'legal.terms.gp.9': 'The app supports appropriate content ratings.',
+    'legal.terms.gp.10': 'We handle user data per the Families Policy.',
+    'legal.terms.gp.11': 'The app is free from deceptive behavior.',
+    'legal.terms.gp.12': 'The app requests only necessary permissions.',
+    'legal.terms.gp.13': 'We provide an accessible privacy policy link.',
+    'legal.terms.gp.14': 'The app respects user opt-out preferences.',
+    'legal.terms.gp.15': 'We comply with Google Play quality and security standards.',
+    'legal.terms.as.title': '10. Apple App Store Compliance',
+    'legal.terms.as.1': 'The app complies with Apple App Store Review Guidelines.',
+    'legal.terms.as.2': 'The app does not access data beyond its functionality.',
+    'legal.terms.as.3': 'We provide a clear privacy policy as required.',
+    'legal.terms.as.4': 'The app does not include hidden features.',
+    'legal.terms.as.5': 'We respect user privacy and follow Apple requirements.',
+    'legal.terms.as.6': 'The app is suitable for its assigned age rating.',
+    'legal.terms.as.7': 'Background location usage is clearly disclosed.',
+    'legal.terms.as.8': 'The app does not use private APIs.',
+    'legal.terms.as.9': 'We provide a mechanism to manage or delete accounts.',
+    'legal.terms.as.10': 'All content complies with Apple guidelines.',
+    'legal.terms.as.11': 'The app supports the latest iOS versions.',
+    'legal.terms.as.12': 'We handle crash reports responsibly.',
+    'legal.terms.as.13': 'The app does not interfere with system functionality.',
+    'legal.terms.as.14': 'All intellectual property rights are reserved.',
+    'legal.terms.as.15': 'We comply with Apple privacy and security requirements.',
+    'legal.terms.ad.title': '11. Google AdSense Compliance',
+    'legal.terms.ad.1': 'Ads comply with Google AdSense program policies.',
+    'legal.terms.ad.2': 'We do not click on our own ads.',
+    'legal.terms.ad.3': 'Ad placement does not interfere with core functionality.',
+    'legal.terms.ad.4': 'Users can opt out of personalized advertising.',
+    'legal.terms.ad.5': 'We do not modify AdSense code unauthorized.',
+    'legal.terms.ad.6': 'Ad content is appropriate for the audience.',
+    'legal.terms.ad.7': 'We comply with GDPR and CCPA requirements.',
+    'legal.terms.ad.8': 'Sensitive ad categories are excluded.',
+    'legal.terms.ad.9': 'AdSense cookies are disclosed in our Privacy Policy.',
+    'legal.terms.ad.10': 'We do not place ads on empty or error pages.',
+    'legal.terms.ad.11': 'The number of ads does not exceed recommended limits.',
+    // Refund Policy
+    'legal.refund.title': 'Refund & Replacement Policy',
+    'legal.refund.s1.title': '1. Introduction',
+    'legal.refund.s1.text': 'At El-Haquna, we want you to be completely satisfied. This policy outlines our refund and replacement procedures.',
+    'legal.refund.s2.title': '2. Refund Eligibility',
+    'legal.refund.s2.item1': 'Refunds are available within 14 days of purchase or subscription.',
+    'legal.refund.s2.item2': 'You must not have used more than 20% of your monthly allocation.',
+    'legal.refund.s2.item3': 'Refunds are not available for accounts terminated for policy violations.',
+    'legal.refund.s3.title': '3. Refund Process',
+    'legal.refund.s3.text': 'Contact us at emadh5156@gmail.com with your account email and reason. We review requests within 5 business days.',
+    'legal.refund.s4.title': '4. Processing Time',
+    'legal.refund.s4.text': 'Approved refunds are processed within 7-14 business days to the original payment method.',
+    'legal.refund.s5.title': '5. Partial Refunds',
+    'legal.refund.s5.text': 'Mid-cycle cancellations may receive prorated credit toward the next billing period.',
+    'legal.refund.s6.title': '6. Service Replacement',
+    'legal.refund.s6.text': 'For unresolved technical issues within 48 hours, we may offer service extension or plan upgrade.',
+    'legal.refund.s7.title': '7. Cancellation',
+    'legal.refund.s7.text': 'Cancel anytime through app settings. Takes effect at end of current billing period.',
+    'legal.refund.s8.title': '8. Exceptions',
+    'legal.refund.s8.item1': 'No refunds for accounts terminated for violations.',
+    'legal.refund.s8.item2': 'Promotional plans are subject to special terms.',
+    'legal.refund.s8.item3': 'No refunds after the 14-day window.',
+    'legal.refund.s9.title': '9. Refund Contact',
+    'legal.refund.s9.text': 'For refund requests: emadh5156@gmail.com',
+    // Contact Us
+    'legal.contact.title': 'Contact Us',
+    'legal.contact.subtitle': 'We\'d love to hear from you! Send us a message and we\'ll respond as soon as possible.',
+    'legal.contact.info': '📋 Contact Information',
+    'legal.contact.directEmail': 'Direct Email',
+    'legal.contact.response': 'We typically respond within 24-48 hours.',
+    'legal.contact.name': 'Your Name *',
+    'legal.contact.email': 'Your Email *',
+    'legal.contact.subject': 'Subject *',
+    'legal.contact.message': 'Your Message *',
+    'legal.contact.send': '📤 Send Message',
+    'legal.contact.success': 'Message sent successfully! We\'ll get back to you soon.',
+    'legal.contact.error': 'Failed to send message. Please try again.',
+    'legal.contact.required': 'All fields are required',
+    // Cross-links
+    'crossLinks.privacy': '🔒 View our Privacy Policy',
+    'crossLinks.terms': '📄 View Terms of Service',
+    'crossLinks.refund': '💰 Refund & Replacement Policy',
+    'crossLinks.about': 'ℹ️ Learn About Us',
+    'crossLinks.contact': '📬 Contact Us',
+    // Footer
+    'footer.refund': 'Refund Policy',
+    'footer.contact': 'Contact Us',
+  },
 };
 
 let currentLang = localStorage.getItem('elhaquna_lang') || 'ar';
@@ -1482,8 +1982,32 @@ function goBackFromLegal() {
 
 // ==================== LEGAL NAVIGATION ====================
 function showLegal(page) {
-  legalReturnScreen = currentScreen; // ← FIX: remember where we came from
+  legalReturnScreen = currentScreen;
   showScreen(page);
+}
+
+// ==================== CONTACT FORM ====================
+function handleContactSend() {
+  const name = document.getElementById('contactName').value.trim();
+  const email = document.getElementById('contactEmail').value.trim();
+  const subject = document.getElementById('contactSubject').value.trim();
+  const message = document.getElementById('contactMessage').value.trim();
+
+  if (!name || !email || !subject || !message) {
+    showAlert(t('common.notice'), t('legal.contact.required'));
+    return;
+  }
+
+  const body = 'Name: ' + name + '%0AEmail: ' + email + '%0A%0A' + encodeURIComponent(message);
+  const mailUrl = 'mailto:emadh5156@gmail.com?subject=' + encodeURIComponent('[El-Haquna] ' + subject) + '&body=' + body;
+  
+  window.location.href = mailUrl;
+  showAlert(t('common.notice'), t('legal.contact.success'));
+  
+  document.getElementById('contactName').value = '';
+  document.getElementById('contactEmail').value = '';
+  document.getElementById('contactSubject').value = '';
+  document.getElementById('contactMessage').value = '';
 }
 
 // ==================== SPLASH ====================
